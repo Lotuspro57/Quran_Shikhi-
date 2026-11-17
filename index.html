@@ -1,0 +1,2574 @@
+<!doctype html>
+<html lang="bn">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#0D7A3D">
+<meta name="description" content="বাংলায় আরবি পড়া শেখার পূর্ণাঙ্গ প্ল্যাটফর্ম">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="আরবি শিখি">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icons/icon-192.png">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<style>html{color-scheme:light}:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0}img{max-width:100%}[hidden]{display:none!important}
+.updbar{position:fixed;left:0;right:0;top:env(safe-area-inset-top,0px);z-index:60;background:var(--green-d);color:#fff;box-shadow:0 4px 16px rgba(0,0,0,.3)}
+.updin{display:flex;align-items:center;gap:10px;padding:10px max(16px,env(safe-area-inset-right,0px)) 10px max(16px,env(safe-area-inset-left,0px));max-width:1040px;margin:0 auto}
+.updn{font-size:.85em;opacity:.9}
+.updbar .pbtn{background:#fff;color:var(--green-d);box-shadow:none;min-width:0;padding:8px 14px}
+.updx{flex:none;background:transparent;border:0;color:#fff;font-size:1.6em;line-height:1;padding:4px 8px;cursor:pointer}
+</style>
+<title>আরবি শিখি</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Anek+Bangla:wght@500;700;800&family=Hind+Siliguri:wght@400;500;600;700&display=swap">
+<style>
+/* Layout: sticky header (brand, age mode, theme) + five-tab nav (top on wide screens, bottom bar on phones).
+   Home is a three-stage path (প্রাথমিক, মধ্যম, উচ্চতর) of lesson cards; tools open as full views; letter detail is a sheet. */
+:root{
+  --bg:#ffffff; --bg2:#F1F8F3; --card:#ffffff; --fg:#08130D; --muted:#46584D; --line:#CFE2D5;
+  --green:#0D7A3D; --green-d:#085A2C; --green-l:#DDF2E4; --on-green:#ffffff;
+  --f-ui:'Hind Siliguri','Amiri','Noto Sans Bengali',system-ui,sans-serif;
+  --f-head:'Anek Bangla','Hind Siliguri',system-ui,sans-serif;
+  --f-ar:'Amiri','Noto Naskh Arabic','Traditional Arabic',serif;
+  --scale:1; --r:12px; --fs:1;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#040906; --bg2:#0B140E; --card:#09110C; --fg:#F1F8F3; --muted:#9CB2A3; --line:#1D2D23;
+  --green:#3ED47C; --green-d:#2DB766; --green-l:#0E2417; --on-green:#03100A; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#040906; --bg2:#0B140E; --card:#09110C; --fg:#F1F8F3; --muted:#9CB2A3; --line:#1D2D23;
+  --green:#3ED47C; --green-d:#2DB766; --green-l:#0E2417; --on-green:#03100A; color-scheme:dark}
+:root[data-age="kid"]{--scale:1.16;--r:22px}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--fg);font:400 calc(16px*var(--scale))/1.65 var(--f-ui);padding-bottom:calc(84px + env(safe-area-inset-bottom,0px))}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);background:var(--bg);z-index:30}
+.wrap{max-width:1040px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+#app{padding-block:20px 40px;outline:none}
+h1,h2,h3{font-family:var(--f-head);line-height:1.25;margin:0;text-wrap:balance}
+h1{font-size:1.9em;font-weight:800}h2{font-size:1.35em;font-weight:700}h3{font-size:1.08em;font-weight:700}
+p{margin:0}
+a{color:var(--green)}
+button{font:inherit;color:inherit;cursor:pointer}
+:focus-visible{outline:3px solid var(--green);outline-offset:2px}
+.ar{font-family:var(--f-ar);direction:rtl;line-height:1.9;font-weight:400}
+.eyebrow{font-size:.78em;letter-spacing:.06em;font-weight:600;color:var(--green)}
+.lead{color:var(--muted);margin-top:6px;max-width:60ch}
+.muted{color:var(--muted)}
+/* header */
+header.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:var(--bg);border-bottom:1px solid var(--line)}
+.hd{display:flex;align-items:center;justify-content:space-between;gap:12px;padding-block:10px;flex-wrap:wrap}
+.brand{display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--fg)}
+.brand-ar{background:var(--green);color:var(--on-green);border-radius:10px;padding:0 12px;font-size:1.35em;line-height:1.7}
+.brand-bn{font-family:var(--f-head);font-weight:800;font-size:1.25em}
+.ctl{display:flex;align-items:center;gap:8px}
+.seg{display:flex;border:1.5px solid var(--green);border-radius:999px;overflow:hidden}
+.seg button{border:0;background:transparent;padding:5px 14px;font-weight:600;font-size:.88em}
+.seg button[aria-pressed="true"]{background:var(--green);color:var(--on-green)}
+.iconbtn{border:1.5px solid var(--line);background:var(--card);border-radius:999px;padding:5px 12px;font-size:.88em;font-weight:600}
+nav.tabs{border-top:1px solid var(--line)}
+.tabs-in{display:flex;gap:4px;overflow-x:auto}
+.tabs a{display:flex;align-items:center;gap:7px;padding:10px 14px;text-decoration:none;color:var(--muted);font-weight:600;white-space:nowrap;border-bottom:3px solid transparent}
+.tabs a svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.tabs a[aria-current="page"]{color:var(--green);border-bottom-color:var(--green)}
+@media(max-width:720px){
+  nav.tabs{position:fixed;left:0;right:0;bottom:0;background:var(--bg);z-index:25;padding-bottom:env(safe-area-inset-bottom,0px)}
+  .tabs-in{justify-content:space-between;gap:0;overflow:visible}
+  .tabs a{flex:1;flex-direction:column;gap:2px;padding:8px 2px;font-size:.72em;border-bottom:0;border-top:3px solid transparent;min-width:0;justify-content:center}
+  .tabs a[aria-current="page"]{border-top-color:var(--green)}
+  h1{font-size:1.55em}
+}
+/* buttons, chips, cards */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border:2px solid var(--green);background:var(--green);color:var(--on-green);border-radius:var(--r);padding:.6em 1.2em;font-weight:700;text-decoration:none}
+.btn.ghost{background:transparent;color:var(--green)}
+.btn.sm{padding:.3em .8em;font-size:.88em}
+.btn:disabled{opacity:.45;cursor:default}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin-block:14px}
+.chip{border:1.5px solid var(--line);background:var(--card);border-radius:999px;padding:.3em 1em;font-weight:600}
+.chip[aria-pressed="true"]{background:var(--green);color:var(--on-green);border-color:var(--green)}
+.card{background:var(--card);border:1.5px solid var(--line);border-radius:var(--r);padding:16px}
+.back{display:inline-block;margin-bottom:12px;font-weight:600;text-decoration:none}
+.lh{margin-bottom:18px}
+.foot{display:flex;flex-wrap:wrap;gap:10px;margin-top:28px;padding-top:18px;border-top:1px solid var(--line)}
+section.blk{margin-top:26px}
+section.blk>h2{margin-bottom:6px}
+.grid{display:grid;gap:12px;grid-template-columns:repeat(auto-fill,minmax(min(100%,230px),1fr));margin-top:12px}
+/* home */
+.hero{display:flex;align-items:center;gap:20px;flex-wrap:wrap;background:var(--green);color:var(--on-green);border-radius:calc(var(--r) + 6px);padding:22px}
+.hero .ar{font-size:3em;line-height:1.5}
+.hero p{opacity:.92}
+.hero .btn{background:var(--bg);color:var(--green-d);border-color:var(--bg)}
+.hero-t{flex:1 1 220px;min-width:0}
+.ring{width:92px;height:92px;flex:none}
+.ring circle{fill:none;stroke-width:9}
+.ring .bg{stroke:rgba(255,255,255,.28)}.ring .fg{stroke:var(--on-green);stroke-linecap:round}
+.ring text{fill:var(--on-green);font:700 22px var(--f-head);text-anchor:middle}
+.stage{margin-top:30px}
+.stage-h{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+.lvl{display:flex;gap:14px;align-items:center;text-decoration:none;color:var(--fg);background:var(--card);border:1.5px solid var(--line);border-radius:var(--r);padding:14px}
+.lvl:hover{border-color:var(--green)}
+.lvl .g{flex:none;width:3.1em;height:3.1em;border-radius:50%;background:var(--green-l);color:var(--green-d);display:grid;place-items:center;font-size:1.4em}
+:root[data-theme="dark"] .lvl .g{color:var(--green)}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]) .lvl .g{color:var(--green)}}
+.lvl .g .ar{line-height:1.3;font-size:1em}
+.lvl b{display:block;font-family:var(--f-head)}
+.lvl small{color:var(--muted)}
+.lvl .st{margin-left:auto;font-size:.78em;font-weight:700;color:var(--green);white-space:nowrap}
+.lvl.done{border-color:var(--green);background:var(--green-l)}
+/* arabic cells */
+.cell{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:0;text-align:center;border:1.5px solid var(--line);background:var(--card);border-radius:var(--r);padding:8px 6px;min-width:0}
+.cell:hover,.tile:hover{border-color:var(--green)}
+.cell .ar{font-size:calc(1.9em*var(--fs))}
+.cell small{color:var(--muted);font-size:.82em;overflow-wrap:anywhere}
+.cell .pic{font-size:1.5em;line-height:1.2}
+.letters{display:grid;gap:10px;grid-template-columns:repeat(auto-fill,minmax(5.4em,1fr))}
+.tile{display:flex;flex-direction:column;align-items:center;border:1.5px solid var(--line);background:var(--card);border-radius:var(--r);padding:8px 4px;min-width:0}
+.tile .tl{font-size:2.5em;line-height:1.5}
+.tile .tn{font-size:.82em;color:var(--muted);text-align:center}
+.cells{display:grid;gap:10px;grid-template-columns:repeat(auto-fill,minmax(7.2em,1fr))}
+.cells.w{grid-template-columns:repeat(auto-fill,minmax(9.5em,1fr))}
+.rule{display:grid;gap:12px;grid-template-columns:repeat(auto-fill,minmax(min(100%,260px),1fr));margin-top:12px}
+.rule .card .ar{font-size:2.4em;display:block;text-align:center}
+.rule .card h3{margin-bottom:4px}
+.rule .card p{color:var(--muted);font-size:.94em}
+.tblw{overflow-x:auto;margin-top:12px;border:1.5px solid var(--line);border-radius:var(--r)}
+table{border-collapse:collapse;width:100%;min-width:420px}
+th,td{padding:6px 10px;text-align:center;border-bottom:1px solid var(--line)}
+th{font-size:.82em;color:var(--muted);background:var(--bg2);font-weight:600}
+tr:last-child td{border-bottom:0}
+td .ar{font-size:1.7em}
+td button{background:none;border:0;padding:0;line-height:1.2}
+td small{display:block;color:var(--muted);font-size:.78em}
+.eq{display:flex;align-items:center;flex-wrap:wrap;gap:8px;direction:ltr}
+.eq .ar{font-size:1.9em}.eq span.op{color:var(--muted)}
+.note{background:var(--green-l);border-radius:var(--r);padding:12px 14px;margin-top:12px;color:var(--fg)}
+.say{border:0;background:transparent;padding:2px 6px;color:var(--green);vertical-align:middle}
+.say svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+/* sheet */
+.sheet{position:fixed;inset:0;z-index:40;background:rgba(0,0,0,.55);display:flex;align-items:flex-end;justify-content:center}
+.sheet[hidden]{display:none}
+.sheet-in{background:var(--bg);width:min(560px,100%);max-height:92vh;overflow-y:auto;border-radius:22px 22px 0 0;padding:18px max(18px,env(safe-area-inset-left,0px)) calc(18px + env(safe-area-inset-bottom,0px))}
+@media(min-width:720px){.sheet{align-items:center}.sheet-in{border-radius:22px}}
+.sh-top{display:flex;justify-content:space-between;align-items:center;gap:8px}
+.big{font-size:7.5em;line-height:1.3;text-align:center;color:var(--green)}
+.forms{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:10px}
+.forms div{border:1.5px solid var(--line);border-radius:var(--r);text-align:center;padding:4px}
+.forms .ar{font-size:2.3em;display:block;line-height:1.5}
+.forms small{font-size:.76em;color:var(--muted)}
+.padw{position:relative;width:min(100%,300px);aspect-ratio:1;margin:10px auto 0;border:2px dashed var(--green);border-radius:var(--r);background:var(--bg2)}
+.padw .ghost{position:absolute;inset:0;display:grid;place-items:center;font-size:12em;opacity:.16;pointer-events:none;color:var(--fg);line-height:1}
+.padw canvas{position:absolute;inset:0;width:100%;height:100%;touch-action:none}
+.row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.row.sp{justify-content:space-between}
+/* quiz + cards */
+.quiz{max-width:640px;margin:0 auto}
+.bar{height:10px;background:var(--bg2);border-radius:99px;overflow:hidden;border:1px solid var(--line)}
+.bar i{display:block;height:100%;background:var(--green)}
+.qp{display:grid;place-items:center;min-height:9em;margin-block:14px;border:1.5px solid var(--line);border-radius:var(--r);padding:12px;text-align:center}
+.qp .ar{font-size:4.6em;line-height:1.5}
+.qp .qn{font-family:var(--f-head);font-size:2em;font-weight:700}
+.opts{display:grid;gap:10px;grid-template-columns:1fr 1fr}
+@media(max-width:420px){.opts{grid-template-columns:1fr}}
+.opt{border:2px solid var(--line);background:var(--card);border-radius:var(--r);padding:.7em;font-weight:600;font-size:1.1em}
+.opt .ar{font-size:2em;line-height:1.5;display:block}
+.opt:hover:not(:disabled){border-color:var(--green)}
+.opt.ok{background:var(--green);color:var(--on-green);border-color:var(--green)}
+.opt.bad{background:var(--fg);color:var(--bg);border-color:var(--fg);text-decoration:line-through}
+.stars{font-size:2.4em;letter-spacing:.1em;color:var(--green)}
+.flash{display:block;width:100%;min-height:15em;border:2px solid var(--green);background:var(--card);border-radius:calc(var(--r) + 6px);padding:20px;text-align:center}
+.flash .ar{font-size:5.5em;line-height:1.5}
+.flash .bk{font-size:1.4em;font-weight:600}
+.flash .bk small{display:block;font-size:.65em;color:var(--muted);font-weight:400}
+.flash .hint{color:var(--muted);font-size:.85em;margin-top:8px}
+.line{display:flex;gap:10px;align-items:center;justify-content:space-between;border-bottom:1px solid var(--line);padding:10px 0}
+.line .ar{font-size:calc(2.1em*var(--fs));flex:1;text-align:right}
+.line .tr{color:var(--muted);font-size:.9em;flex:0 0 38%;min-width:0}
+.wd{background:none;border:0;padding:0 2px;font-family:var(--f-ar);font-size:inherit;border-radius:6px}
+.wd:hover{background:var(--green-l)}
+.toast{position:fixed;left:50%;bottom:calc(96px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--fg);color:var(--bg);padding:8px 16px;border-radius:99px;z-index:50;max-width:90vw;font-size:.9em}
+.toast[hidden]{display:none}
+.kv{display:grid;gap:10px;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));margin-top:12px}
+.kv .card b{display:block;font:800 1.8em var(--f-head);color:var(--green)}
+@media(prefers-reduced-motion:no-preference){.opt,.cell,.tile,.lvl{transition:border-color .15s,background .15s}}
+
+.b2{font-size:2.3em;line-height:1.5}
+.fam{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.tut{background:var(--green-l);border-color:var(--green);margin-bottom:8px}
+.tut p{margin-top:6px}
+.steps{margin:8px 0 0;padding-left:1.3em}
+.mist{margin:8px 0 0;padding-left:1.2em;color:var(--muted)}
+td.l{text-align:start}
+.pair{display:grid;grid-template-columns:auto auto 1fr;gap:10px;align-items:center;padding:8px 0;border-bottom:1px solid var(--line)}
+@media(max-width:520px){.pair{grid-template-columns:auto auto}.pair p{grid-column:1/-1}}
+.chat{display:flex;flex-direction:column;gap:10px;margin-block:14px;min-height:6em}
+.bub{max-width:92%;padding:10px 14px;border-radius:var(--r);border:1.5px solid var(--line);background:var(--card);overflow-wrap:anywhere}
+.bub.u{align-self:flex-end;background:var(--green);color:var(--on-green);border-color:var(--green)}
+.bub .gap{height:.6em}
+.bub.a{align-self:flex-start}
+textarea{font:inherit;color:var(--fg);background:var(--card);border:1.5px solid var(--line);border-radius:var(--r);padding:10px;flex:1 1 220px;min-width:0;resize:vertical}
+.cert{border:3px double var(--green);border-radius:var(--r);padding:24px;text-align:center;margin-top:12px}
+.cert input{font:700 1.3em var(--f-head);text-align:center;background:transparent;color:var(--fg);border:0;border-bottom:2px solid var(--green);max-width:100%}
+.hint2{font-size:.9em;color:var(--muted)}
+.fab{position:fixed;right:max(16px,env(safe-area-inset-right,0px));bottom:calc(84px + env(safe-area-inset-bottom,0px));z-index:26;display:flex;align-items:center;gap:8px;background:var(--green);color:var(--on-green);border:0;border-radius:999px;padding:.6em 1.1em;font-weight:700;box-shadow:0 4px 14px rgba(0,0,0,.3)}
+@media(min-width:721px){.fab{bottom:24px}}
+.chat.sm{max-height:42vh;overflow-y:auto;margin-block:6px}
+.ask-in{display:flex;flex-direction:column;gap:8px}
+body.ai{padding-bottom:0}
+body.ai header.top,body.ai .fab{display:none}
+body.ai #app{padding-block:0}
+.aifull{display:flex;flex-direction:column;height:calc(100dvh - env(safe-area-inset-top,0px) - env(safe-area-inset-bottom,0px));min-height:0}
+.aibar{display:flex;align-items:center;justify-content:space-between;gap:10px;padding-block:10px;border-bottom:1px solid var(--line)}
+.aibar .back{margin:0}
+.aifull .chat{flex:1;min-height:0;overflow-y:auto;margin-block:10px}
+.aifull form{padding-bottom:10px}
+a.fab{text-decoration:none}
+.cal{display:grid;grid-template-columns:repeat(7,1fr);gap:4px}
+.cal .wh{text-align:center;font-size:.78em;color:var(--muted);font-weight:600;padding:4px 0}
+.cd{border:1.5px solid var(--line);background:var(--card);border-radius:10px;min-height:3.3em;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;padding:2px;min-width:0;color:var(--fg)}
+.cd.e{visibility:hidden}
+.cd.st{background:var(--green-l)}
+.cd.td{border-color:var(--green);border-width:2.5px}
+.cd.sel{background:var(--green);color:var(--on-green);border-color:var(--green)}
+.cd .dt{width:.55em;height:.55em;border-radius:50%;border:1.5px solid currentColor;display:block}
+.cd .dt.f{background:currentColor}
+.sess{display:flex;gap:12px;padding:10px 0;border-bottom:1px solid var(--line)}
+.sess.ok>div b{text-decoration:line-through;color:var(--muted)}
+.tick{flex:none;width:1.7em;height:1.7em;border:2px solid var(--green);border-radius:7px;background:transparent;color:var(--on-green);display:grid;place-items:center;padding:0}
+.tick[aria-checked="true"]{background:var(--green)}
+.tick[aria-checked="true"]::after{content:"✓";font-weight:700}
+input[type="time"],input[type="date"]{font:inherit;color:var(--fg);background:var(--card);border:1.5px solid var(--line);border-radius:10px;padding:6px 8px}
+details.mon>summary{cursor:pointer;list-style:none}
+details.mon>summary::-webkit-details-marker{display:none}
+.ay.on{outline:3px solid var(--green);background:var(--green-l)}
+@media(max-width:720px){
+  .tabs-in{display:grid;grid-template-columns:repeat(4,1fr);gap:0;padding-left:4px;padding-right:4px}
+  .tabs a{flex-direction:row;gap:4px;padding:6px 2px;font-size:.78em;line-height:1.3;border-top:0;border-bottom:3px solid transparent;overflow:hidden;text-overflow:ellipsis}
+  .tabs a svg{width:16px;height:16px;flex:none}
+  .tabs a[aria-current="page"]{border-top-color:transparent;border-bottom-color:var(--green);background:var(--green-l)}
+  body{padding-bottom:calc(88px + env(safe-area-inset-bottom,0px))}
+  .fab{bottom:calc(88px + env(safe-area-inset-bottom,0px))}
+}
+body.ai{padding-bottom:0}
+#daypanel{scroll-margin-top:130px}
+.pbtn{flex:none;align-self:center;display:inline-flex;align-items:center;justify-content:center;min-width:84px;min-height:52px;padding:10px 18px;border-radius:14px;background:var(--green);color:var(--on-green);font-weight:700;font-size:1.05em;text-decoration:none;box-shadow:0 2px 0 var(--green-d)}
+.pbtn:active{transform:translateY(1px);box-shadow:none}
+</style>
+</head>
+<body>
+<header class="top">
+  <div class="wrap hd">
+    <a class="brand" href="#home" aria-label="আরবি শিখি, হোম"><span class="brand-ar ar" lang="ar">عربي</span><span class="brand-bn">আরবি শিখি</span></a>
+    <div class="ctl">
+      <div class="seg" role="group" aria-label="বয়স অনুযায়ী মোড">
+        <button type="button" id="age-kid" data-act="age" data-v="kid">ছোটদের</button>
+        <button type="button" id="age-adult" data-act="age" data-v="adult">বড়দের</button>
+      </div>
+      <button type="button" class="iconbtn" id="theme-btn" data-act="theme" aria-label="থিম পরিবর্তন"></button>
+    </div>
+  </div>
+  <nav class="tabs" aria-label="প্রধান মেনু"><div class="wrap tabs-in">
+    <a href="#home" data-tab="home"><svg viewBox="0 0 24 24"><path d="M3 11l9-8 9 8v10h-6v-6H9v6H3z"/></svg>পাঠ</a>
+    <a href="#practice" data-tab="practice"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="4"/></svg>অনুশীলন</a>
+    <a href="#cards" data-tab="cards"><svg viewBox="0 0 24 24"><rect x="3" y="6" width="18" height="13" rx="2"/><path d="M7 3h10"/></svg>কার্ড</a>
+    <a href="#read" data-tab="read"><svg viewBox="0 0 24 24"><path d="M3 5h7a3 3 0 013 3v12a2 2 0 00-2-2H3zM21 5h-7"/><path d="M21 5v13h-7"/></svg>পড়ার ঘর</a>
+    <a href="#quran" data-tab="quran"><svg viewBox="0 0 24 24"><path d="M5 4h11a3 3 0 013 3v13H8a3 3 0 01-3-3z"/><path d="M9 8h6"/></svg>আল-কুরআন</a>
+    <a href="#plan" data-tab="plan"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M8 3v4M16 3v4M3 10h18"/></svg>পরিকল্পনা</a>
+    <a href="#progress" data-tab="progress"><svg viewBox="0 0 24 24"><path d="M5 20V11M12 20V4M19 20v-6"/></svg>অগ্রগতি</a>
+  </div></nav>
+</header>
+<main class="wrap" id="app" tabindex="-1"></main>
+<div id="sheet" class="sheet" hidden role="dialog" aria-modal="true" aria-label="অক্ষরের বিবরণ"></div>
+<a href="#tutor" id="askfab" class="fab" aria-label="ওস্তাদকে জিজ্ঞাসা করুন"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 5h16v11H9l-5 4z"/></svg>ওস্তাদকে জিজ্ঞাসা</a>
+<div id="toast" class="toast" hidden role="status"></div>
+<script>
+/* ---------- DATA ---------- */
+const ZWJ='‍',FA='َ',KA='ِ',DA='ُ';
+/* [char, name, tip, example word, syllables, picture, non-joining] ; Bengali meanings are left for a later step */
+const LET=[
+['ا','আলিফ','লম্বা আ-কার। পরের অক্ষরের সাথে জোড়া লাগে না।','أَسَد','আ-সাদ','🦁',1],
+['ب','বা','দুই ঠোঁট মিলিয়ে ‘ব’। নিচে একটি ফোঁটা।','بَطَّة','বাত-তা','🦆',0],
+['ت','তা','জিহ্বার ডগা দাঁতের গোড়ায় ঠেকিয়ে ‘ত’। উপরে দুই ফোঁটা।','تُفَّاح','তুফ-ফাহ','🍎',0],
+['ث','ছা','জিহ্বার ডগা দাঁতের ফাঁকে রেখে হালকা ‘ছ’। উপরে তিন ফোঁটা।','ثَعْلَب','ছা’-লাব','🦊',0],
+['ج','জীম','জিহ্বার মাঝখান তালুতে লাগিয়ে ‘জ’। নিচে একটি ফোঁটা।','جَمَل','জা-মাল','🐪',0],
+['ح','হা (বড়)','গলার মাঝখান থেকে হালকা শ্বাসের ‘হ’। কোনো ফোঁটা নেই।','حِصَان','হি-সান','🐴',0],
+['خ','খা','গলার উপরের অংশ থেকে ঘষে ‘খ’। উপরে একটি ফোঁটা।','خَرُوف','খা-রূফ','🐑',0],
+['د','দাল','জিহ্বার ডগা উপরের দাঁতের গোড়ায় ‘দ’। জোড়া লাগে না।','دَجَاجَة','দা-জা-জা','🐔',1],
+['ذ','যাল','জিহ্বার ডগা দাঁতের ফাঁকে রেখে নরম ‘য’। জোড়া লাগে না।','ذُرَة','যু-রা','🌽',1],
+['ر','রা','জিহ্বা একটু কাঁপিয়ে ‘র’। জোড়া লাগে না।','رِيشَة','রী-শা','🪶',1],
+['ز','যা','ইংরেজি z-এর মতো ‘য’। জোড়া লাগে না।','زَرَافَة','যা-রা-ফা','🦒',1],
+['س','সীন','দাঁতের ফাঁক দিয়ে ‘স’। তিন দাঁত, ফোঁটা নেই।','سَمَكَة','সা-মা-কা','🐟',0],
+['ش','শীন','‘শ’। সীনের উপর তিন ফোঁটা।','شَمْس','শামস','☀️',0],
+['ص','ছোয়াদ','মোটা সুরে মুখ ভরে ‘ছ’।','صَقْر','ছাক্র','🦅',0],
+['ض','দোয়াদ','মোটা সুরে ‘দ্ব’। জিহ্বার পাশ থেকে।','ضِفْدَع','দিফ-দা’','🐸',0],
+['ط','তোয়া','মোটা সুরে মুখ ভরে ‘ত্ব’।','طَاوُوس','তা-ঊস','🦚',0],
+['ظ','যোয়া','মোটা সুরে ‘য্ব’। জিহ্বা দাঁতের ফাঁকে।','ظَرْف','যারফ','✉️',0],
+['ع','আইন','গলার গভীর থেকে চাপা ‘আ’। শিক্ষকের কাছে শুনে অনুশীলন করুন।','عِنَب','ই-নাব','🍇',0],
+['غ','গাইন','গলার শেষ দিক থেকে গড়গড়ার মতো ‘গ’।','غَيْمَة','গাই-মা','☁️',0],
+['ف','ফা','নিচের ঠোঁট উপরের দাঁতে লাগিয়ে ‘ফ’।','فِيل','ফীল','🐘',0],
+['ق','ক্বাফ','জিহ্বার গোড়া থেকে গভীর, মোটা ‘ক্ব’।','قَمَر','ক্বা-মার','🌙',0],
+['ك','কাফ','জিহ্বার মাঝ থেকে হালকা ‘ক’।','كِتَاب','কি-তাব','📖',0],
+['ل','লাম','জিহ্বার ডগা তালুতে ঠেকিয়ে ‘ল’।','لَيْمُون','লাই-মূন','🍋',0],
+['م','মীম','দুই ঠোঁট বন্ধ করে ‘ম’।','مَوْز','মাওয','🍌',0],
+['ن','নূন','নাকের সাহায্যে ‘ন’। উপরে একটি ফোঁটা।','نَجْمَة','নাজ-মা','⭐',0],
+['ه','হা (ছোট)','গলার গোড়া থেকে হালকা ‘হ’।','هُدْهُد','হুদ-হুদ','🐦',0],
+['و','ওয়াও','ঠোঁট গোল করে ‘ওয়া/ও’। জোড়া লাগে না।','وَرْدَة','ওয়ার-দা','🌹',1],
+['ي','ইয়া','‘ই/ইয়া’। নিচে দুই ফোঁটা।','يَد','ইয়াদ','✋',0]
+].map(a=>({ch:a[0],name:a[1],tip:a[2],w:a[3],wb:a[4],pic:a[5],nj:a[6]}));
+const BASE=['','ব','ত','ছ','জ','হ','খ','দ','য','র','য','স','শ','ছ','দ্ব','ত্ব','য্ব','','গ','ফ','ক্ব','ক','ল','ম','ন','হ','ওয়','ইয়'];
+LET.forEach((l,i)=>{l.b=BASE[i];});
+const formsOf=l=>l.nj?[l.ch,l.ch,ZWJ+l.ch,ZWJ+l.ch]:[l.ch,l.ch+ZWJ,ZWJ+l.ch+ZWJ,ZWJ+l.ch];
+const VS=['া','ি','ু'];
+function syl(l,v){
+  const ar=l.ch==='ا'?['أَ','إِ','أُ'][v]:l.ch+[FA,KA,DA][v];
+  let bn;
+  if(l.ch==='ا')bn=['আ','ই','উ'][v];
+  else if(l.ch==='ع')bn=['আ’','ই’','উ’'][v];
+  else bn=l.b+VS[v];
+  return {ar,bn};
+}
+const strip=s=>s.replace(/[ً-ْٰ]/g,'');
+/* reading words: [arabic, syllables, picture] */
+const WORDS=[
+['كِتَاب','কি-তাব','📖'],['قَلَم','ক্বা-লাম','✏️'],['بَيْت','বাইত','🏠'],['مَدْرَسَة','মাদ-রা-সা','🏫'],
+['شَمْس','শামস','☀️'],['قَمَر','ক্বা-মার','🌙'],['مَاء','মা-উন','💧'],['بَاب','বাব','🚪'],
+['وَلَد','ওয়া-লাদ','👦'],['بِنْت','বিনত','👧'],['شَجَرَة','শা-জা-রা','🌳'],['سَيَّارَة','সাই-ইয়া-রা','🚗'],
+['طَائِرَة','তা-ই-রা','✈️'],['تُفَّاح','তুফ-ফাহ','🍎'],['قِطَّة','কিত-তা','🐱'],['كَلْب','কালব','🐶'],
+['سَمَكَة','সা-মা-কা','🐟'],['وَرْدَة','ওয়ার-দা','🌹'],['نَجْم','নাজম','⭐'],['جَبَل','জা-বাল','⛰️'],
+['سَاعَة','সা-আ','⏰'],['كُرْسِي','কুর-সী','🪑'],['فِيل','ফীল','🐘'],['بَحْر','বাহর','🌊']
+];
+/* vocabulary decks: [arabic, bengali reading] */
+const VOCAB={
+ num:{t:'সংখ্যা ১–১০',g:'١٢٣',items:[['وَاحِد','ওয়া-হিদ'],['اِثْنَان','ইছ-নান'],['ثَلَاثَة','ছা-লা-ছা'],['أَرْبَعَة','আর-বা-আ'],['خَمْسَة','খাম-সা'],['سِتَّة','সিত-তা'],['سَبْعَة','সাব-আ'],['ثَمَانِيَة','ছা-মা-নি-য়া'],['تِسْعَة','তিস-আ'],['عَشَرَة','আ-শা-রা']]},
+ day:{t:'সপ্তাহের দিন',g:'أيام',items:[['الأَحَد','আল-আহাদ'],['الاِثْنَيْن','আল-ইছ-নাইন'],['الثُّلَاثَاء','আছ-ছু-লা-ছা'],['الأَرْبِعَاء','আল-আর-বি-আ'],['الخَمِيس','আল-খা-মীস'],['الجُمُعَة','আল-জু-মু-আ'],['السَّبْت','আস-সাবত']]},
+ col:{t:'রং',g:'لون',items:[['أَحْمَر','আহ-মার'],['أَزْرَق','আয-রাক্ব'],['أَخْضَر','আখ-দার'],['أَصْفَر','আছ-ফার'],['أَبْيَض','আব-ইয়ায'],['أَسْوَد','আস-ওয়াদ']]},
+ fam:{t:'পরিবার',g:'أسرة',items:[['أَب','আব'],['أُمّ','উম্ম'],['أَخ','আখ'],['أُخْت','উখত'],['جَدّ','জাদ্দ'],['جَدَّة','জাদ-দা'],['اِبْن','ইবন'],['بِنْت','বিনত']]},
+ grt:{t:'সালাম ও শুভেচ্ছা',g:'سلام',items:[['السَّلَامُ عَلَيْكُمْ','আস-সালামু আলাইকুম'],['وَعَلَيْكُمُ السَّلَامُ','ওয়া আলাইকুমুস সালাম'],['صَبَاحُ الْخَيْر','সাবা-হুল খাইর'],['مَسَاءُ الْخَيْر','মা-সা-উল খাইর'],['شُكْرًا','শুকরান'],['مَرْحَبًا','মারহাবান'],['مَعَ السَّلَامَة','মা-আস সালামা'],['بِسْمِ اللَّه','বিসমিল্লাহ']]}
+};
+/* reading library */
+const TEXTS=[
+{id:'fatiha',t:'সূরা আল-ফাতিহা',ar:['بِسْمِ ٱللَّهِ ٱلرَّحْمَٰنِ ٱلرَّحِيمِ','ٱلْحَمْدُ لِلَّهِ رَبِّ ٱلْعَٰلَمِينَ','ٱلرَّحْمَٰنِ ٱلرَّحِيمِ','مَٰلِكِ يَوْمِ ٱلدِّينِ','إِيَّاكَ نَعْبُدُ وَإِيَّاكَ نَسْتَعِينُ','ٱهْدِنَا ٱلصِّرَٰطَ ٱلْمُسْتَقِيمَ','صِرَٰطَ ٱلَّذِينَ أَنْعَمْتَ عَلَيْهِمْ غَيْرِ ٱلْمَغْضُوبِ عَلَيْهِمْ وَلَا ٱلضَّآلِّينَ'],
+ bn:['বিসমিল্লাহির রাহমানির রাহীম','আলহামদু লিল্লাহি রাব্বিল আলামীন','আর রাহমানির রাহীম','মালিকি ইয়াওমিদ্দীন','ইয়্যাকা না’বুদু ওয়া ইয়্যাকা নাস্তাঈন','ইহদিনাস সিরাতাল মুস্তাকীম','সিরাতাল্লাযীনা আন’আমতা আলাইহিম গাইরিল মাগদূবি আলাইহিম ওয়ালাদ দাল্লীন']},
+{id:'ikhlas',t:'সূরা আল-ইখলাস',ar:['قُلْ هُوَ ٱللَّهُ أَحَدٌ','ٱللَّهُ ٱلصَّمَدُ','لَمْ يَلِدْ وَلَمْ يُولَدْ','وَلَمْ يَكُن لَّهُۥ كُفُوًا أَحَدٌۢ'],
+ bn:['কুল হুওয়াল্লাহু আহাদ','আল্লাহুস সামাদ','লাম ইয়ালিদ ওয়া লাম ইউলাদ','ওয়া লাম ইয়াকুল্লাহু কুফুওয়ান আহাদ']},
+{id:'falaq',t:'সূরা আল-ফালাক্ব',ar:['قُلْ أَعُوذُ بِرَبِّ ٱلْفَلَقِ','مِن شَرِّ مَا خَلَقَ','وَمِن شَرِّ غَاسِقٍ إِذَا وَقَبَ','وَمِن شَرِّ ٱلنَّفَّٰثَٰتِ فِي ٱلْعُقَدِ','وَمِن شَرِّ حَاسِدٍ إِذَا حَسَدَ'],
+ bn:['কুল আউযু বিরাব্বিল ফালাক্ব','মিন শাররি মা খালাক্ব','ওয়া মিন শাররি গাসিক্বিন ইযা ওয়াক্বাব','ওয়া মিন শাররিন নাফফাসাতি ফিল উক্বাদ','ওয়া মিন শাররি হাসিদিন ইযা হাসাদ']},
+{id:'nas',t:'সূরা আন-নাস',ar:['قُلْ أَعُوذُ بِرَبِّ ٱلنَّاسِ','مَلِكِ ٱلنَّاسِ','إِلَٰهِ ٱلنَّاسِ','مِن شَرِّ ٱلْوَسْوَاسِ ٱلْخَنَّاسِ','ٱلَّذِي يُوَسْوِسُ فِي صُدُورِ ٱلنَّاسِ','مِنَ ٱلْجِنَّةِ وَٱلنَّاسِ'],
+ bn:['কুল আউযু বিরাব্বিন নাস','মালিকিন নাস','ইলাহিন নাস','মিন শাররিল ওয়াসওয়াসিল খান্নাস','আল্লাযী ইউওয়াসউইসু ফী সুদূরিন নাস','মিনাল জিন্নাতি ওয়ান নাস']},
+{id:'talk',t:'সালাম ও পরিচয় (কথোপকথন)',ar:['السَّلَامُ عَلَيْكُمْ','وَعَلَيْكُمُ السَّلَامُ','كَيْفَ حَالُكَ؟','أَنَا بِخَيْرٍ، شُكْرًا','مَا اسْمُكَ؟','اِسْمِي مُحَمَّد'],
+ bn:['আস-সালামু আলাইকুম','ওয়া আলাইকুমুস সালাম','কাইফা হালুক?','আনা বিখাইর, শুকরান','মাসমুক?','ইসমী মুহাম্মাদ']}
+];
+
+/* ---------- CORE ---------- */
+const $=(s,r=document)=>r.querySelector(s);
+const KEY='arabi-shikhi-v2';
+let mem=null;
+function load(){try{const r=localStorage.getItem(KEY);if(r)return JSON.parse(r)}catch(e){}return mem||{}}
+const S=Object.assign({done:{},best:{},known:{},streak:{last:'',n:0},age:'kid',theme:'auto',tr:true,fs:1},load());
+function save(){mem=S;try{localStorage.setItem(KEY,JSON.stringify(S))}catch(e){}}
+const bd=n=>String(n).replace(/\d/g,d=>'০১২৩৪৫৬৭৮৯'[d]);
+const shuf=a=>{a=[...a];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a};
+const pick=(a,n)=>shuf(a).slice(0,n);
+const ar=(t,c='')=>`<span class="ar ${c}" lang="ar" dir="rtl">${t}</span>`;
+const ICON_SPK='<svg viewBox="0 0 24 24"><path d="M4 9v6h4l5 4V5L8 9z"/><path d="M16 9a4 4 0 010 6M18.5 6.5a8 8 0 010 11"/></svg>';
+const spk=t=>`<button type="button" class="say" data-act="say" data-t="${t}" aria-label="শুনুন">${ICON_SPK}</button>`;
+const cell=(a,b,pic)=>`<button type="button" class="cell" data-act="say" data-t="${a}">${pic?`<span class="pic">${pic}</span>`:''}${ar(a)}${b?`<small>${b}</small>`:''}</button>`;
+const ST={g:0,syl:true,q:null,fc:null,fs:1};
+const STAGE=['প্রাথমিক','মধ্যম','তাজবীদ','উচ্চতর'];
+const LV=[
+{t:'আরবি বর্ণমালা',d:'২৮টি অক্ষর চিনি, শুনি ও লিখি',g:'أ',st:0},
+{t:'মাখরাজ ও কাছাকাছি অক্ষর',d:'কোথা থেকে উচ্চারণ, কোনটি কোনটির মতো',g:'ع',st:0},
+{t:'হরকত (ছোট স্বর)',d:'যবর, যের, পেশ ও জযম দিয়ে পড়া',g:'بَ',st:0},
+{t:'অক্ষর জোড়া লাগানো',d:'শুরু, মাঝ ও শেষের রূপ',g:'بـ',st:0},
+{t:'মাদ্দ, তানবীন ও তাশদীদ',d:'টেনে পড়া, ন-ধ্বনি ও দ্বিত্ব',g:'بّ',st:1},
+{t:'বিশেষ চিহ্ন',d:'হামযা, গোল তা, ছোট আলিফ, ওয়াসলা',g:'ء',st:1},
+{t:'শব্দ পড়া',d:'সিলেবল ভেঙে পুরো শব্দ পড়ি',g:'بَيْت',st:1},
+{t:'আল (ال) ও চন্দ্র-সূর্য অক্ষর',d:'কখন ল পড়া হয়, কখন হয় না',g:'ال',st:1},
+{t:'নুন সাকিন ও তানবীনের নিয়ম',d:'ইযহার, ইদগাম, ইকলাব, ইখফা',g:'نْ',st:2},
+{t:'মীম সাকিন ও কালকালা',d:'গুন্নাহ ও প্রতিধ্বনির ধ্বনি',g:'مْ',st:2},
+{t:'মাদ্দের প্রকার',d:'কত মাত্রা টানতে হবে',g:'آ',st:2},
+{t:'ভারী-হালকা অক্ষর',d:'র ও আল্লাহ শব্দের ল-এর নিয়ম',g:'ر',st:2},
+{t:'থামার চিহ্ন ও ওয়াকফ',d:'কোথায় থামব, কীভাবে থামব',g:'ۚ',st:2},
+{t:'ব্যাকরণের ভিত্তি',d:'ইসম, ফিল, হরফ, সর্বনাম ও ধাতু',g:'نَحْو',st:3},
+{t:'শব্দভান্ডার',d:'সংখ্যা, দিন, রং, পরিবার ও সালাম',g:'كلمات',st:3},
+{t:'উন্নত পড়া',d:'হরকত ছাড়া পড়া ও পূর্ণ পাঠ',g:'اقرأ',st:3}
+];
+function markActive(){
+  const f=d=>d.getFullYear()+'-'+(d.getMonth()+1)+'-'+d.getDate();
+  const n=new Date(),t=f(n),y=f(new Date(Date.now()-864e5));
+  const p=n.getFullYear()+'-'+String(n.getMonth()+1).padStart(2,'0')+'-'+String(n.getDate()).padStart(2,'0');
+  S.days=S.days||{};S.days[p]=(S.days[p]||0)+1;
+  if(S.streak.last===t){save();return}
+  S.streak.n=S.streak.last===y?S.streak.n+1:1;S.streak.last=t;save();
+}
+let tt;
+function toast(m){const e=$('#toast');e.textContent=m;e.hidden=false;clearTimeout(tt);tt=setTimeout(()=>{e.hidden=true},2600)}
+function speak(t){
+  try{
+    if(!('speechSynthesis' in window))throw 0;
+    const v=speechSynthesis.getVoices().find(x=>x.lang&&x.lang.toLowerCase().startsWith('ar'));
+    if(!v){toast('এই ডিভাইসে আরবি ভয়েস পাওয়া যায়নি');return}
+    const u=new SpeechSynthesisUtterance(t);u.lang=v.lang;u.voice=v;u.rate=.7;
+    speechSynthesis.cancel();speechSynthesis.speak(u);
+  }catch(e){toast('এখানে উচ্চারণ শোনা যাচ্ছে না')}
+}
+function prefs(){
+  const r=document.documentElement;r.dataset.age=S.age;
+  if(S.theme==='auto')r.removeAttribute('data-theme');else r.dataset.theme=S.theme;
+  $('#age-kid').setAttribute('aria-pressed',S.age==='kid');
+  $('#age-adult').setAttribute('aria-pressed',S.age==='adult');
+  $('#theme-btn').textContent='থিম: '+({auto:'অটো',light:'দিন',dark:'রাত'})[S.theme];
+  r.style.setProperty('--fs',S.fs);
+}
+const pct=()=>Math.round(Object.values(S.done).filter(Boolean).length/LV.length*100);
+function ring(p){
+  const c=2*Math.PI*38;
+  return `<svg class="ring" viewBox="0 0 92 92" role="img" aria-label="মোট অগ্রগতি ${bd(p)} শতাংশ"><circle class="bg" cx="46" cy="46" r="38"/><circle class="fg" cx="46" cy="46" r="38" stroke-dasharray="${c.toFixed(1)}" stroke-dashoffset="${(c*(1-p/100)).toFixed(1)}" transform="rotate(-90 46 46)"/><text x="46" y="54">${bd(p)}%</text></svg>`;
+}
+/* ---------- HOME ---------- */
+function viewHome(){
+  const next=LV.findIndex((_,i)=>!S.done[i+1]);
+  const stages=[0,1,2].map(s=>{
+    const items=LV.map((l,i)=>({l,n:i+1})).filter(x=>x.l.st===s);
+    const sub=['অক্ষর ও হরকত','শব্দ ও সহজ পড়া','ব্যাকরণ ও পূর্ণ পাঠ'][s];
+    return `<section class="stage"><div class="stage-h"><h2>${STAGE[s]} ধাপ</h2><span class="muted">${sub}</span></div><div class="grid">${items.map(({l,n})=>`<a class="lvl ${S.done[n]?'done':''}" href="#level-${n}"><span class="g">${ar(l.g)}</span><span><small>পাঠ ${bd(n)}</small><b>${l.t}</b><small>${l.d}</small></span><span class="st">${S.done[n]?'সম্পন্ন':'শুরু'}</span></a>`).join('')}</div></section>`;
+  }).join('');
+  return `<div class="hero"><div class="hero-t"><p>আসসালামু আলাইকুম</p>${ar('مَرْحَبًا بِكُمْ')}<p>অক্ষর থেকে পূর্ণ পাঠ পর্যন্ত, ধাপে ধাপে পড়তে শিখুন।</p><div class="row" style="margin-top:12px"><a class="btn" href="#level-${next<0?1:next+1}">${next<0?'আবার দেখি':next===0&&!S.done[1]?'শুরু করি':'চালিয়ে যাই'}</a></div></div>${ring(pct())}</div>${stages}`;
+}
+/* ---------- PROGRESS ---------- */
+function viewProgress(){
+  const known=Object.values(S.known).reduce((a,b)=>a+b.length,0);
+  const stars=Object.values(S.best).reduce((a,b)=>a+(b>=9?3:b>=7?2:b>=5?1:0),0);
+  return `<h1>আমার অগ্রগতি</h1><div class="kv"><div class="card"><b>${bd(pct())}%</b>পাঠ শেষ</div><div class="card"><b>${bd(S.streak.n||0)}</b>টানা দিন</div><div class="card"><b>${bd(stars)}</b>তারা (সর্বোচ্চ ${bd(15)})</div><div class="card"><b>${bd(known)}</b>শেখা কার্ড</div></div>
+  <section class="blk"><h2>পাঠের তালিকা</h2>${LV.map((l,i)=>`<div class="line"><span>${bd(i+1)}. ${l.t}</span><a href="#level-${i+1}">${S.done[i+1]?'সম্পন্ন ✓':'খুলুন'}</a></div>`).join('')}</section>
+  <section class="blk"><h2>অনুশীলনের সেরা ফল</h2>${QZ.map(q=>`<div class="line"><span>${q.t}</span><b>${S.best[q.id]==null?'—':bd(S.best[q.id])+'/১০'}</b></div>`).join('')}</section>
+  <section class="blk"><button class="btn ghost sm" data-act="resetall">${ST.rs?'নিশ্চিত? সব মুছে ফেলুন':'অগ্রগতি মুছুন'}</button></section>`;
+}
+/* ---------- ROUTER ---------- */
+const app=$('#app');
+function render(keepScroll){
+  const h=(location.hash||'#home').slice(1),i=h.indexOf('-');
+  const a=i<0?h:h.slice(0,i),b=i<0?'':h.slice(i+1);
+  let html;
+  switch(a){
+    case'level':html=viewLevel(+b);break;
+    case'practice':html=viewPractice(b);break;
+    case'cards':html=viewCards(b);break;
+    case'read':html=viewRead(b);break;
+    case'progress':html=viewProgress();break;
+    default:html=viewHome();
+  }
+  app.innerHTML=html;
+  const tab=({level:'home',home:'home',practice:'practice',cards:'cards',read:'read',progress:'progress'})[a]||'home';
+  document.querySelectorAll('[data-tab]').forEach(x=>{if(x.dataset.tab===tab)x.setAttribute('aria-current','page');else x.removeAttribute('aria-current')});
+  if(!keepScroll)window.scrollTo(0,0);
+}
+const rerender=()=>render(true);
+window.addEventListener('hashchange',()=>{ST.rs=false;render()});
+/* ---------- SHEET + WRITING PAD ---------- */
+function openSheet(h){const s=$('#sheet');s.innerHTML=`<div class="sheet-in">${h}</div>`;s.hidden=false}
+function closeSheet(){const s=$('#sheet');s.hidden=true;s.innerHTML=''}
+function sheetLetter(i){
+  const l=LET[i],f=formsOf(l),nm=['আলাদা','শুরুতে','মাঝে','শেষে'];
+  openSheet(`<div class="sh-top"><h2>${l.name}</h2><button class="btn ghost sm" data-act="close">বন্ধ করি</button></div>
+  <div class="big ar" lang="ar">${l.ch}</div>
+  <div class="row" style="justify-content:center"><button class="btn sm" data-act="say" data-t="${l.ch}">শুনুন</button></div>
+  <p class="lead" style="margin-inline:auto;text-align:center">${l.tip}</p>
+  <h3 style="margin-top:16px">রূপ</h3><div class="forms">${f.map((x,k)=>`<div>${ar(x)}<small>${nm[k]}</small></div>`).join('')}</div>
+  <h3 style="margin-top:16px">উদাহরণ</h3><div class="row"><span style="font-size:1.6em">${l.pic}</span>${ar(l.w,'')}<span class="muted">${l.wb}</span>${spk(l.w)}</div>
+  <h3 style="margin-top:16px">লিখে দেখি</h3><p class="muted">ছায়ার উপর আঙুল বা মাউস দিয়ে আঁকুন।</p>
+  <div class="padw"><div class="ghost ar" aria-hidden="true">${l.ch}</div><canvas id="pad" aria-label="লেখার জায়গা"></canvas></div>
+  <div class="row sp" style="margin-top:12px"><button class="btn ghost sm" data-act="clearpad">মুছে ফেলি</button><span class="row"><button class="btn ghost sm" data-act="letter" data-i="${(i+27)%28}" aria-label="আগের অক্ষর">← আগের</button><button class="btn sm" data-act="letter" data-i="${(i+1)%28}">পরের →</button></span></div>`);
+  initPad();
+}
+function initPad(){
+  const c=$('#pad');if(!c)return;
+  const r=c.getBoundingClientRect(),d=window.devicePixelRatio||1;
+  c.width=Math.round(r.width*d);c.height=Math.round(r.height*d);
+  const x=c.getContext('2d');x.scale(d,d);x.lineWidth=11;x.lineCap='round';x.lineJoin='round';
+  x.strokeStyle=getComputedStyle(document.documentElement).getPropertyValue('--green').trim()||'#0D7A3D';
+  let on=false;
+  const pt=e=>{const b=c.getBoundingClientRect();return[e.clientX-b.left,e.clientY-b.top]};
+  c.addEventListener('pointerdown',e=>{on=true;c.setPointerCapture(e.pointerId);const[p,q]=pt(e);x.beginPath();x.moveTo(p,q);x.lineTo(p+.1,q+.1);x.stroke()});
+  c.addEventListener('pointermove',e=>{if(!on)return;const[p,q]=pt(e);x.lineTo(p,q);x.stroke();x.beginPath();x.moveTo(p,q)});
+  const off=()=>{on=false};c.addEventListener('pointerup',off);c.addEventListener('pointercancel',off);
+  c._clear=()=>x.clearRect(0,0,r.width,r.height);
+}
+/* ---------- ACTIONS ---------- */
+const ACT={
+  say:t=>speak(t.dataset.t),
+  age:t=>{S.age=t.dataset.v;save();prefs()},
+  theme:()=>{S.theme=({auto:'light',light:'dark',dark:'auto'})[S.theme];save();prefs()},
+  letter:t=>{markActive();sheetLetter(+t.dataset.i)},
+  close:closeSheet,
+  clearpad:()=>{const c=$('#pad');if(c&&c._clear)c._clear()},
+  done:t=>{const n=t.dataset.n;S.done[n]=!S.done[n];if(S.done[n])markActive();save();rerender();if(S.done[n])toast('মাশাআল্লাহ! পাঠ সম্পন্ন')},
+  grp:t=>{ST.g=+t.dataset.v;rerender()},
+  syl:()=>{ST.syl=!ST.syl;rerender()},
+  tr:()=>{S.tr=!S.tr;save();rerender()},
+  fs:t=>{S.fs=Math.min(1.6,Math.max(.8,+(S.fs+(+t.dataset.v)).toFixed(2)));save();prefs();rerender()},
+  reveal:t=>{const b=t.querySelector('.rv');if(b)b.hidden=!b.hidden;if(!b.hidden)speak(t.dataset.t)},
+  resetall:()=>{if(!ST.rs){ST.rs=true;rerender();return}S.done={};S.best={};S.known={};S.streak={last:'',n:0};save();ST.rs=false;rerender()}
+};
+document.addEventListener('click',e=>{
+  const t=e.target.closest('[data-act]');
+  if(!t){if(e.target.id==='sheet')closeSheet();return}
+  const f=ACT[t.dataset.act];if(f)f(t,e);
+});
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeSheet()});
+
+/* ---------- EXTRA DATA ---------- */
+S.weak=S.weak||[];S.chk=S.chk||{};S.exam=S.exam||0;S.name=S.name||'';S.turns=S.turns||[];S.days=S.days||{};S.pdone=S.pdone||{};S.rt=S.rt||{};S.plan=S.plan||null;
+WORDS.push(['مَسْجِد','মাস-জিদ','🕌'],['يَد','ইয়াদ','✋'],['عَيْن','আইন','👁️'],['أُذُن','উ-যুন','👂'],['قَلْب','ক্বালব','❤️'],['حَلِيب','হা-লীব','🥛'],['خُبْز','খুবয','🍞'],['عَسَل','আ-সাল','🍯'],['تَمْر','তামর','🌴'],['بُرْتُقَال','বুর-তু-ক্বাল','🍊'],['بَقَرَة','বা-কা-রা','🐄'],['أَرْنَب','আর-নাব','🐰'],['دُبّ','দুব্ব','🐻'],['قِرْد','ক্বিরদ','🐒'],['عُصْفُور','উছ-ফূর','🐦'],['نَمْلَة','নাম-লা','🐜'],['نَحْلَة','নাহ-লা','🐝'],['فَرَاشَة','ফা-রা-শা','🦋'],['زَهْرَة','যাহ-রা','🌸'],['سَحَاب','সা-হাব','☁️'],['مَطَر','মা-তার','🌧️'],['نَار','নার','🔥'],['ثَلْج','ছালজ','❄️'],['رِيح','রীহ','💨'],['طَبِيب','তা-বীব','🩺'],['مِفْتَاح','মিফ-তাহ','🔑'],['هَاتِف','হা-তিফ','📱'],['حَقِيبَة','হা-কী-বা','🎒'],['دَفْتَر','দাফ-তার','📓'],['مِسْطَرَة','মিস-তা-রা','📏'],['سَرِير','সা-রীর','🛏️'],['حَدِيقَة','হা-দী-কা','🌳'],['مَطْبَخ','মাত-বাখ','🍳'],['صَابُون','ছা-বূন','🧼']);
+TEXTS.push(
+{id:'asr',t:'সূরা আল-আসর',ar:['وَٱلْعَصْرِ','إِنَّ ٱلْإِنسَٰنَ لَفِى خُسْرٍ','إِلَّا ٱلَّذِينَ ءَامَنُوا۟ وَعَمِلُوا۟ ٱلصَّٰلِحَٰتِ وَتَوَاصَوْا۟ بِٱلْحَقِّ وَتَوَاصَوْا۟ بِٱلصَّبْرِ'],bn:['ওয়াল আসর','ইন্নাল ইনসানা লাফী খুসর','ইল্লাল্লাযীনা আমানূ ওয়া আমিলুস সালিহাতি ওয়া তাওয়াসাও বিল হাক্কি ওয়া তাওয়াসাও বিস সবর']},
+{id:'kawthar',t:'সূরা আল-কাওসার',ar:['إِنَّآ أَعْطَيْنَٰكَ ٱلْكَوْثَرَ','فَصَلِّ لِرَبِّكَ وَٱنْحَرْ','إِنَّ شَانِئَكَ هُوَ ٱلْأَبْتَرُ'],bn:['ইন্না আ’ত্বাইনা কাল কাউসার','ফাসাল্লি লিরাব্বিকা ওয়ানহার','ইন্না শানিআকা হুওয়াল আবতার']},
+{id:'nasr',t:'সূরা আন-নাসর',ar:['إِذَا جَآءَ نَصْرُ ٱللَّهِ وَٱلْفَتْحُ','وَرَأَيْتَ ٱلنَّاسَ يَدْخُلُونَ فِى دِينِ ٱللَّهِ أَفْوَاجًا','فَسَبِّحْ بِحَمْدِ رَبِّكَ وَٱسْتَغْفِرْهُ ۚ إِنَّهُۥ كَانَ تَوَّابًۢا'],bn:['ইযা জাআ নাসরুল্লাহি ওয়াল ফাতহ','ওয়া রাআইতান নাসা ইয়াদখুলূনা ফী দীনিল্লাহি আফওয়াজা','ফাসাব্বিহ বিহামদি রাব্বিকা ওয়াসতাগফিরহু ইন্নাহূ কানা তাওওয়াবা']},
+{id:'kafirun',t:'সূরা আল-কাফিরূন',ar:['قُلْ يَٰٓأَيُّهَا ٱلْكَٰفِرُونَ','لَآ أَعْبُدُ مَا تَعْبُدُونَ','وَلَآ أَنتُمْ عَٰبِدُونَ مَآ أَعْبُدُ','وَلَآ أَنَا۠ عَابِدٌ مَّا عَبَدتُّمْ','وَلَآ أَنتُمْ عَٰبِدُونَ مَآ أَعْبُدُ','لَكُمْ دِينُكُمْ وَلِىَ دِينِ'],bn:['কুল ইয়া আইয়ুহাল কাফিরূন','লা আ’বুদু মা তা’বুদূন','ওয়ালা আনতুম আবিদূনা মা আ’বুদ','ওয়ালা আনা আবিদুম মা আবাদতুম','ওয়ালা আনতুম আবিদূনা মা আ’বুদ','লাকুম দীনুকুম ওয়ালিয়া দীন']},
+{id:'kursi',t:'আয়াতুল কুরসী',ar:['ٱللَّهُ لَا إِلَٰهَ إِلَّا هُوَ ٱلْحَيُّ ٱلْقَيُّومُ','لَا تَأْخُذُهُ سِنَةٌ وَلَا نَوْمٌ','لَهُ مَا فِي ٱلسَّمَاوَاتِ وَمَا فِي ٱلْأَرْضِ','مَن ذَا ٱلَّذِي يَشْفَعُ عِندَهُ إِلَّا بِإِذْنِهِ','يَعْلَمُ مَا بَيْنَ أَيْدِيهِمْ وَمَا خَلْفَهُمْ','وَلَا يُحِيطُونَ بِشَيْءٍ مِّنْ عِلْمِهِ إِلَّا بِمَا شَاءَ','وَسِعَ كُرْسِيُّهُ ٱلسَّمَاوَاتِ وَٱلْأَرْضَ','وَلَا يَئُودُهُ حِفْظُهُمَا','وَهُوَ ٱلْعَلِيُّ ٱلْعَظِيمُ'],bn:['আল্লাহু লা ইলাহা ইল্লা হুওয়াল হাইয়্যুল ক্বাইয়্যূম','লা তা’খুযুহূ সিনাতুঁ ওয়ালা নাওম','লাহূ মা ফিস সামাওয়াতি ওয়া মা ফিল আরদ','মান যাল্লাযী ইয়াশফা’উ ইন্দাহূ ইল্লা বিইযনিহ','ইয়া’লামু মা বাইনা আইদীহিম ওয়ামা খালফাহুম','ওয়ালা ইউহীতূনা বিশাইয়িম মিন ইলমিহী ইল্লা বিমা শাআ','ওয়াসিআ কুরসিয়্যুহুস সামাওয়াতি ওয়াল আরদ','ওয়ালা ইয়াউদুহূ হিফযুহুমা','ওয়া হুওয়াল আলিয়্যুল আযীম']}
+);
+const MAKH=[
+['জাউফ (মুখ ও গলার ফাঁকা স্থান)','ا و ي','মাদ্দের অক্ষর। বাতাস ফাঁকা স্থান দিয়ে টেনে বের হয়।'],
+['হালক্ব: কণ্ঠের একদম নিচ','ء ه','গলার সবচেয়ে গভীর অংশ থেকে।'],
+['হালক্ব: গলার মাঝখান','ع ح','গলার মাঝখান থেকে চাপা ধ্বনি।'],
+['হালক্ব: গলার উপরের অংশ','غ خ','গলার উপর থেকে ঘষে বের হয়।'],
+['লিসান (জিহ্বা): ১৮টি অক্ষর','ق ك ج ش ي ض ل ن ر ط د ت ص ز س ظ ذ ث','জিহ্বার গোড়া, মাঝ, পাশ ও ডগার ভিন্ন ভিন্ন স্থান থেকে।'],
+['শাফাতান (দুই ঠোঁট)','ف م ب و','ঠোঁটের সাহায্যে।'],
+['খাইশূম (নাকের বাঁশি)','ن م','গুন্নাহ বা নাকের ধ্বনি।']
+];
+const SIM=[
+['ب ت ث ن ي','একই শরীর, ফোঁটা আলাদা: ب (নিচে ১), ت (উপরে ২), ث (উপরে ৩), ن (উপরে ১), ي (নিচে ২)।'],
+['ج ح خ','ج (নিচে ১), ح (ফোঁটা নেই), خ (উপরে ১)।'],
+['د ذ','ذ-এর উপরে ১ ফোঁটা।'],
+['ر ز','ز-এর উপরে ১ ফোঁটা।'],
+['س ش','ش-এর উপরে ৩ ফোঁটা।'],
+['ص ض','ض-এর উপরে ১ ফোঁটা।'],
+['ط ظ','ظ-এর উপরে ১ ফোঁটা।'],
+['ع غ','غ-এর উপরে ১ ফোঁটা।'],
+['ف ق','ف (উপরে ১), ق (উপরে ২)।']
+];
+const CONTRAST=[['ت','ط','তা পাতলা সুরে, তোয়া মোটা সুরে।'],['س','ص','সীন পাতলা, ছোয়াদ মোটা।'],['د','ض','দাল পাতলা, দোয়াদ মোটা।'],['ذ','ظ','যাল পাতলা, যোয়া মোটা।'],['ح','ه','হা গলার মাঝ থেকে, হা (ছোট) কণ্ঠের শুরু থেকে।'],['ك','ق','কাফ হালকা, ক্বাফ গভীর ও মোটা।'],['ع','ا','আইন গলার চাপা ধ্বনি, আলিফ হালকা।']];
+const TUT=[null,
+['২৮টি অক্ষরের নাম, আকৃতি ও আওয়াজ চেনা','২০ মিনিট, ২ দিন','প্রতিদিন ৭টি অক্ষর। শুনুন, বলুন, তারপর আঙুলে লিখুন।',['ب ت ث ن ي-র ফোঁটা গুলিয়ে ফেলা','ح خ ه-কে একই ধ্বনিতে পড়া']],
+['উচ্চারণের স্থান (মাখরাজ) জানা এবং কাছাকাছি অক্ষর আলাদা করা','২৫ মিনিট','আয়নার সামনে মুখ ও জিহ্বার অবস্থান দেখে বলুন।',['ص ض ط ظ-কে পাতলা সুরে পড়া','ع-কে আলিফের মতো পড়া']],
+['যবর, যের, পেশ ও জযম দিয়ে অক্ষর পড়া','২৫ মিনিট','একটি অক্ষরের তিন হরকত পড়ুন, তারপর পরের অক্ষর।',['যবরকে ‘ও’ বা ‘অ’ পড়া','হরকত বেশি টেনে ফেলা']],
+['শুরু-মাঝ-শেষের রূপ চেনা ও জোড়া লাগিয়ে পড়া','২৫ মিনিট','শব্দ দেখে আগে অক্ষর আলাদা করুন, তারপর জোড়া লাগান।',['৬টি না-জোড়ার অক্ষরের পরেও জোড়া ধরে নেওয়া','মাঝের রূপ চিনতে না পারা']],
+['টেনে পড়া, তানবীন, তাশদীদ ও জযম আয়ত্ত করা','৩০ মিনিট','মাদ্দ পড়ার সময় মনে মনে ‘এক-দুই’ গুনুন।',['তাশদীদ একবার পড়া','জযমে বাড়তি স্বর জুড়ে দেওয়া']],
+['হামযা, গোল তা, আলিফ মাকসুরা, ছোট আলিফ ও ওয়াসলা চেনা','৩০ মিনিট','সূরার লেখায় এই চিহ্নগুলো বারবার আসে, তাই প্রতিটির নমুনা খুঁজে দেখুন।',['ছোট আলিফকে বাদ দিয়ে পড়া','ওয়াসলার হামযা মাঝে ধরে পড়া']],
+['সিলেবল ভেঙে পুরো শব্দ পড়া','৩০ মিনিট, ২ দিন','আগে ধীরে সিলেবল ধরে, পরে একসাথে।',['অক্ষর গিলে ফেলা','প্রতিটি শব্দে একই গতিতে না পড়া']],
+['আল-এর নিয়ম, চন্দ্র ও সূর্য অক্ষর','২০ মিনিট','প্রতিটি শব্দ আগে আল ছাড়া, পরে আল সহ পড়ুন।',['সূর্য অক্ষরের আগে ল স্পষ্ট করা','চন্দ্র অক্ষরে ল গিলে ফেলা']],
+['ইযহার, ইদগাম, ইকলাব, ইখফা চেনা','৩৫ মিনিট','নুন সাকিনের পরের অক্ষরটি দেখে নিয়ম ঠিক করুন।',['ইখফায় নুনকে স্পষ্ট করা','ইকলাবে মীমের ধ্বনি না আনা']],
+['মীম সাকিনের নিয়ম, গুন্নাহ ও কালকালা','৩০ মিনিট','গুন্নাহ ২ মাত্রা নাকে টানুন, কালকালায় হালকা ঠোকা দিন।',['কালকালায় বাড়তি স্বর জুড়ে দেওয়া','গুন্নাহ ছোট করা']],
+['মাদ্দের প্রকার ও মাত্রা','৩০ মিনিট','আঙুল দিয়ে মাত্রা গুনে অনুশীলন করুন।',['সব মাদ্দ সমান টানা','আরিয আর লাযিম গুলিয়ে ফেলা']],
+['ভারী-হালকা অক্ষর, ‘র’ ও আল্লাহর ল','২৫ মিনিট','ভারী অক্ষরে মুখ ভরে, হালকায় ঠোঁট ছড়িয়ে পড়ুন।',['ভারী অক্ষর হালকা করে ফেলা','র-এর নিয়ম না মানা']],
+['থামার চিহ্ন চেনা ও ওয়াকফের নিয়ম','২৫ মিনিট','চিহ্নে এলে থামুন, না থামলে শ্বাস ধরে রাখুন।',['দুই যবরে থেমে ‘আন’ পড়া','গোল তা-তে থেমে ‘ত’ পড়া']],
+['ইসম, ফিল, হরফ ও সর্বনাম চেনা','৩০ মিনিট','প্রতিটি শব্দ কোন শ্রেণির আগে ভাবুন।',['ধাতুর অক্ষর আর বাড়তি অক্ষর গুলিয়ে ফেলা','পুরুষ-স্ত্রী রূপে ভুল']],
+['প্রতিদিনের শব্দ পড়া ও মনে রাখা','প্রতিদিন ১৫ মিনিট','ফ্ল্যাশকার্ডে প্রতিদিন ১০টি শব্দ।',['না শুনেই শুধু চোখে মুখস্থ করা','পুনরাবৃত্তি না করা']],
+['হরকত ছাড়া ও পূর্ণ পাঠ সাবলীল পড়া','প্রতিদিন ২০ মিনিট','প্রতিদিন একটি সূরা বা ছোট পাঠ পুরো পড়ুন।',['গতি বাড়াতে গিয়ে নিয়ম ভুলে যাওয়া','একজন শিক্ষককে না শোনানো']]
+];
+const LQB={
+2:[['ঠোঁট থেকে উচ্চারিত অক্ষর কোনগুলো?','ف م ب و',['ج ش ي','ق ك','ع ح'],'',1],
+['গুন্নাহ কোন অক্ষরে স্পষ্ট হয়?','ن ও م',['ب ও ت','ر ও ل','ج ও ح']],
+['ক্বাফ ও কাফের মধ্যে গভীর ও মোটা ধ্বনি কোনটি?','ক্বাফ',['কাফ','দুটোই সমান','কোনোটিই নয়']],
+['ث-এর উচ্চারণে জিহ্বার ডগা কোথায় থাকে?','দাঁতের ফাঁকে হালকা বেরিয়ে',['ঠোঁটের ভেতরে','গলার ভেতরে','তালুতে চেপে']],
+['কোন অক্ষরগুলো একই শরীরের, শুধু ফোঁটা আলাদা?','ب ت ث',['ا د ر','ف ك ل','ه و ي'],'',1],
+['ع অক্ষরটি কোথা থেকে উচ্চারিত হয়?','কণ্ঠের মাঝখান থেকে',['ঠোঁট থেকে','নাক থেকে','জিহ্বার ডগা থেকে']]],
+5:[['তাশদীদ থাকলে অক্ষর কীভাবে পড়তে হয়?','দুইবার, জোর দিয়ে',['একবার হালকা','একদম বাদ দিয়ে','টেনে লম্বা করে']],
+['এটি কীভাবে পড়বেন?','বা (টেনে)',['ব (ছোট)','বি','বু'],'بَا'],
+['তানবীন শব্দের শেষে কোন ধ্বনি যোগ করে?','ন',['ম','ত','র']],
+['জযম থাকলে অক্ষরের স্বর কেমন হয়?','কোনো স্বর থাকে না',['আ ধ্বনি','ই ধ্বনি','উ ধ্বনি']],
+['এটি কীভাবে পড়বেন?','বী (টেনে)',['বি (ছোট)','বা','বু'],'بِي'],
+['মাদ্দের অক্ষর কোনগুলো?','ا و ي',['ب ت ث','ق ك ل','ر ز س'],'',1]],
+6:[['থামলে গোল তা (ة) কেমন উচ্চারিত হয়?','হ',['ত','ম','ন']],
+['আলিফ মাকসুরা (ى) কোন ধ্বনি দেয়?','লম্বা আ',['ই','উ','ওয়া']],
+['শব্দের মাঝে এলে ওয়াসলা (ٱ)-এর হামযার কী হয়?','পড়া হয় না',['জোরে পড়া হয়','ই পড়া হয়','টেনে পড়া হয়']],
+['هَٰذَا-এর খাড়া যবর (ٰ) কোন ধ্বনি দেয়?','লম্বা আ',['ছোট অ','ই','উ']],
+['أ ও إ-এর পার্থক্য কী?','হামযা আলিফের উপরে বা নিচে বসে',['ধ্বনি একদম আলাদা','একটিতে ফোঁটা আছে','কোনো পার্থক্য নেই']],
+['অক্ষরের উপরে ছোট বৃত্ত (۟) থাকলে কী হয়?','অক্ষরটি পড়া হয় না',['টেনে পড়া হয়','দুইবার পড়া হয়','নাকে পড়া হয়']]],
+8:[['الشَّمْس-এ ‘ল’ কীভাবে পড়া হয়?','পড়া হয় না, শীন দ্বিত্ব হয়',['স্পষ্ট পড়া হয়','টেনে পড়া হয়','ই হয়ে যায়']],
+['الْقَمَر-এ ‘ল’ কেমন?','স্পষ্ট পড়া হয়',['পড়া হয় না','দ্বিত্ব হয়','নাকে পড়া হয়']],
+['সূর্য অক্ষর কয়টি?','১৪টি',['১০টি','১২টি','২৮টি']],
+['ن কোন ধরনের অক্ষর?','সূর্য অক্ষর',['চন্দ্র অক্ষর','কোনোটিই নয়','দুটোই']],
+['ك কোন ধরনের অক্ষর?','চন্দ্র অক্ষর',['সূর্য অক্ষর','কোনোটিই নয়','দুটোই']],
+['الرَّجُل কীভাবে পড়বেন?','আর-রাজুল',['আল-রাজুল','আল-জুল','আর-জুল']]],
+9:[['ইযহারের অক্ষর কয়টি?','৬টি',['৪টি','১৫টি','৮টি']],
+['নুন সাকিনের পরে ب এলে কোন নিয়ম?','ইকলাব',['ইযহার','ইদগাম','ইখফা']],
+['ইখফার অক্ষর কয়টি?','১৫টি',['৬টি','৪টি','২টি']],
+['ইদগামের অক্ষর কোনগুলো?','ي ر م ل و ن',['ء ه ع ح غ خ','ب','ت ث ج د ذ'],'',1],
+['ইকলাবে নুনের ধ্বনি কীসে বদলায়?','মীম',['লাম','রা','ইয়া']],
+['مِنْ هَادٍ-এ কোন নিয়ম?','ইযহার',['ইকলাব','ইদগাম','ইখফা'],'']],
+10:[['মীম সাকিনের পরে ب এলে কোন নিয়ম?','ইখফা শফভী',['ইযহার শফভী','ইদগাম শফভী','ইকলাব']],
+['মীম সাকিনের পরে م এলে কোন নিয়ম?','ইদগাম শফভী',['ইখফা শফভী','ইযহার শফভী','ইকলাব']],
+['কালকালার অক্ষর কোনগুলো?','ق ط ب ج د',['ي ر م ل و ن','ء ه ع ح غ خ','ا و ي'],'',1],
+['কালকালা কেমন ধ্বনি?','প্রতিধ্বনির মতো হালকা কম্পন',['টেনে লম্বা করা','নাকে গুন্নাহ করা','অক্ষর বাদ দেওয়া']],
+['গুন্নাহ কত মাত্রা?','২ মাত্রা',['৪ মাত্রা','৬ মাত্রা','১ মাত্রা']]],
+11:[['মাদ্দে আসলীর মাত্রা কত?','২ মাত্রা',['৪ মাত্রা','৬ মাত্রা','১ মাত্রা']],
+['একই শব্দে মাদ্দের পরে হামযা এলে কোন মাদ্দ?','মুত্তাসিল',['মুনফাসিল','আসলী','লাযিম']],
+['আলাদা শব্দে হামযা এলে (যেমন فِي أَنْفُسِكُمْ) কোন মাদ্দ?','মুনফাসিল',['মুত্তাসিল','আসলী','লাযিম']],
+['মাদ্দের পরে তাশদীদ বা স্থায়ী জযম থাকলে কোন মাদ্দ?','লাযিম',['আসলী','মুত্তাসিল','মুনফাসিল']],
+['মাদ্দে লাযিমে সাধারণত কত মাত্রা?','৬ মাত্রা',['২ মাত্রা','১ মাত্রা','৩ মাত্রা']],
+['মাদ্দে আরিয কখন হয়?','ওয়াকফে (থামলে)',['শব্দের শুরুতে','তাশদীদের আগে','হামযার আগে']]],
+12:[['ভারী অক্ষর কয়টি?','৭টি',['৫টি','১০টি','১৪টি']],
+['‘র’ যবর বা পেশযুক্ত হলে কেমন পড়তে হয়?','ভারী',['হালকা','পড়া হয় না','দ্বিত্ব']],
+['رِزْق-এ র যেরযুক্ত, তাই কেমন?','হালকা',['ভারী','পড়া হয় না','নাকে']],
+['بِسْمِ ٱللَّهِ-এ আল্লাহর ল কেমন?','হালকা, কারণ আগে যের',['ভারী','পড়া হয় না','নাকে পড়া হয়']],
+['ص ض ط ظ ق خ غ কেমন অক্ষর?','ভারী অক্ষর',['হালকা অক্ষর','মাদ্দের অক্ষর','সূর্য অক্ষর']]],
+13:[['م চিহ্ন (ۘ) মানে কী?','অবশ্যই থামুন',['থামবেন না','যেকোনো একটি','দুই জায়গায় থামুন']],
+['لا চিহ্ন (ۙ) মানে কী?','এখানে থামবেন না',['অবশ্য থামুন','থামা উত্তম','যেকোনো']],
+['ج চিহ্ন (ۚ) মানে কী?','থামা বা না থামা দুটোই জায়েয',['অবশ্য থামুন','থামা নিষেধ','থামা ওয়াজিব']],
+['ওয়াকফে দুই যবর (ً) কীভাবে পড়া হয়?','লম্বা আ (আন নয়)',['আন','ই','উ']],
+['থামার সময় শেষ অক্ষরের হরকত কেমন হয়?','জযমের মতো পড়া হয়',['পেশ দিয়ে','যবর দিয়ে','টেনে']]],
+14:[['ফিল মানে কী?','ক্রিয়া',['নাম','অব্যয়','সর্বনাম']],
+['ইসম মানে কী?','নাম',['ক্রিয়া','অব্যয়','হরফ']],
+['هُوَ কোন সর্বনাম?','সে (পুরুষ)',['আমি','তুমি','আমরা']],
+['ك ت ب-কে কী বলে?','ধাতু (মূল অক্ষর)',['হরকত','তানবীন','তাশদীদ']],
+['শব্দের শেষে ة সাধারণত কী বোঝায়?','স্ত্রীবাচক',['পুরুষবাচক','ক্রিয়া','অব্যয়']]]
+};
+
+/* ---------- LESSONS ---------- */
+const sec=(h,body,lead)=>`<section class="blk"><h2>${h}</h2>${lead?`<p class="lead">${lead}</p>`:''}${body}</section>`;
+const rule=(g,h,p)=>`<div class="card">${ar(g)}<h3>${h}</h3><p>${p}</p></div>`;
+const tbl=(head,rows)=>`<div class="tblw"><table><thead><tr>${head.map(x=>`<th>${x}</th>`).join('')}</tr></thead><tbody>${rows.join('')}</tbody></table></div>`;
+const sbtn=(a,b)=>`<td><button type="button" data-act="say" data-t="${a}">${ar(a)}<small>${b}</small></button></td>`;
+const LVR={
+1:()=>{
+  const g=['সব অক্ষর','১–৭','৮–১৪','১৫–২১','২২–২৮'];
+  const lo=ST.g?(ST.g-1)*7:0,hi=ST.g?ST.g*7:28;
+  return `<div class="note">আরবি ডান থেকে বাঁয়ে লেখা হয়। যেকোনো অক্ষরে ট্যাপ করলে নাম, উচ্চারণ, উদাহরণ ও লেখার জায়গা খুলবে।</div>
+  <div class="chips" role="group" aria-label="অক্ষরের দল">${g.map((x,i)=>`<button type="button" class="chip" aria-pressed="${ST.g===i}" data-act="grp" data-v="${i}">${x}</button>`).join('')}</div>
+  <div class="letters">${LET.map((l,i)=>({l,i})).filter(x=>x.i>=lo&&x.i<hi).map(({l,i})=>`<button type="button" class="tile" data-act="letter" data-i="${i}"><span class="ar tl">${l.ch}</span><span class="tn">${l.name}</span></button>`).join('')}</div>
+  <div class="foot" style="border:0;margin-top:14px"><a class="btn ghost sm" href="#practice-q1">অক্ষর চেনার কুইজ</a><a class="btn ghost sm" href="#cards-letters">অক্ষরের কার্ড</a></div>`;
+},
+2:()=>{
+  const sgn=[['بَ','ফাতহা (যবর)','অক্ষরের উপরে ছোট দাগ। ‘আ’ ধ্বনি, ছোট করে।'],['بِ','কাসরা (যের)','অক্ষরের নিচে ছোট দাগ। ‘ই’ ধ্বনি।'],['بُ','দাম্মা (পেশ)','অক্ষরের উপরে ছোট ‘ও’-র মতো চিহ্ন। ‘উ’ ধ্বনি।'],['بْ','সুকুন (জযম)','অক্ষরের উপরে ছোট বৃত্ত। স্বর নেই, অক্ষর থেমে যায়।']];
+  const rows=LET.map(l=>`<tr><td>${ar(l.ch)}</td>${[0,1,2].map(v=>{const s=syl(l,v);return sbtn(s.ar,s.bn)}).join('')}</tr>`);
+  return `<div class="rule">${sgn.map(s=>rule(s[0],s[1],s[2])).join('')}</div>`+
+  sec('সব অক্ষরে তিন হরকত',tbl(['অক্ষর','যবর','যের','পেশ'],rows),'ট্যাপ করে শুনুন। প্রতিটি ধ্বনি ছোট করে পড়ুন।')+
+  `<div class="foot" style="border:0"><a class="btn ghost sm" href="#practice-q3">হরকত পড়ার কুইজ</a></div>`;
+},
+3:()=>{
+  const rows=LET.map(l=>{const f=formsOf(l);return `<tr><td>${ar(l.ch)}</td>${f.map(x=>sbtn(x,'').replace('<small></small>','')).join('')}</tr>`});
+  const ex=[[['ب','ا','ب'],'بَاب','বাব'],[['ك','ت','ا','ب'],'كِتَاب','কিতাব'],[['ق','م','ر'],'قَمَر','ক্বামার'],[['ش','م','س'],'شَمْس','শামস'],[['ج','م','ل'],'جَمَل','জামাল'],[['و','ل','د'],'وَلَد','ওয়ালাদ'],[['ن','ج','م'],'نَجْم','নাজম']];
+  return `<div class="note">আরবিতে অক্ষর শব্দের শুরুতে, মাঝে বা শেষে এলে আকৃতি একটু বদলায়। নিচের তালিকায় চারটি রূপ দেখুন।</div>`+
+  `<div class="rule">${rule('ا د ذ ر ز و','৬টি অক্ষর পরেরটির সাথে জোড়া লাগে না','এই অক্ষরগুলোর পরে যে অক্ষর আসে, তা নতুন করে শুরুর রূপ নেয়।')}${rule('ب + ي + ت','জোড়া লাগালে এক শব্দ','আলাদা অক্ষর পাশাপাশি বসে একটি শব্দ তৈরি করে।')}</div>`+
+  sec('জোড়া লাগানোর উদাহরণ',`<div class="grid">${ex.map(([p,w,b])=>`<div class="card"><div class="eq">${p.map(x=>ar(x)).join('<span class="op">+</span>')}<span class="op">=</span><button type="button" class="say" data-act="say" data-t="${w}" style="font-size:1em">${ar(strip(w))}</button></div><p class="muted">${b} ${spk(w)}</p></div>`).join('')}</div>`)+
+  sec('২৮ অক্ষরের চার রূপ',tbl(['অক্ষর','আলাদা','শুরুতে','মাঝে','শেষে'],rows));
+},
+4:()=>{
+  const sub=['ب','ت','ج','ك','ل','م','ن'].map(c=>LET.find(l=>l.ch===c));
+  const m=sub.map(l=>`<tr><td>${ar(l.ch)}</td>${[[FA+'ا','া'],[KA+'ي','ী'],[DA+'و','ূ']].map(([x,y])=>sbtn(l.ch+x,l.b+y)).join('')}</tr>`);
+  const ws=(a)=>`<div class="cells w">${a.map(([x,b])=>cell(x,b)).join('')}</div>`;
+  return sec('মাদ্দ: টেনে পড়া',tbl(['অক্ষর','যবর + আলিফ','যের + ইয়া','পেশ + ওয়াও'],m),'আলিফ, ইয়া ও ওয়াও হরকতের পরে এলে স্বর লম্বা হয়। প্রায় দুই মাত্রা টেনে পড়ুন।')+
+  sec('তানবীন: দুই যবর, দুই যের, দুই পেশ',tbl(['অক্ষর','দুই যবর (আন)','দুই যের (ইন)','দুই পেশ (উন)'],sub.slice(0,4).map(l=>`<tr><td>${ar(l.ch)}</td>${[['ً','ান'],['ٍ','িন'],['ٌ','ুন']].map(([x,y])=>sbtn(l.ch+x,l.b+y)).join('')}</tr>`)),'শব্দের শেষে অতিরিক্ত ‘ন’ ধ্বনি যুক্ত হয়।')+
+  sec('তাশদীদ: অক্ষর দুইবার পড়া',ws([['رَبَّ','রাব্বা'],['جَنَّة','জান-না'],['أُمّ','উম্ম'],['مُحَمَّد','মুহাম-মাদ'],['اللَّه','আল-লাহ'],['كَسَّرَ','কাস-সারা']]),'অক্ষরের উপরের ‘ডব্লিউ’-আকৃতির চিহ্নটি তাশদীদ। অক্ষরটি জোরে দুইবার পড়ুন।')+
+  sec('জযম সহ শব্দ',ws([['قَلْب','ক্বালব'],['بَحْر','বাহর'],['نَجْم','নাজম'],['مَدْرَسَة','মাদ-রা-সা'],['شَمْس','শামস'],['كَلْب','কালব']]),'জযমযুক্ত অক্ষর আগের স্বরের সাথে মিলিয়ে পড়ুন, আলাদা স্বর দেবেন না।');
+},
+5:()=>`<div class="row sp"><p class="lead" style="margin:0">শব্দ ভেঙে পড়ুন, তারপর একসাথে।</p><button type="button" class="chip" aria-pressed="${ST.syl}" data-act="syl">সিলেবল দেখাই</button></div>
+  <div class="cells w" style="margin-top:12px">${WORDS.map(w=>cell(w[0],ST.syl?w[1]:'',w[2])).join('')}</div>
+  <div class="foot" style="border:0"><a class="btn ghost sm" href="#practice-q4">শব্দ পড়ার কুইজ</a><a class="btn ghost sm" href="#cards-words">শব্দের কার্ড</a></div>`,
+6:()=>{
+  const sun='ت ث د ذ ر ز س ش ص ض ط ظ ل ن'.split(' '),moon='ا ب ج ح خ ع غ ف ق ك م ه و ي'.split(' ');
+  const ws=a=>`<div class="cells w">${a.map(([x,b])=>cell(x,b)).join('')}</div>`;
+  return `<div class="rule">${rule('الشَّمْس','সূর্য অক্ষর (১৪টি)','‘আল’-এর ‘ল’ উচ্চারণ হয় না। পরের অক্ষর দ্বিত্ব হয়: আশ-শামস।')}${rule('الْقَمَر','চন্দ্র অক্ষর (১৪টি)','‘ল’ স্পষ্ট পড়তে হয়: আল-ক্বামার।')}</div>`+
+  sec('সূর্য অক্ষর',`<div class="cells">${sun.map(c=>cell(c,'')).join('')}</div>`)+
+  sec('চন্দ্র অক্ষর',`<div class="cells">${moon.map(c=>cell(c,'')).join('')}</div>`)+
+  sec('সূর্য অক্ষরের শব্দ',ws([['الشَّمْس','আশ-শামস'],['النَّجْم','আন-নাজম'],['السَّيَّارَة','আস-সাইয়্যারা'],['الرَّجُل','আর-রাজুল'],['التُّفَّاح','আত-তুফফাহ'],['الدَّجَاجَة','আদ-দাজাজা']]))+
+  sec('চন্দ্র অক্ষরের শব্দ',ws([['الْقَمَر','আল-ক্বামার'],['الْكِتَاب','আল-কিতাব'],['الْبَيْت','আল-বাইত'],['الْبَاب','আল-বাব'],['الْوَلَد','আল-ওয়ালাদ'],['الْجَمَل','আল-জামাল']]));
+},
+7:()=>{
+  const ws=a=>`<div class="cells w">${a.map(([x,b])=>cell(x,b)).join('')}</div>`;
+  return `<div class="rule">${rule('كِتَاب','ইসম (নাম)','ব্যক্তি, বস্তু বা স্থানের নাম।')}${rule('كَتَبَ','ফিল (ক্রিয়া)','কাজ বোঝায়। সময়ভেদে রূপ বদলায়।')}${rule('فِي','হরফ (অব্যয়)','শব্দ বা বাক্যকে জুড়ে দেয়। এককভাবে পূর্ণ অর্থ দেয় না।')}</div>`+
+  sec('সর্বনাম',ws([['أَنَا','আনা'],['نَحْنُ','নাহনু'],['أَنْتَ','আনতা'],['أَنْتِ','আনতি'],['أَنْتُمْ','আনতুম'],['هُوَ','হুওয়া'],['هِيَ','হিয়া'],['هُمْ','হুম'],['هُنَّ','হুন-না']]))+
+  sec('ধাতু (ك ت ب) থেকে শব্দ পরিবার','<div class="note">আরবির বেশিরভাগ শব্দ তিন অক্ষরের ধাতু থেকে তৈরি। ধাতু চিনলে নতুন শব্দ সহজে চেনা যায়।</div>'+ws([['كَتَبَ','কা-তা-বা'],['كِتَاب','কি-তাব'],['كَاتِب','কা-তিব'],['مَكْتَب','মাক-তাব'],['مَكْتَبَة','মাক-তা-বা'],['مَكْتُوب','মাক-তূব']]))+
+  sec('পুরুষ ও স্ত্রী রূপ',ws([['طَالِب','তা-লিব'],['طَالِبَة','তা-লি-বা'],['مُدَرِّس','মু-দাররিস'],['مُدَرِّسَة','মু-দাররি-সা']]),'শব্দের শেষে গোল ‘তা’ (ة) যোগ হলে সাধারণত স্ত্রীবাচক হয়।')+
+  sec('বহুবচন',ws([['كِتَاب','কি-তাব'],['كُتُب','কু-তুব'],['بَيْت','বাইত'],['بُيُوت','বু-ইউত']]));
+},
+8:()=>`<div class="note">প্রতিটি ডেক ট্যাপ করে শুনুন, তারপর ফ্ল্যাশকার্ডে অনুশীলন করুন। বাংলা অর্থ পরে যোগ হবে।</div>`+Object.entries(VOCAB).map(([k,v])=>sec(v.t,`<div class="cells w">${v.items.map(([a,b])=>cell(a,b)).join('')}</div><div class="foot" style="border:0;margin-top:8px;padding:0"><a class="btn ghost sm" href="#cards-${k}">কার্ড অনুশীলন</a></div>`)).join(''),
+9:()=>{
+  const steps=[['১. অক্ষর চিনুন','প্রতিটি অক্ষরের আকৃতি ও ফোঁটা দেখুন।'],['২. হরকত দেখুন','উপরে-নিচে কোন চিহ্ন আছে খুঁজুন।'],['৩. সিলেবল ভাঙুন','শব্দকে ছোট অংশে ভেঙে পড়ুন।'],['৪. ধীরে, স্পষ্ট পড়ুন','আগে ভুলহীন, পরে দ্রুত।'],['৫. গতি বাড়ান','হরকত ছাড়া পড়ার চেষ্টা করুন।']];
+  return `<div class="rule">${steps.map(s=>`<div class="card"><h3>${s[0]}</h3><p>${s[1]}</p></div>`).join('')}</div>`+
+  sec('হরকত ছাড়া পড়ুন',`<div class="cells w">${WORDS.slice(0,12).map(w=>`<button type="button" class="cell" data-act="reveal" data-t="${w[0]}">${ar(strip(w[0]))}<small class="rv" hidden>${w[0]}<br>${w[1]}</small></button>`).join('')}</div>`,'শব্দে ট্যাপ করলে হরকত ও উচ্চারণ দেখা যাবে।')+
+  sec('পূর্ণ পাঠ','<div class="grid">'+TEXTS.map(t=>`<a class="lvl" href="#read-${t.id}"><span><b>${t.t}</b><small>${bd(t.ar.length)}টি লাইন</small></span><span class="st">পড়ি</span></a>`).join('')+'</div>');
+}
+};
+function viewLevel(n){
+  const lv=LV[n-1];if(!lv)return viewHome();
+  const d=S.done[n];
+  return `<a class="back" href="#home">← সব পাঠ</a><div class="lh"><div class="eyebrow">${STAGE[lv.st]} ধাপ · পাঠ ${bd(n)}</div><h1>${lv.t}</h1><p class="lead">${lv.d}</p></div>${LVR[n]()}
+  <div class="foot"><button type="button" class="btn ${d?'ghost':''}" data-act="done" data-n="${n}">${d?'সম্পন্ন ✓ (বাতিল)':'পাঠ সম্পন্ন করেছি'}</button>${n<LV.length?`<a class="btn ghost" href="#level-${n+1}">পরের পাঠ →</a>`:''}</div>`;
+}
+
+/* ---------- PRACTICE ---------- */
+const QZ=[
+{id:'q1',t:'অক্ষরের নাম চিনি',d:'অক্ষর দেখে নাম বাছাই করুন',g:'ب'},
+{id:'q2',t:'নাম দেখে অক্ষর খুঁজি',d:'নাম পড়ে সঠিক অক্ষর বাছুন',g:'ج'},
+{id:'q3',t:'হরকত পড়ি',d:'যবর, যের, পেশ সহ উচ্চারণ',g:'تُ'},
+{id:'q4',t:'শব্দ পড়ি',d:'শব্দ দেখে সঠিক উচ্চারণ',g:'كِتَاب'},
+{id:'q5',t:'অক্ষরের রূপ চিনি',d:'শুরু, মাঝ ও শেষের রূপ',g:'ـعـ'}
+];
+function opts(ans,pool){return shuf([ans,...pick([...new Set(pool.filter(x=>x!==ans))],3)])}
+function makeQs(id){
+  if(id==='q1')return pick(LET,10).map(l=>({q:'এই অক্ষরের নাম কী?',p:l.ch,pa:1,a:l.name,o:opts(l.name,LET.map(x=>x.name))}));
+  if(id==='q2')return pick(LET,10).map(l=>({q:'এই নামের অক্ষর কোনটি?',p:l.name,pa:0,a:l.ch,oa:1,o:opts(l.ch,LET.map(x=>x.ch))}));
+  if(id==='q3')return pick(LET,10).map(l=>{const v=Math.floor(Math.random()*3),s=syl(l,v);return {q:'কীভাবে পড়বেন?',p:s.ar,pa:1,a:s.bn,o:opts(s.bn,LET.map(x=>syl(x,v).bn))}});
+  if(id==='q4')return pick(WORDS,10).map(w=>({q:'শব্দটি কীভাবে পড়বেন?',p:w[0],pa:1,a:w[1],o:opts(w[1],WORDS.map(x=>x[1]))}));
+  return pick(LET,10).map(l=>{const k=1+Math.floor(Math.random()*3),f=formsOf(l)[k];return {q:['','শুরুর','মাঝের','শেষের'][k]+' রূপ দেখে অক্ষরের নাম বলুন',p:f,pa:1,a:l.name,o:opts(l.name,LET.map(x=>x.name))}});
+}
+const starsOf=s=>s>=9?3:s>=7?2:s>=5?1:0;
+function viewPractice(b){
+  if(!b)return `<h1>অনুশীলন</h1><p class="lead">প্রতিবার ১০টি প্রশ্ন। ৫টি সঠিক হলে ১ তারা, ৭টিতে ২, ৯টিতে ৩ তারা।</p><div class="grid">${QZ.map(q=>{const s=S.best[q.id];return `<a class="lvl" href="#practice-${q.id}" data-act="qstart" data-id="${q.id}"><span class="g">${ar(q.g)}</span><span><b>${q.t}</b><small>${q.d}</small></span><span class="st">${s==null?'শুরু':'★'.repeat(starsOf(s))||'০'}</span></a>`}).join('')}</div>`;
+  const qd=QZ.find(x=>x.id===b);if(!qd)return viewPractice('');
+  if(!ST.q||ST.q.id!==b)ST.q={id:b,qs:makeQs(b),i:0,sc:0,pk:null};
+  const Q=ST.q;
+  if(Q.i>=10){
+    const st=starsOf(Q.sc);
+    return `<div class="quiz"><a class="back" href="#practice">← সব কুইজ</a><div class="card" style="text-align:center"><h1>${bd(Q.sc)}/১০</h1><div class="stars" aria-label="${bd(st)} তারা">${'★'.repeat(st)}${'☆'.repeat(3-st)}</div><p class="lead" style="margin:8px auto">${st===3?'চমৎকার! মাশাআল্লাহ।':st>=1?'ভালো হয়েছে। আবার চেষ্টা করলে আরও ভালো হবে।':'আবার পাঠটি দেখে চেষ্টা করুন।'}</p><div class="row" style="justify-content:center;margin-top:12px"><button class="btn" data-act="qagain">আবার খেলি</button><a class="btn ghost" href="#practice">অন্য কুইজ</a></div></div></div>`;
+  }
+  const q=Q.qs[Q.i];
+  return `<div class="quiz"><a class="back" href="#practice">← সব কুইজ</a><div class="row sp"><b>${qd.t}</b><span class="muted">${bd(Q.i+1)}/১০</span></div><div class="bar" style="margin-top:8px"><i style="width:${Q.i*10}%"></i></div>
+  <p style="margin-top:14px;font-weight:600">${q.q}</p><div class="qp">${q.pa?ar(q.p):`<span class="qn">${q.p}</span>`}</div>
+  <div class="opts">${q.o.map(o=>{let c='opt';if(Q.pk!=null){if(o===q.a)c+=' ok';else if(o===Q.pk)c+=' bad'}return `<button type="button" class="${c}" data-act="opt" data-v="${o}" ${Q.pk!=null?'disabled':''}>${q.oa?ar(o):o}</button>`}).join('')}</div>
+  ${Q.pk!=null?`<div class="row sp" style="margin-top:14px"><span>${Q.pk===q.a?'সঠিক!':'সঠিক উত্তর: '+(q.oa?ar(q.a):q.a)}</span><button class="btn" data-act="qnext">${Q.i===9?'ফল দেখি':'পরের প্রশ্ন'}</button></div>`:''}</div>`;
+}
+Object.assign(ACT,{
+  qstart:()=>{ST.q=null},
+  qagain:()=>{ST.q=null;rerender()},
+  opt:t=>{const Q=ST.q;if(!Q||Q.pk!=null)return;Q.pk=t.dataset.v;if(Q.pk===Q.qs[Q.i].a)Q.sc++;rerender()},
+  qnext:()=>{const Q=ST.q;Q.i++;Q.pk=null;if(Q.i>=10){S.best[Q.id]=Math.max(S.best[Q.id]||0,Q.sc);markActive();save()}rerender()}
+});
+/* ---------- FLASHCARDS ---------- */
+function deckOf(id){
+  if(id==='letters')return {t:'২৮ অক্ষর',c:LET.map(l=>({f:l.ch,b:`${l.name}<small>${l.pic} ${l.w} · ${l.wb}</small>`,s:l.ch}))};
+  if(id==='words')return {t:'পড়ার শব্দ',c:WORDS.map(w=>({f:w[0],b:`${w[1]}<small>${w[2]}</small>`,s:w[0]}))};
+  const v=VOCAB[id];return v?{t:v.t,c:v.items.map(x=>({f:x[0],b:x[1],s:x[0]}))}:null;
+}
+const DECKS=['letters','words',...Object.keys(VOCAB)];
+function viewCards(id){
+  if(!id)return `<h1>ফ্ল্যাশকার্ড</h1><p class="lead">কার্ড উল্টে উচ্চারণ দেখুন। জানা কার্ড বাদ পড়বে, না-জানাগুলো ফিরে আসবে।</p><div class="grid">${DECKS.map(k=>{const d=deckOf(k),n=(S.known[k]||[]).length;return `<a class="lvl" href="#cards-${k}" data-act="fcstart" data-id="${k}"><span><b>${d.t}</b><small>${bd(n)}/${bd(d.c.length)} শেখা হয়েছে</small></span><span class="st">খুলি</span></a>`}).join('')}</div>`;
+  const d=deckOf(id);if(!d)return viewCards('');
+  if(!ST.fc||ST.fc.id!==id){const kn=S.known[id]||[];ST.fc={id,q:shuf(d.c.map((_,i)=>i).filter(i=>!kn.includes(i))),flip:false}}
+  const F=ST.fc,kn=(S.known[id]||[]).length;
+  if(!F.q.length)return `<div class="quiz"><a class="back" href="#cards">← সব ডেক</a><div class="card" style="text-align:center"><h1>সব কার্ড শেখা শেষ</h1><p class="lead" style="margin:8px auto">${d.t} ডেকের ${bd(d.c.length)}টি কার্ডই জানা হয়ে গেছে।</p><button class="btn" data-act="fcreset" data-id="${id}" style="margin-top:12px">আবার শুরু করি</button></div></div>`;
+  const c=d.c[F.q[0]];
+  return `<div class="quiz"><a class="back" href="#cards">← সব ডেক</a><div class="row sp"><b>${d.t}</b><span class="muted">${bd(kn)}/${bd(d.c.length)} শেখা</span></div><div class="bar" style="margin:8px 0 14px"><i style="width:${kn/d.c.length*100}%"></i></div>
+  <button type="button" class="flash" data-act="flip" aria-live="polite">${F.flip?`<div class="bk">${c.b}</div>`:`${ar(c.f)}<div class="hint">ট্যাপ করে উল্টান</div>`}</button>
+  <div class="row" style="justify-content:center;margin-top:10px"><button class="btn ghost sm" data-act="say" data-t="${c.s}">শুনুন</button></div>
+  <div class="row" style="margin-top:12px"><button class="btn ghost" style="flex:1" data-act="fcagain">আবার দেখব</button><button class="btn" style="flex:1" data-act="fcknow">জানি</button></div></div>`;
+}
+Object.assign(ACT,{
+  fcstart:()=>{ST.fc=null},
+  flip:()=>{ST.fc.flip=!ST.fc.flip;rerender()},
+  fcagain:()=>{const F=ST.fc;F.q.push(F.q.shift());F.flip=false;rerender()},
+  fcknow:()=>{const F=ST.fc,i=F.q.shift();(S.known[F.id]=S.known[F.id]||[]).push(i);F.flip=false;markActive();save();rerender()},
+  fcreset:t=>{S.known[t.dataset.id]=[];ST.fc=null;save();rerender()}
+});
+/* ---------- READING ROOM ---------- */
+function viewRead(id){
+  if(!id)return `<h1>পড়ার ঘর</h1><p class="lead">হরকত সহ পূর্ণ পাঠ। প্রতিটি শব্দে ট্যাপ করে শুনুন।</p><div class="grid">${TEXTS.map(t=>`<a class="lvl" href="#read-${t.id}"><span><b>${t.t}</b><small>${bd(t.ar.length)}টি লাইন</small></span><span class="st">পড়ি</span></a>`).join('')}</div>`;
+  const t=TEXTS.find(x=>x.id===id);if(!t)return viewRead('');
+  return `<a class="back" href="#read">← সব পাঠ</a><h1>${t.t}</h1>
+  <div class="chips"><button type="button" class="chip" aria-pressed="${S.tr}" data-act="tr">বাংলা উচ্চারণ</button><button type="button" class="chip" data-act="fs" data-v="-0.15" aria-label="লেখা ছোট করুন">আ−</button><button type="button" class="chip" data-act="fs" data-v="0.15" aria-label="লেখা বড় করুন">আ+</button></div>
+  <div>${t.ar.map((l,i)=>`<div class="line"><span class="ar" lang="ar" dir="rtl">${l.split(' ').map(w=>`<button type="button" class="wd" data-act="say" data-t="${w}">${w}</button>`).join(' ')}</span>${S.tr?`<span class="tr">${t.bn[i]}</span>`:''}<button type="button" class="say" data-act="say" data-t="${l}" aria-label="পুরো লাইন শুনুন">${ICON_SPK}</button></div>`).join('')}</div>
+  <p class="muted" style="margin-top:14px">শব্দে ট্যাপ করলে সেই শব্দ, আর পাশের স্পিকারে ট্যাপ করলে পুরো লাইন শোনা যাবে। সঠিক তিলাওয়াতের জন্য একজন যোগ্য শিক্ষকের কাছে শুনে নিন।</p>`;
+}
+
+/* ---------- NEW LESSONS ---------- */
+const cw=a=>`<div class="cells w">${a.map(([x,b])=>cell(x,b)).join('')}</div>`;
+const Lt=c=>LET.find(l=>l.ch===c);
+const arr=s=>s.split(' ').map(c=>cell(c,Lt(c)?Lt(c).name:'')).join('');
+const LVN={1:LVR[1],3:LVR[2],4:LVR[3],5:LVR[4],7:LVR[5],8:LVR[6],14:LVR[7],15:LVR[8],16:LVR[9]};
+const mrow=(a,b,c,d)=>`<tr><td class="l"><b>${a}</b></td><td class="l">${b}</td><td>${c}</td>${sbtn(d[0],d[1])}</tr>`;
+LVN[2]=()=>
+  sec('উচ্চারণের ৫টি স্থান (মাখরাজ)',`<div class="rule">${MAKH.map(m=>`<div class="card"><h3>${m[0]}</h3><div class="cells" style="margin:8px 0">${arr(m[1])}</div><p>${m[2]}</p></div>`).join('')}</div>`,'প্রতিটি অক্ষর মুখ বা গলার নির্দিষ্ট স্থান থেকে বের হয়। স্থান ঠিক হলে উচ্চারণও ঠিক হয়।')+
+  sec('একই শরীর, আলাদা ফোঁটা',`<div class="rule">${SIM.map(s=>`<div class="card"><div class="fam">${s[0].split(' ').map(c=>ar(c,'b2')).join('')}</div><p>${s[1]}</p></div>`).join('')}</div>`,'অক্ষর চেনার প্রথম কৌশল: আগে শরীরের আকৃতি, তারপর ফোঁটা গুনুন।')+
+  sec('গুলিয়ে ফেলার জোড়া',CONTRAST.map(([a,b,t])=>`<div class="pair">${cell(syl(Lt(a),0).ar,Lt(a).name)}${cell(syl(Lt(b),0).ar,Lt(b).name)}<p>${t}</p></div>`).join(''),'দুইটি অক্ষর পাশাপাশি শুনুন ও বলুন।');
+LVN[6]=()=>
+  sec('হামযা (ء)',cw([['أَب','আব'],['إِبِل','ই-বিল'],['أُمّ','উম্ম'],['سَأَلَ','সা-আ-লা'],['مُؤْمِن','মু’-মিন'],['مَاء','মা-উন'],['شَيْء','শাই-উন']]),'হামযা আলিফের উপরে (أ) বা নিচে (إ), ওয়াওয়ের উপরে (ؤ), ইয়ার উপরে (ئ) বা একা (ء) বসে। ধ্বনি কণ্ঠের একদম নিচ থেকে, আকস্মিক ‘অ’-র মতো।')+
+  sec('গোল তা (ة)',cw([['مَدْرَسَة','মাদ-রা-সাহ'],['شَجَرَة','শা-জা-রাহ'],['سَيَّارَة','সাই-ইয়া-রাহ'],['مَكْتَبَة','মাক-তা-বাহ']]),'শব্দ শেষে থামলে ‘হ’-র মতো। পরের শব্দের সাথে জুড়ে পড়লে ‘ত’ হয়।')+
+  sec('আলিফ মাকসুরা (ى)',cw([['مُوسَى','মূ-সা'],['عِيسَى','ঈ-সা'],['هُدَى','হু-দা'],['مَتَى','মা-তা'],['عَلَى','আ-লা'],['إِلَى','ই-লা']]),'দেখতে ইয়ার মতো, কিন্তু নিচে ফোঁটা নেই। ধ্বনি লম্বা ‘আ’।')+
+  sec('খাড়া যবর (ٰ) ও আলিফ মাদ্দা (آ)',cw([['هَٰذَا','হা-যা'],['ذَٰلِكَ','যা-লিকা'],['إِلَٰه','ই-লাহ'],['ٱلرَّحْمَٰن','আর-রাহ-মান'],['آمَنَ','আ-মানা'],['قُرْآن','ক্বুর-আন']]),'অক্ষরের উপরে ছোট খাড়া দাগ থাকলে সেখানে লম্বা ‘আ’ পড়তে হয়, যদিও আলিফ লেখা থাকে না। আলিফের উপরে ঢেউ চিহ্ন (آ) মানে আলিফ টেনে পড়া।')+
+  sec('ওয়াসলা (ٱ)',cw([['ٱللَّه','আল-লাহ'],['ٱلْحَمْد','আল-হামদ'],['ٱبْن','ইবন'],['ٱسْم','ইসম'],['ٱهْدِنَا','ইহ-দি-না'],['بِسْمِ ٱللَّهِ','বিস-মিল-লাহ']]),'শব্দের শুরুতে থামলে ওয়াসলার হামযা পড়া হয়। আগের শব্দের সাথে জুড়ে পড়লে হামযা পড়া হয় না। যেমন: বিস-মিল-লাহ।')+
+  sec('নীরব অক্ষরের চিহ্ন (۟)',cw([['ءَامَنُوا۟','আ-মা-নূ'],['عَمِلُوا۟','আ-মি-লূ'],['وَتَوَاصَوْا۟','ওয়া-তা-ওয়া-সাও']]),'অক্ষরের উপরে ছোট গোল বৃত্ত থাকলে সেই অক্ষর লেখা থাকে কিন্তু পড়া হয় না।');
+LVN[9]=()=>{
+  const R=[['ء ه ع ح غ خ','ইযহার (স্পষ্ট)','৬টি কণ্ঠের অক্ষর। নুনের ধ্বনি স্পষ্ট, গুন্নাহ ছাড়া।',[['مِنْ هَادٍ','মিন হা-দিন'],['مَنْ آمَنَ','মান আ-মানা'],['مِنْ خَيْرٍ','মিন খাই-রিন'],['عَلِيمٌ حَكِيمٌ','আলীমুন হাকীম']]],
+  ['ي ر م ل و ن','ইদগাম (মিলিয়ে ফেলা)','ي ن م و গুন্নাহ সহ, ل ر গুন্নাহ ছাড়া। নুন পরের অক্ষরের সাথে মিশে যায়।',[['مَنْ يَقُولُ','মাইঁ-ইয়াকূলু'],['مِنْ وَلِيٍّ','মিও-ওয়ালিয়্যিন'],['مِنْ رَبِّهِمْ','মির-রাব্বিহিম'],['مِنْ لَدُنْهُ','মিল-লাদুনহু']]],
+  ['ب','ইকলাব (বদলে দেওয়া)','নুন বদলে মীম হয়ে যায় এবং গুন্নাহ সহ গোপন হয়।',[['مِنْ بَعْدِ','মিম-বা’-দি'],['سَمِيعٌ بَصِيرٌ','সামী-উম বাসীর'],['أَنْبِيَاء','আম-বি-য়া’']]],
+  ['ت ث ج د ذ ز س ش ص ض ط ظ ف ق ك','ইখফা (গোপন করা)','বাকি ১৫টি অক্ষর। নুন গোপন হয়, ২ মাত্রা গুন্নাহ সহ।',[['مِنْ قَبْلُ','মিঙ-ক্বাব-লু'],['أَنْتُمْ','আন-তুম'],['مَنْ كَانَ','মাঙ-কা-না'],['أَنْزَلَ','আন-যা-লা']]]];
+  return `<div class="note">নুন সাকিন (نْ) বা তানবীনের (ــٌ ــً ــٍ) পরে যে অক্ষর আসে, তা দেখেই নিয়ম ঠিক হয়।</div>`+R.map(r=>sec(r[1],`<div class="card" style="margin-bottom:10px"><div class="fam">${r[0].split(' ').map(c=>ar(c,'b2')).join('')}</div><p>${r[2]}</p></div>`+cw(r[3]))).join('');
+};
+LVN[10]=()=>
+  sec('মীম সাকিনের ৩ নিয়ম',`<div class="rule">${rule('مْ + ب','ইখফা শফভী','মীমের পরে ب এলে মীম ঠোঁটে গোপন হয়, গুন্নাহ সহ।')}${rule('مْ + م','ইদগাম শফভী','মীমের পরে م এলে দুই মীম মিলে যায়, গুন্নাহ সহ।')}${rule('مْ + অন্য','ইযহার শফভী','বাকি সব অক্ষরের আগে মীম স্পষ্ট। و ও ف-এর আগে বেশি সতর্ক থাকুন।')}</div>`)+
+  sec('মীম সাকিনের উদাহরণ',cw([['تَرْمِيهِم بِحِجَارَةٍ','তার-মী-হিম বি-হি-জা-রাহ'],['أَمْ مَنْ','আম-মান'],['لَهُم مَّا','লা-হুম-মা'],['لَهُمْ فِيهَا','লা-হুম ফী-হা'],['أَنْعَمْتَ','আন-আম-তা']]))+
+  sec('কালকালা: ق ط ب ج د',cw([['قَدْ','ক্বাদ্‌'],['أَحَد','আ-হাদ্‌'],['يَجْعَلُ','ইয়াজ-আ-লু'],['يَدْخُلُونَ','ইয়াদ-খু-লূন'],['مَطْلَع','মাত-লা’']]),'এই পাঁচ অক্ষরে জযম বা থামা থাকলে ধ্বনিতে হালকা প্রতিধ্বনি বা ঠোকা আসে। বাড়তি স্বর যোগ করবেন না।')+
+  sec('গুন্নাহ (ن ও م-এ তাশদীদ)',cw([['إِنَّ','ইন-না'],['ثُمَّ','ছুম-মা'],['جَنَّة','জান-নাহ'],['عَمَّ','আম-মা']]),'নাক দিয়ে ২ মাত্রা ধ্বনি টানুন।');
+LVN[11]=()=>{
+  const rows=[mrow('মাদ্দে আসলী','মাদ্দের অক্ষরের পরে হামযা বা জযম নেই','২',['بَا','বা']),mrow('মুত্তাসিল','একই শব্দে মাদ্দের পরে হামযা','৪–৫',['جَاءَ','জা-আ']),mrow('মুনফাসিল','প্রথম শব্দের শেষে মাদ্দ, পরের শব্দ হামযা দিয়ে শুরু','৪–৫',['فِي أَنْفُسِكُمْ','ফী আন-ফু-সি-কুম']),mrow('আরিয','মাদ্দের পরে থামার কারণে জযম','২/৪/৬',['نَسْتَعِينْ','নাস-তা-ঈন']),mrow('লাযিম','মাদ্দের পরে তাশদীদ বা স্থায়ী জযম','৬',['الضَّالِّينَ','আদ-দাল-লীন'])];
+  return `<div class="note">এক মাত্রা প্রায় এক আঙুল বন্ধ করে খুলতে যতটুকু সময় লাগে। মাত্রার সংখ্যা তিলাওয়াতের পদ্ধতিতে সামান্য আলাদা হতে পারে; এখানে প্রচলিত হাফস পদ্ধতি অনুসরণ করা হয়েছে।</div>`+tbl(['প্রকার','কখন','মাত্রা','উদাহরণ'],rows)+
+  sec('মাদ্দ চিহ্ন (ٓ)',cw([['إِنَّآ','ইন-না-আ'],['جَآءَ','জা-আ'],['مَآ','মা-আ']]),'অক্ষরের উপরে ঢেউ চিহ্ন (ٓ) থাকলে সেই স্বর টেনে পড়তে হয়।');
+};
+LVN[12]=()=>
+  sec('৭টি ভারী অক্ষর',`<div class="cells">${'خ ص ض غ ط ق ظ'.split(' ').map(c=>cell(syl(Lt(c),0).ar,Lt(c).name)).join('')}</div>`,'এগুলো মুখ ভরে মোটা সুরে পড়তে হয়। বাকি অক্ষর হালকা সুরে।')+
+  sec('র (ر)-এর নিয়ম',`<div class="rule">${rule('رَ رُ','যবর বা পেশ হলে ভারী','মুখ ভরে মোটা সুরে।')}${rule('رِ','যের হলে হালকা','ঠোঁট ছড়িয়ে পাতলা সুরে।')}</div>`+cw([['رَبّ','রাব্ব'],['رُسُل','রু-সুল'],['رِزْق','রিয-ক্ব'],['رِجَال','রি-জাল']]))+
+  sec('আল্লাহ শব্দের ল',`<div class="rule">${rule('قَالَ ٱللَّهُ','আগে যবর বা পেশ হলে ভারী','ল মোটা সুরে: ক্বা-লাল-লাহু।')}${rule('بِسْمِ ٱللَّهِ','আগে যের হলে হালকা','ল পাতলা সুরে: বিস-মিল-লাহ।')}</div>`);
+LVN[13]=()=>{
+  const m=[['ۘ','মীম (লাযিম)','অবশ্যই থামুন'],['ۚ','জীম (জায়েয)','থামা বা না থামা দুটোই জায়েয'],['ۖ','সিলি','না থামা উত্তম'],['ۗ','ক্বিলি','থামা উত্তম'],['ۙ','লা','এখানে থামবেন না'],['ۛ ۛ','মুআনাকা','দুই চিহ্নের যেকোনো একটিতে থামুন']];
+  return sec('থামার চিহ্ন',tbl(['চিহ্ন','নাম','অর্থ'],m.map(x=>`<tr><td>${ar(x[0],'b2')}</td><td class="l">${x[1]}</td><td class="l">${x[2]}</td></tr>`)))+
+  sec('থামার নিয়ম',`<div class="rule">${rule('رَحِيمٌ','শেষ হরকত বাদ','পেশ, যের বা যবর বাদ দিয়ে জযমের মতো থামুন: রাহীম।')}${rule('أَفْوَاجًا','দুই যবর হলে লম্বা আ','আন নয়, আ: আফওয়াজা।')}${rule('مَدْرَسَة','গোল তা হলে হ','মাদরাসাহ।')}</div>`)+
+  sec('অনুশীলন',cw([['أَفْوَاجًا','আফ-ওয়া-জা'],['رَحِيمٌ','রা-হীম'],['عَلِيمٍ','আ-লীম'],['مَدْرَسَة','মাদ-রা-সাহ']]),'এখন পড়ার ঘরে গিয়ে সূরা আন-নাসর ও আল-ফাতিহায় চিহ্ন দেখে থামার অনুশীলন করুন।')+
+  `<div class="foot" style="border:0"><a class="btn ghost sm" href="#read-nasr">সূরা আন-নাসর</a><a class="btn ghost sm" href="#read-fatiha">আল-ফাতিহা</a></div>`;
+};
+function viewLevel(n){
+  const lv=LV[n-1];if(!lv||!LVN[n])return viewHome();
+  const t=TUT[n],d=S.done[n],ck=S.chk[n];
+  return `<a class="back" href="#home">← সব পাঠ</a><div class="lh"><div class="eyebrow">${STAGE[lv.st]} ধাপ · পাঠ ${bd(n)}</div><h1>${lv.t}</h1><p class="lead">${lv.d}</p></div>
+  <div class="card tut"><div class="row sp"><b>ওস্তাদের পরিকল্পনা</b><span class="muted">সময়: ${t[1]}</span></div><p><b>লক্ষ্য:</b> ${t[0]}</p><ol class="steps"><li>শুনুন ও বলুন</li><li>নিজে পড়ুন</li><li>বারবার অনুশীলন করুন</li><li>লেসন চেকে ৫টির মধ্যে ৪টি সঠিক করুন</li></ol><p><b>পদ্ধতি:</b> ${t[2]}</p></div>
+  ${LVN[n]()}
+  <section class="blk"><h2>সাধারণ ভুল</h2><ul class="mist">${t[3].map(x=>`<li>${x}</li>`).join('')}</ul></section>
+  <section class="blk card"><h2>লেসন চেক</h2><p class="muted">৫টি প্রশ্নের ৪টি সঠিক হলে পাঠ সম্পন্ন হবে।${ck!=null?` আপনার সেরা ফল: ${bd(ck)}/৫।`:''}</p><div class="row" style="margin-top:10px"><a class="btn" href="#practice-lc${n}" data-act="qstart">চেক শুরু করি</a><a class="btn ghost" href="#tutor" data-act="askl" data-n="${n}">ওস্তাদকে জিজ্ঞাসা</a></div></section>
+  <div class="foot"><button type="button" class="btn ${d?'ghost':''}" data-act="done" data-n="${n}">${d?'সম্পন্ন ✓ (বাতিল)':'নিজে সম্পন্ন করি'}</button>${n<LV.length?`<a class="btn ghost" href="#level-${n+1}">পরের পাঠ →</a>`:''}</div>`;
+}
+
+/* ---------- QUIZ ENGINE ---------- */
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+function qOf(t,i,x){
+  if(t==='q4'){const w=WORDS[i];return {k:'q4|'+i,q:'শব্দটি কীভাবে পড়বেন?',p:w[0],pa:1,a:w[1],o:opts(w[1],WORDS.map(y=>y[1]))}}
+  const l=LET[i];
+  if(t==='q1')return {k:'q1|'+i,q:'এই অক্ষরের নাম কী?',p:l.ch,pa:1,a:l.name,o:opts(l.name,LET.map(y=>y.name))};
+  if(t==='q2')return {k:'q2|'+i,q:'এই নামের অক্ষর কোনটি?',p:l.name,pa:0,a:l.ch,oa:1,o:opts(l.ch,LET.map(y=>y.ch))};
+  if(t==='q3'){const s=syl(l,x);return {k:'q3|'+i+'|'+x,q:'কীভাবে পড়বেন?',p:s.ar,pa:1,a:s.bn,o:opts(s.bn,LET.map(y=>syl(y,x).bn))}}
+  return {k:'q5|'+i+'|'+x,q:['','শুরুর','মাঝের','শেষের'][x]+' রূপ দেখে অক্ষরের নাম বলুন',p:formsOf(l)[x],pa:1,a:l.name,o:opts(l.name,LET.map(y=>y.name))};
+}
+const fk=k=>{const p=k.split('|');return [p[0],+p[1],+p[2]||0]};
+const mk=(t,n)=>pick([...Array(t==='q4'?WORDS.length:LET.length).keys()],n).map(i=>qOf(t,i,t==='q3'?Math.floor(Math.random()*3):t==='q5'?1+Math.floor(Math.random()*3):0));
+const sq=x=>({k:null,q:x[0],p:x[3]||'',pa:!!x[3],a:x[1],oa:!!x[4],o:shuf([x[1],...x[2]])});
+const bank=(n,c)=>pick(LQB[n],c).map(sq);
+function vq(n){const all=Object.values(VOCAB).flatMap(v=>v.items);return pick(all,n).map(([a,b])=>({k:null,q:'কীভাবে পড়বেন?',p:a,pa:1,a:b,o:opts(b,all.map(x=>x[1]))}))}
+function lessonQs(n){
+  const f={1:()=>[...mk('q1',3),...mk('q2',2)],2:()=>[...bank(2,4),...mk('q1',1)],3:()=>mk('q3',5),4:()=>mk('q5',5),7:()=>mk('q4',5),15:()=>vq(5),16:()=>[...mk('q4',3),...bank(14,2)]}[n];
+  return f?f():bank(n,5);
+}
+function makeQs(id){
+  if(/^q[1-5]$/.test(id))return mk(id,10);
+  if(id==='mix')return shuf([...mk('q1',4),...mk('q3',4),...mk('q4',4),...mk('q5',3)]);
+  if(id==='place')return [...mk('q1',2),...mk('q3',2),...mk('q5',2),...bank(5,2)];
+  if(id==='exam')return shuf([...mk('q1',5),...mk('q3',3),...mk('q5',3),...mk('q4',3),...pick(Object.values(LQB).flat(),6).map(sq)]);
+  if(id==='weak')return pick(S.weak,10).map(k=>qOf(...fk(k)));
+  const m=/^lc(\d+)$/.exec(id);return m?lessonQs(+m[1]):[];
+}
+function qmeta(id){
+  const m=/^lc(\d+)$/.exec(id);
+  if(m){const n=+m[1];return LV[n-1]?{t:'লেসন চেক: '+LV[n-1].t,back:'#level-'+n,lc:n}:null}
+  const r={q1:'অক্ষরের নাম চিনি',q2:'নাম দেখে অক্ষর খুঁজি',q3:'হরকত পড়ি',q4:'শব্দ পড়ি',q5:'অক্ষরের রূপ চিনি',mix:'মিশ্র কুইজ',weak:'দুর্বল অংশ ঝালাই',place:'কোথা থেকে শুরু করব?',exam:'চূড়ান্ত পরীক্ষা'}[id];
+  return r?{t:r,back:'#practice'}:null;
+}
+const starN=r=>r>=.9?3:r>=.7?2:r>=.5?1:0;
+const qi=(id,t,d,g,st)=>`<a class="lvl" href="#practice-${id}" data-act="qstart"><span class="g">${ar(g)}</span><span><b>${t}</b><small>${d}</small></span><span class="st">${st}</span></a>`;
+const bst=id=>S.best[id]==null?'শুরু':('★'.repeat(starN(S.best[id]/10))||'০');
+function viewPractice(b){
+  if(b==='drill')return viewDrill();
+  if(!b){
+    const nw=S.weak.length;
+    return `<h1>অনুশীলন</h1><p class="lead">নিয়মিত অনুশীলনই পড়া সহজ করে। ভুল হওয়া প্রশ্নগুলো নিজে থেকে জমা হয়, পরে ঝালাই করা যায়।</p>
+    <div class="grid">${nw?qi('weak','দুর্বল অংশ ঝালাই',bd(nw)+'টি প্রশ্ন জমা আছে','!','ঝালাই'):''}${qi('mix','মিশ্র কুইজ','অক্ষর, হরকত, রূপ ও শব্দ একসাথে','٭',bst('mix'))}<a class="lvl" href="#practice-drill" data-act="qstart"><span class="g">${ar('اقرأ')}</span><span><b>পড়ার সিঁড়ি</b><small>অসীম অনুশীলন: সিলেবল থেকে লাইন</small></span><span class="st">খুলি</span></a></div>
+    <section class="blk"><h2>বিষয় অনুযায়ী কুইজ</h2><div class="grid">${[['q1','অক্ষরের নাম চিনি','অক্ষর দেখে নাম বাছাই','ب'],['q2','নাম দেখে অক্ষর খুঁজি','নাম পড়ে অক্ষর বাছাই','ج'],['q3','হরকত পড়ি','যবর, যের, পেশ সহ','تُ'],['q4','শব্দ পড়ি','শব্দ দেখে উচ্চারণ','كِتَاب'],['q5','অক্ষরের রূপ চিনি','শুরু, মাঝ ও শেষের রূপ','ـعـ']].map(x=>qi(x[0],x[1],x[2],x[3],bst(x[0]))).join('')}</div></section>
+    <section class="blk"><h2>পরীক্ষা</h2><div class="grid">${qi('place','কোথা থেকে শুরু করব?','৮টি প্রশ্নে স্তর যাচাই','؟','খুলি')}${qi('exam','চূড়ান্ত পরীক্ষা','২০টি প্রশ্ন, ১৬টি সঠিক হলে উত্তীর্ণ','✓',S.exam>=16?'উত্তীর্ণ':S.exam?bd(S.exam)+'/২০':'শুরু')}</div></section>`;
+  }
+  const md=qmeta(b);if(!md)return viewPractice('');
+  if(!ST.q||ST.q.id!==b){
+    const qs=makeQs(b);
+    if(!qs.length)return `<a class="back" href="#practice">← সব কুইজ</a><div class="card"><h2>এখন কোনো দুর্বল অংশ নেই</h2><p class="lead">কুইজে ভুল হওয়া প্রশ্নগুলো এখানে ঝালাই করার জন্য জমা হবে।</p></div>`;
+    ST.q={id:b,qs,i:0,sc:0,pk:null};
+  }
+  const Q=ST.q,n=Q.qs.length;
+  if(Q.i>=n)return resultView(Q,md);
+  const q=Q.qs[Q.i];
+  return `<div class="quiz"><a class="back" href="${md.back}">← ফিরি</a><div class="row sp"><b>${md.t}</b><span class="muted">${bd(Q.i+1)}/${bd(n)}</span></div><div class="bar" style="margin-top:8px"><i style="width:${Q.i/n*100}%"></i></div>
+  <p style="margin-top:14px;font-weight:600">${q.q}</p>${q.p?`<div class="qp">${q.pa?ar(q.p):`<span class="qn">${q.p}</span>`}</div>`:''}
+  <div class="opts" style="margin-top:12px">${q.o.map(o=>{let c='opt';if(Q.pk!=null){if(o===q.a)c+=' ok';else if(o===Q.pk)c+=' bad'}return `<button type="button" class="${c}" data-act="opt" data-v="${esc(o)}" ${Q.pk!=null?'disabled':''}>${q.oa?ar(o):o}</button>`}).join('')}</div>
+  ${Q.pk!=null?`<div class="row sp" style="margin-top:14px"><span>${Q.pk===q.a?'সঠিক!':'সঠিক উত্তর: '+(q.oa?ar(q.a):q.a)}</span><button class="btn" data-act="qnext">${Q.i===n-1?'ফল দেখি':'পরের প্রশ্ন'}</button></div>`:''}</div>`;
+}
+function finishQuiz(Q){
+  const n=Q.qs.length,id=Q.id;markActive();
+  const m=/^lc(\d+)$/.exec(id);
+  if(m){const L=+m[1];S.chk[L]=Math.max(S.chk[L]||0,Q.sc);if(Q.sc>=Math.ceil(n*.8))S.done[L]=true}
+  else if(id==='exam')S.exam=Math.max(S.exam||0,Q.sc);
+  else if(id!=='weak'&&id!=='place')S.best[id]=Math.max(S.best[id]||0,Math.round(Q.sc/n*10));
+  save();
+}
+function resultView(Q,md){
+  const n=Q.qs.length,sc=Q.sc,id=Q.id;let top='',msg='',links='';
+  if(md.lc){const ok=sc>=Math.ceil(n*.8);msg=ok?'মাশাআল্লাহ! পাঠ সম্পন্ন হয়েছে।':'আরেকটু অনুশীলন দরকার। পাঠটি আবার দেখে চেষ্টা করুন।';links=ok?`<a class="btn" href="#level-${Math.min(md.lc+1,LV.length)}">পরের পাঠ</a><a class="btn ghost" href="${md.back}">পাঠে ফিরি</a>`:`<a class="btn" href="${md.back}">পাঠ দেখি</a><button class="btn ghost" data-act="qagain">আবার চেষ্টা</button>`}
+  else if(id==='exam'){const ok=sc>=16;msg=ok?'অভিনন্দন! আপনি চূড়ান্ত পরীক্ষায় উত্তীর্ণ হয়েছেন।':'উত্তীর্ণ হতে ১৬টি সঠিক লাগে। দুর্বল অংশ ঝালাই করে আবার চেষ্টা করুন।';links=ok?`<a class="btn" href="#progress">সনদ দেখি</a>`:`<a class="btn" href="#practice-weak" data-act="qstart">দুর্বল অংশ ঝালাই</a><button class="btn ghost" data-act="qagain">আবার চেষ্টা</button>`}
+  else if(id==='place'){const t=sc<=3?1:sc<=5?3:sc<=6?5:7;msg=`আপনার জন্য পাঠ ${bd(t)} (${LV[t-1].t}) থেকে শুরু করা ভালো।`;links=`<a class="btn" href="#level-${t}">পাঠ ${bd(t)} শুরু করি</a>`}
+  else{const s=starN(sc/n);top=`<div class="stars" aria-label="${bd(s)} তারা">${'★'.repeat(s)}${'☆'.repeat(3-s)}</div>`;msg=s===3?'চমৎকার! মাশাআল্লাহ।':s>=1?'ভালো হয়েছে। আবার চেষ্টা করলে আরও ভালো হবে।':'পাঠটি আবার দেখে চেষ্টা করুন।';links=`<button class="btn" data-act="qagain">আবার খেলি</button><a class="btn ghost" href="#practice">অন্য কুইজ</a>`}
+  return `<div class="quiz"><a class="back" href="${md.back}">← ফিরি</a><div class="card" style="text-align:center"><h1>${bd(sc)}/${bd(n)}</h1>${top}<p class="lead" style="margin:8px auto">${msg}</p><div class="row" style="justify-content:center;margin-top:12px">${links}</div></div></div>`;
+}
+Object.assign(ACT,{
+  opt:t=>{const Q=ST.q;if(!Q||Q.pk!=null)return;const q=Q.qs[Q.i];Q.pk=t.dataset.v;const ok=Q.pk===q.a;if(ok)Q.sc++;if(q.k){const j=S.weak.indexOf(q.k);if(ok&&j>=0)S.weak.splice(j,1);if(!ok&&j<0){S.weak.push(q.k);if(S.weak.length>40)S.weak.shift()}save()}rerender()},
+  qnext:()=>{const Q=ST.q;Q.i++;Q.pk=null;if(Q.i>=Q.qs.length)finishQuiz(Q);rerender()},
+  askl:t=>{ST.tc=+t.dataset.n},
+  dl:t=>{ST.dl=+t.dataset.v;ST.dr=null;rerender()},
+  newdrill:()=>{ST.dr=null;rerender()}
+});
+/* ---------- READING LADDER ---------- */
+function genDrill(l){
+  const v=()=>Math.floor(Math.random()*3);
+  if(l===1)return pick(LET,12).map(x=>{const s=syl(x,v());return [s.ar,s.bn]});
+  if(l===2)return Array.from({length:8},()=>{const a=pick(LET,2).map(x=>syl(x,v()));return [a[0].ar+a[1].ar,a[0].bn+a[1].bn]});
+  if(l===3)return pick(WORDS,12).map(w=>[w[0],w[1]]);
+  return pick(TEXTS,5).map(t=>{const i=Math.floor(Math.random()*t.ar.length);return [t.ar[i],t.bn[i]]});
+}
+function viewDrill(){
+  const l=ST.dl||1;if(!ST.dr||ST.dr.l!==l)ST.dr={l,items:genDrill(l)};
+  const L=['অক্ষর + হরকত','জোড়া সিলেবল','শব্দ','লাইন'];
+  const items=l<4?`<div class="cells ${l>1?'w':''}">${ST.dr.items.map(([a,b])=>`<button type="button" class="cell" data-act="reveal" data-t="${a}">${ar(a)}<small class="rv" hidden>${b}</small></button>`).join('')}</div>`:ST.dr.items.map(([a,b])=>`<button type="button" class="line" style="width:100%;background:none;border-inline:0;border-top:0;text-align:inherit" data-act="reveal" data-t="${a}">${ar(a)}<span class="tr rv" hidden>${b}</span></button>`).join('');
+  return `<a class="back" href="#practice">← অনুশীলন</a><h1>পড়ার সিঁড়ি</h1><p class="lead">প্রতিটি ঘর আগে নিজে পড়ুন, তারপর ট্যাপ করে উচ্চারণ মিলিয়ে নিন। সহজ ধাপ থেকে কঠিনে যান।</p>
+  <div class="chips" role="group" aria-label="ধাপ">${L.map((x,i)=>`<button type="button" class="chip" aria-pressed="${l===i+1}" data-act="dl" data-v="${i+1}">${bd(i+1)}. ${x}</button>`).join('')}</div>${items}
+  <div class="foot" style="border:0"><button type="button" class="btn" data-act="newdrill">নতুন সেট</button></div>`;
+}
+/* ---------- HOME + PROGRESS ---------- */
+function viewHome(){
+  const next=LV.findIndex((_,i)=>!S.done[i+1]),nw=S.weak.length;
+  const fresh=!Object.values(S.done).some(Boolean)&&!Object.keys(S.best).length;
+  const plan=[...todayPlanItems(),...(nw?[[`আগের ${bd(nw)}টি দুর্বল প্রশ্ন ঝালাই`,'#practice-weak']]:[]),[next<0?'যেকোনো পাঠ আবার দেখুন':`নতুন পাঠ: ${LV[next].t}`,`#level-${next<0?1:next+1}`],['৫ মিনিট ফ্ল্যাশকার্ড',next>=6?'#cards-words':'#cards-letters'],['পড়ার সিঁড়িতে ১ সেট','#practice-drill']];
+  const sub=['অক্ষর, উচ্চারণ ও হরকত','শব্দ ও বিশেষ চিহ্ন','তিলাওয়াতের নিয়ম','ব্যাকরণ ও পূর্ণ পাঠ'];
+  const stages=[0,1,2,3].map(s=>`<section class="stage"><div class="stage-h"><h2>${STAGE[s]} ধাপ</h2><span class="muted">${sub[s]}</span></div><div class="grid">${LV.map((l,i)=>({l,n:i+1})).filter(x=>x.l.st===s).map(({l,n})=>`<a class="lvl ${S.done[n]?'done':''}" href="#level-${n}"><span class="g">${ar(l.g)}</span><span><small>পাঠ ${bd(n)}</small><b>${l.t}</b><small>${l.d}</small></span><span class="st">${S.done[n]?'সম্পন্ন':'শুরু'}</span></a>`).join('')}</div></section>`).join('');
+  return `<div class="hero"><div class="hero-t"><p>আসসালামু আলাইকুম</p>${ar('مَرْحَبًا بِكُمْ')}<p>অক্ষর থেকে সাবলীল তিলাওয়াত পর্যন্ত, ধাপে ধাপে।</p><div class="row" style="margin-top:12px"><a class="btn" href="#level-${next<0?1:next+1}">${fresh?'শুরু করি':next<0?'আবার দেখি':'চালিয়ে যাই'}</a>${fresh?'<a class="btn" href="#practice-place">কোথা থেকে শুরু?</a>':''}</div></div>${ring(pct())}</div>
+  <section class="blk card"><h2>আজকের পরিকল্পনা</h2><ol class="steps">${plan.map(p=>`<li><a href="${p[1]}" ${p[1]==='#practice-weak'||p[1]==='#practice-drill'?'data-act="qstart"':''}>${p[0]}</a></li>`).join('')}</ol><p class="hint2" style="margin-top:10px">প্রতিদিন ২০–৩০ মিনিট যথেষ্ট। অটকে গেলে <a href="#tutor">ওস্তাদকে</a> জিজ্ঞাসা করুন।</p></section>${stages}
+  <section class="blk"><div class="foot" style="border:0;margin:0;padding:0"><a class="btn ghost" href="#practice-exam" data-act="qstart">চূড়ান্ত পরীক্ষা</a></div></section>`;
+}
+function viewProgress(){
+  const known=Object.values(S.known).reduce((a,b)=>a+b.length,0);
+  const stars=Object.values(S.best).reduce((a,b)=>a+starN(b/10),0);
+  const cert=S.exam>=16?`<section class="blk"><div class="cert"><p class="muted">অভিনন্দন</p><h2>চূড়ান্ত পরীক্ষায় উত্তীর্ণ</h2><p style="margin-top:10px">এই স্বীকৃতি দেওয়া হলো</p><input id="cname" value="${esc(S.name)}" placeholder="আপনার নাম লিখুন" aria-label="আপনার নাম"><p style="margin-top:10px">চূড়ান্ত পরীক্ষায় ${bd(S.exam)}/২০ পেয়েছেন।</p><p class="hint2" style="margin-top:8px">এটি এই প্ল্যাটফর্মের নিজস্ব স্বীকৃতি, কোনো প্রাতিষ্ঠানিক সনদ নয়।</p></div></section>`:'';
+  return `<h1>আমার অগ্রগতি</h1><div class="kv"><div class="card"><b>${bd(pct())}%</b>পাঠ শেষ</div><div class="card"><b>${bd(S.streak.n||0)}</b>টানা দিন</div><div class="card"><b>${bd(stars)}</b>তারা (সর্বোচ্চ ${bd(18)})</div><div class="card"><b>${bd(known)}</b>শেখা কার্ড</div><div class="card"><b>${bd(S.weak.length)}</b>দুর্বল প্রশ্ন</div></div>${cert}
+  <section class="blk"><h2>পাঠের তালিকা</h2>${LV.map((l,i)=>`<div class="line"><span>${bd(i+1)}. ${l.t}${S.chk[i+1]!=null?` <small class="muted">(চেক ${bd(S.chk[i+1])}/৫)</small>`:''}</span><a href="#level-${i+1}">${S.done[i+1]?'সম্পন্ন ✓':'খুলুন'}</a></div>`).join('')}</section>
+  <section class="blk"><h2>অনুশীলনের সেরা ফল</h2>${['q1','q2','q3','q4','q5','mix'].map(id=>`<div class="line"><span>${qmeta(id).t}</span><b>${S.best[id]==null?'—':bd(S.best[id])+'/১০'}</b></div>`).join('')}<div class="line"><span>চূড়ান্ত পরীক্ষা</span><b>${S.exam?bd(S.exam)+'/২০':'—'}</b></div></section>
+  <section class="blk"><button class="btn ghost sm" data-act="resetall">${ST.rs?'নিশ্চিত? সব মুছে ফেলুন':'অগ্রগতি মুছুন'}</button></section>`;
+}
+Object.assign(ACT,{resetall:()=>{if(!ST.rs){ST.rs=true;rerender();return}S.done={};S.best={};S.known={};S.chk={};S.weak=[];S.exam=0;S.days={};S.pdone={};S.rt={};S.streak={last:'',n:0};save();ST.rs=false;rerender()}});
+
+/* ---------- TUTOR (ask Claude) ---------- */
+const fmt=t=>String(t).split('\n').map(l=>l.trim()?`<div dir="auto">${esc(l)}</div>`:'<div class="gap"></div>').join('');
+const bub=(r,c)=>`<div class="bub ${r==='user'?'u':'a'}">${fmt(c)}</div>`;
+const SUG=['আজ আমি কী শিখব?','ص আর س-র পার্থক্য সহজে বুঝাও','আমাকে একটি ছোট পরীক্ষা নাও','نَجْم শব্দটি কীভাবে পড়ব?','নুন সাকিনের নিয়ম সহজে বুঝাও'];
+const ERR={not_granted:'অনুমতি দেওয়া হয়নি। ওস্তাদ ব্যবহার করতে Claude-কে অনুমতি দিন।',rate_limited:'অনেক বেশি অনুরোধ হয়েছে। একটু পরে আবার চেষ্টা করুন।',cancelled:'থামানো হয়েছে।',session_expired:'আবার সাইন ইন করুন।',sampling_disabled:'এই অ্যাকাউন্টে ওস্তাদ বন্ধ আছে।',upstream_error:'কিছু একটা ঠিক হয়নি। আবার চেষ্টা করুন।'};
+let TBUSY=false,TCTL=null;
+function pushTurn(r,c){S.turns.push({role:r,content:c});if(S.turns.length>12)S.turns.splice(0,S.turns.length-12);while(S.turns.length&&S.turns[0].role!=='user')S.turns.shift();save()}
+function viewTutor(){
+  const empty=!S.turns.length;
+  return `<div class="aifull"><div class="aibar"><a class="back" href="${ST.from||'#home'}">← ফিরি</a><b>ওস্তাদ</b><button type="button" class="btn ghost sm" data-act="tclear">মুছুন</button></div>
+  <div class="chat" id="tchat" aria-live="polite">${empty?bub('assistant','আসসালামু আলাইকুম! আমি আপনার ওস্তাদ। কী জানতে চান?'):S.turns.map(t=>bub(t.role,t.content)).join('')}</div>
+  ${empty?`<div class="chips" style="margin:0 0 8px">${SUG.map(s=>`<button type="button" class="chip" data-act="tsug" data-q="${esc(s)}">${s}</button>`).join('')}</div>`:''}
+  <form id="tf" class="row" style="align-items:flex-end;flex-wrap:nowrap"><textarea id="tin" rows="2" dir="auto" placeholder="প্রশ্ন লিখুন বা আরবি লেখা পেস্ট করুন" aria-label="ওস্তাদকে প্রশ্ন"></textarea><button type="submit" class="btn" id="tsend">পাঠান</button><button type="button" class="btn ghost" id="tstop" data-act="tstop" hidden>থামান</button></form></div>`;
+}
+function rules(){
+  const done=LV.filter((_,i)=>S.done[i+1]).map(l=>l.t).join('، ')||'এখনো কোনো পাঠ সম্পন্ন হয়নি';
+  const nx=LV.findIndex((_,i)=>!S.done[i+1]);
+  const weak=[...new Set(S.weak.map(fk).filter(a=>a[0]!=='q4').map(a=>LET[a[1]].name))].slice(0,8).join('، ')||'নেই';
+  const ci=ctxInfo();const ctx=ci.txt?`\nছাত্র এখন যে পর্দায় আছে: ${ci.txt}`:ST.tc?`\nছাত্র এখন পাঠ ${ST.tc} (${LV[ST.tc-1].t}) পড়ছে।`:'';
+  return `তুমি ‘ওস্তাদ’: একজন ধৈর্যশীল, অভিজ্ঞ আরবি পড়ার শিক্ষক। ছাত্র বাংলাভাষী; বয়স ৫ থেকে ১৫ বা তার বেশি হতে পারে, তাই সহজ বাংলায় ছোট বাক্যে ও উৎসাহ দিয়ে বলো।
+কাজের নিয়ম:
+১) আরবি শব্দ বা বাক্য দিলে হরকতসহ লেখো, সিলেবল ভাগ করে দাও, বাংলা অক্ষরে উচ্চারণ দাও এবং কোন নিয়ম (মাদ্দ, ইদগাম, ইযহার ইত্যাদি) আছে তা সংক্ষেপে বলো।
+২) বাংলা অক্ষরে যে ধ্বনি ঠিকমতো লেখা যায় না (ع غ ق ص ض ط ظ ح), সেখানে মাখরাজ বা মুখের অবস্থান বর্ণনা করো।
+৩) ছাত্র ভুল করলে ধৈর্যের সঙ্গে সঠিকটা বুঝিয়ে আবার চেষ্টা করতে বলো।
+৪) পরীক্ষা চাইলে একবারে একটি প্রশ্ন করো, উত্তরের জন্য অপেক্ষা করো, তারপর ফল জানাও।
+৫) অর্থ বা অনুবাদ চাইলে সংক্ষেপে দাও, তবে মূল জোর পড়ার দক্ষতায়।
+৬) নিশ্চিত না হলে অনুমান করো না; যোগ্য ক্বারী বা শিক্ষকের কাছে শুনে যাচাই করতে বলো।
+৭) মার্কডাউন চিহ্ন (*, #, backtick) ব্যবহার করো না। সাধারণ লাইনে লেখো। উত্তর ১৫ লাইনের মধ্যে রাখো।
+ছাত্রের অগ্রগতি: সম্পন্ন পাঠ: ${done}। পরের পাঠ: ${nx<0?'সব শেষ':LV[nx].t}। দুর্বল অক্ষর: ${weak}।${ctx}`;
+}
+let getSample=async()=>{try{return window.claude&&window.claude.use?await window.claude.use('sample'):null}catch(e){return null}};
+async function sendTutor(p){
+  p=p||'t';
+  const ta=$('#'+p+'in'),text=((ta&&ta.value)||'').trim();if(!text||TBUSY)return;
+  ta.value='';pushTurn('user',text);
+  const chat=$('#'+p+'chat');if(S.turns.length===1)chat.innerHTML='';
+  chat.insertAdjacentHTML('beforeend',bub('user',text)+'<div class="bub a" id="live">ওস্তাদ ভাবছেন...</div>');
+  const live=$('#live');live.removeAttribute('id');live.scrollIntoView({block:'nearest'});
+  TBUSY=true;const sb=$('#'+p+'send'),st=$('#'+p+'stop');if(sb)sb.disabled=true;if(st)st.hidden=false;
+  const sm=await getSample();
+  try{
+    if(!sm){live.textContent='AI ওস্তাদ এখনো সংযুক্ত হয়নি। সংযুক্ত হলে এখানেই উত্তর পাবেন। ততক্ষণ পাঠের ‘সাধারণ ভুল’ অংশ ও অনুশীলন দেখুন।';return}
+    TCTL=new AbortController();
+    const r=await sm([{role:'user',content:rules()},...S.turns],{cache:false,signal:TCTL.signal,onText:({text})=>{live.innerHTML=fmt(text);live.scrollIntoView({block:'nearest'})}});
+    pushTurn('assistant',r.text);live.innerHTML=fmt(r.text);
+  }catch(e){
+    const c=(e&&e.code)||'upstream_error';
+    if(e&&e.text)live.innerHTML=fmt(e.text)+`<div class="hint2">${ERR[c]||ERR.upstream_error}</div>`;else live.textContent=ERR[c]||ERR.upstream_error;
+  }finally{
+    TBUSY=false;TCTL=null;const a=$('#'+p+'send'),b=$('#'+p+'stop');if(a)a.disabled=false;if(b)b.hidden=true;
+  }
+}
+Object.assign(ACT,{
+  tsug:t=>{const p=t.dataset.p||'t',ta=$('#'+p+'in');if(ta){ta.value=t.dataset.q;sendTutor(p)}},
+  tstop:()=>{if(TCTL)TCTL.abort()},
+  tclear:()=>{S.turns=[];save();rerender()}
+});
+document.addEventListener('submit',e=>{const id=e.target.id;if(id==='tf'||id==='ff'){e.preventDefault();sendTutor(id[0])}});
+document.addEventListener('keydown',e=>{if(e.key==='Enter'&&(e.ctrlKey||e.metaKey)&&(e.target.id==='tin'||e.target.id==='fin')){e.preventDefault();sendTutor(e.target.id[0])}});
+document.addEventListener('input',e=>{if(e.target.id==='cname'){S.name=e.target.value;save()}});
+/* ---------- ROUTER (final) ---------- */
+function render(keepScroll){
+  const h=(location.hash||'#home').slice(1),i=h.indexOf('-');
+  const a=i<0?h:h.slice(0,i),b=i<0?'':h.slice(i+1);
+  if(a!=='tutor')ST.from=location.hash||'#home';
+  let html;
+  switch(a){
+    case'level':html=viewLevel(+b);break;
+    case'practice':html=viewPractice(b);break;
+    case'cards':html=viewCards(b);break;
+    case'read':html=viewRead(b);break;
+    case'tutor':html=viewTutor();break;
+    case'plan':html=viewPlan();break;
+    case'quran':html=viewQuran(b);break;
+    case'progress':html=viewProgress();break;
+    default:html=viewHome();
+  }
+  app.innerHTML=html;
+  const tab=({level:'home',home:'home',practice:'practice',cards:'cards',read:'read',quran:'quran',plan:'plan',tutor:'tutor',progress:'progress'})[a]||'home';
+  document.querySelectorAll('[data-tab]').forEach(x=>{if(x.dataset.tab===tab)x.setAttribute('aria-current','page');else x.removeAttribute('aria-current')});
+  const fab=$('#askfab');if(fab)fab.hidden=(a==='tutor');
+  document.body.classList.toggle('ai',a==='tutor');
+  if(a==='tutor'){const c=$('#tchat');if(c)c.scrollTop=c.scrollHeight}
+  if(!keepScroll)window.scrollTo(0,0);
+}
+
+/* ---------- FLOATING ASK BUTTON ---------- */
+function ctxInfo(){
+  const cur=location.hash==='#tutor'?(ST.from||'#home'):(location.hash||'#home');const h=cur.slice(1),i=h.indexOf('-'),a=i<0?h:h.slice(0,i),b=i<0?'':h.slice(i+1);
+  if(a==='level'&&LV[+b-1])return {label:`পাঠ ${bd(+b)}: ${LV[+b-1].t}`,txt:`পাঠ ${b} (${LV[+b-1].t}) খুলে দেখছে।`,sug:['এই পাঠের সারাংশ বলো','এই পাঠ থেকে আমাকে একটি প্রশ্ন করো','এই পাঠে আমি কোথায় ভুল করতে পারি?']};
+  if(a==='practice'&&b&&b!=='drill'){
+    const md=qmeta(b),Q=ST.q;let cur='';
+    if(Q&&Q.id===b&&Q.qs[Q.i]){const q=Q.qs[Q.i];cur=` বর্তমান প্রশ্ন: ${q.q} ${q.p||''}`}
+    return {label:'কুইজ'+(md?': '+md.t:''),txt:`কুইজ বা পরীক্ষা দিচ্ছে${md?' ('+md.t+')':''}।${cur} সঠিক উত্তর সরাসরি বলে দিও না; ইঙ্গিত দাও।`,sug:['একটি ইঙ্গিত দাও','এই নিয়মটি আবার বুঝাও']};
+  }
+  if(a==='read'&&b){const t=TEXTS.find(x=>x.id===b);if(t)return {label:t.t,txt:`পড়ার ঘরে ‘${t.t}’ পড়ছে। লাইনগুলো: ${t.ar.join(' | ')}`,sug:['প্রথম লাইনটি ধাপে ধাপে পড়িয়ে দাও','এই লেখায় কোন কোন নিয়ম আছে?','সঠিকভাবে পড়ার টিপস দাও']}}
+  if(a==='cards'&&b&&deckOf(b))return {label:'ফ্ল্যাশকার্ড: '+deckOf(b).t,txt:`ফ্ল্যাশকার্ডে ‘${deckOf(b).t}’ অনুশীলন করছে।`,sug:['এই কার্ডগুলো মনে রাখার কৌশল বলো','আমাকে একটি ছোট পরীক্ষা নাও']};
+  if(a==='quran'&&b){const q=QS.find(x=>x.id===b);if(q)return {label:'সূরা '+q.n,txt:`আল-কুরআন ট্যাবে সূরা ${q.n} পড়ছে। আয়াত: ${q.ar.join(' | ')}`,sug:['এই সূরার মূল শিক্ষা কী?','প্রথম আয়াতটি ধাপে ধাপে পড়িয়ে দাও','এই সূরায় কোন তাজবীদ নিয়ম আছে?']}}
+  const lab={home:'হোম',cards:'ফ্ল্যাশকার্ড',read:'পড়ার ঘর',progress:'অগ্রগতি',practice:'অনুশীলন',plan:'পরিকল্পনা',quran:'আল-কুরআন'}[a];
+  return {label:lab||'হোম',txt:'',sug:SUG};
+}
+let VOICES=[];
+function loadVoices(){try{VOICES=speechSynthesis.getVoices()||[]}catch(e){}}
+if('speechSynthesis' in window){loadVoices();try{speechSynthesis.addEventListener('voiceschanged',loadVoices)}catch(e){try{speechSynthesis.onvoiceschanged=loadVoices}catch(_){}}}
+function speak(t){
+  if(!('speechSynthesis' in window)){toast('এই ব্রাউজারে উচ্চারণ শোনার সুবিধা নেই');return}
+  try{
+    loadVoices();
+    const v=VOICES.find(x=>/^ar/i.test(x.lang||''));
+    const u=new SpeechSynthesisUtterance(t);u.lang=v?v.lang:'ar-SA';if(v)u.voice=v;u.rate=.7;
+    let started=false;u.onstart=()=>{started=true};
+    u.onerror=ev=>toast(ev&&ev.error==='not-allowed'?'এই ভিউতে শব্দ চালানো যাচ্ছে না। পেজটি নতুন ট্যাবে খুলে দেখুন।':'শব্দ চালানো যায়নি। ডিভাইসে আরবি ভয়েস আছে কি না দেখুন।');
+    speechSynthesis.cancel();speechSynthesis.speak(u);
+    if(!v)setTimeout(()=>{if(!started&&!speechSynthesis.speaking)toast('আপনার ডিভাইসে আরবি ভয়েস ইনস্টল করা নেই')},1500);
+  }catch(e){toast('এখানে উচ্চারণ শোনা যাচ্ছে না')}
+}
+
+/* ---------- CALENDAR + DAY-WISE SCHEDULE ---------- */
+const MON=['জানুয়ারি','ফেব্রুয়ারি','মার্চ','এপ্রিল','মে','জুন','জুলাই','আগস্ট','সেপ্টেম্বর','অক্টোবর','নভেম্বর','ডিসেম্বর'];
+const WD=['রবিবার','সোমবার','মঙ্গলবার','বুধবার','বৃহস্পতিবার','শুক্রবার','শনিবার'];
+const WDS=['রবি','সোম','মঙ্গল','বুধ','বৃহ','শুক্র','শনি'];
+const WORDER=[6,0,1,2,3,4,5];
+const pad=n=>String(n).padStart(2,'0');
+const dk=d=>d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate());
+const pdt=k=>{const[y,m,d]=k.split('-').map(Number);return new Date(y,m-1,d)};
+const addD=(d,n)=>new Date(d.getFullYear(),d.getMonth(),d.getDate()+n);
+const todayK=()=>dk(new Date());
+const dlabel=k=>{const d=pdt(k);return `${WD[d.getDay()]}, ${bd(d.getDate())} ${MON[d.getMonth()]}`};
+/* [lesson, title, minutes, links] */
+const SESS=[
+[1,'বর্ণমালা ১: প্রথম ১৪টি অক্ষর',25,[['পাঠ ১','#level-1']]],
+[1,'বর্ণমালা ২: শেষ ১৪টি অক্ষর ও লেসন চেক',30,[['পাঠ ১','#level-1'],['চেক','#practice-lc1']]],
+[2,'মাখরাজ ও কাছাকাছি অক্ষর',30,[['পাঠ ২','#level-2'],['চেক','#practice-lc2']]],
+[3,'হরকত: যবর, যের, পেশ',25,[['পাঠ ৩','#level-3']]],
+[3,'হরকত: জযম ও সব অক্ষরে অনুশীলন',30,[['পাঠ ৩','#level-3'],['চেক','#practice-lc3']]],
+[4,'অক্ষর জোড়া লাগানো',30,[['পাঠ ৪','#level-4'],['চেক','#practice-lc4']]],
+[0,'প্রাথমিক ধাপের ঝালাই',25,[['মিশ্র কুইজ','#practice-mix'],['অক্ষরের কার্ড','#cards-letters']]],
+[5,'মাদ্দ ও তানবীন',30,[['পাঠ ৫','#level-5']]],
+[5,'তাশদীদ ও জযম, তারপর চেক',30,[['পাঠ ৫','#level-5'],['চেক','#practice-lc5']]],
+[6,'হামযা, গোল তা, আলিফ মাকসুরা',30,[['পাঠ ৬','#level-6']]],
+[6,'ছোট আলিফ, ওয়াসলা ও চেক',30,[['পাঠ ৬','#level-6'],['চেক','#practice-lc6']]],
+[7,'শব্দ পড়া ১: সিলেবল ধরে',25,[['পাঠ ৭','#level-7'],['পড়ার সিঁড়ি','#practice-drill']]],
+[7,'শব্দ পড়া ২ ও চেক',30,[['শব্দের কার্ড','#cards-words'],['চেক','#practice-lc7']]],
+[8,'আল ও চন্দ্র-সূর্য অক্ষর',30,[['পাঠ ৮','#level-8'],['চেক','#practice-lc8']]],
+[0,'মধ্যম ধাপের ঝালাই',25,[['মিশ্র কুইজ','#practice-mix'],['দুর্বল অংশ','#practice-weak']]],
+[9,'নুন সাকিন: ইযহার ও ইকলাব',30,[['পাঠ ৯','#level-9']]],
+[9,'নুন সাকিন: ইদগাম, ইখফা ও চেক',35,[['পাঠ ৯','#level-9'],['চেক','#practice-lc9']]],
+[10,'মীম সাকিন ও কালকালা',30,[['পাঠ ১০','#level-10'],['চেক','#practice-lc10']]],
+[11,'মাদ্দের প্রকার',30,[['পাঠ ১১','#level-11'],['চেক','#practice-lc11']]],
+[12,'ভারী-হালকা অক্ষর',30,[['পাঠ ১২','#level-12'],['চেক','#practice-lc12']]],
+[13,'থামার চিহ্ন ও ওয়াকফ',30,[['পাঠ ১৩','#level-13'],['চেক','#practice-lc13'],['আন-নাসর','#read-nasr']]],
+[0,'তাজবীদ ঝালাই ও সূরা ফাতিহা',30,[['আল-ফাতিহা','#read-fatiha'],['মিশ্র কুইজ','#practice-mix']]],
+[14,'ব্যাকরণ: ইসম, ফিল, হরফ, সর্বনাম',30,[['পাঠ ১৪','#level-14']]],
+[14,'ব্যাকরণ: ধাতু, পুরুষ-স্ত্রী ও চেক',30,[['পাঠ ১৪','#level-14'],['চেক','#practice-lc14']]],
+[15,'শব্দভান্ডার: সংখ্যা, দিন, রং',25,[['পাঠ ১৫','#level-15'],['কার্ড','#cards-num']]],
+[15,'শব্দভান্ডার: পরিবার, সালাম ও চেক',30,[['পাঠ ১৫','#level-15'],['চেক','#practice-lc15']]],
+[16,'হরকত ছাড়া পড়া',30,[['পাঠ ১৬','#level-16']]],
+[0,'পড়ার ঘর: আল-ফাতিহা ও ইখলাস',30,[['ফাতিহা','#read-fatiha'],['ইখলাস','#read-ikhlas']]],
+[0,'পড়ার ঘর: আল-ফালাক্ব ও আন-নাস',30,[['ফালাক্ব','#read-falaq'],['নাস','#read-nas']]],
+[0,'পড়ার ঘর: আসর, কাওসার, নাসর, কাফিরূন',35,[['আসর','#read-asr'],['কাফিরূন','#read-kafirun']]],
+[16,'আয়াতুল কুরসী ও লেসন চেক',35,[['কুরসী','#read-kursi'],['চেক','#practice-lc16']]],
+[0,'চূড়ান্ত পরীক্ষা',40,[['পরীক্ষা','#practice-exam']]],
+[0,'দুর্বল অংশ ঝালাই ও সনদ',30,[['ঝালাই','#practice-weak'],['অগ্রগতি','#progress']]]
+];
+
+const DUR=[[30,'১ মাস','৩০ দিন'],[60,'২ মাস','৬০ দিন'],[90,'৩ মাস','৯০ দিন'],[180,'৬ মাস','১৮০ দিন']];
+const TOTAL_MIN=SESS.reduce((a,s)=>a+s[2],0);
+if(S.plan&&!S.plan.order)S.plan=null;
+const allIdx=()=>SESS.map((_,i)=>i);
+function schedule(){
+  const p=S.plan,o=p.order,n=p.n,s0=pdt(p.start),days=[];
+  for(let d=0;d<n;d++)days.push({key:dk(addD(s0,d)),d,ids:[],ref:null});
+  o.forEach((id,k)=>{days[Math.min(n-1,Math.floor(k*n/o.length))].ids.push(id)});
+  let last=null;days.forEach(x=>{if(x.ids.length)last=x.ids[x.ids.length-1];else x.ref=last});
+  return days;
+}
+const byKey=days=>{const m={};days.forEach(x=>{m[x.key]=x});return m};
+const dayDone=x=>x.ids.length?x.ids.every(i=>S.pdone[i]):!!S.rt[x.key];
+const routineLinks=()=>[['৫ মিনিট কার্ড',S.done[7]?'#cards-words':'#cards-letters'],...(S.weak.length?[['দুর্বল ঝালাই','#practice-weak']]:[]),['পড়ার সিঁড়ি','#practice-drill']];
+const lk=l=>`<a class="btn ghost sm" href="${l[1]}" ${l[1].startsWith('#practice')?'data-act="qstart"':''}>${l[0]}</a>`;
+function sessItem(x){
+  const s=SESS[x.i],L=s[3],p=L[0],rest=L.slice(1);
+  const pa=p[1].startsWith('#practice')?' data-act="qstart"':'';
+  return `<div class="sess ${x.done?'ok':''}" style="align-items:center"><button type="button" class="tick" role="checkbox" aria-checked="${!!x.done}" data-act="ptick" data-i="${x.i}" aria-label="${esc(s[1])} সম্পন্ন চিহ্ন"></button><div style="min-width:0;flex:1"><b>${s[1]}</b><div class="muted">${bd(s[2])} মিনিট${s[0]&&LV[s[0]-1]?' · পাঠ '+bd(s[0])+': '+LV[s[0]-1].t:''}</div>${rest.length?`<div class="row" style="gap:6px;margin-top:6px">${rest.map(lk).join('')}</div>`:''}</div><a class="pbtn" href="${p[1]}"${pa}>${p[0]}</a></div>`;
+}
+function routineItem(key){
+  return `<div class="sess ${S.rt[key]?'ok':''}"><button type="button" class="tick" role="checkbox" aria-checked="${!!S.rt[key]}" data-act="prt" data-k="${key}" aria-label="দৈনিক ঝালাই সম্পন্ন চিহ্ন"></button><div style="min-width:0"><b>দৈনিক ঝালাই</b><div class="muted">১০ মিনিট</div><div class="row" style="gap:6px;margin-top:6px">${routineLinks().map(lk).join('')}</div></div></div>`;
+}
+function dayBody(key,by){
+  const x=by[key];let h='';
+  const hist=Object.keys(S.pdone).filter(i=>S.pdone[i]===key&&!(x&&x.ids.includes(+i))).map(Number);
+  if(x&&x.ids.length)h+=x.ids.map(i=>sessItem({i,done:!!S.pdone[i]})).join('');
+  else if(x&&x.ref!=null)h+=`<div class="note" style="margin-top:0">অনুশীলনের দিন। নতুন সেশন নেই, ‘${SESS[x.ref][1]}’ ঝালাই করুন।</div><div class="row" style="gap:6px;margin:8px 0">${SESS[x.ref][3].map(lk).join('')}</div>`;
+  h+=hist.map(i=>sessItem({i,done:1})).join('');
+  if(!x&&!hist.length)h+='<p class="muted" style="padding:8px 0">এই দিনে সূচিতে কিছু নেই।</p>';
+  if(x)h+=routineItem(key);
+  const n=S.days[key];
+  return h+(n?`<p class="hint2" style="margin-top:8px">এই দিনে ${bd(n)}টি অনুশীলনের কাজ করেছেন।</p>`:'');
+}
+function calHtml(days){
+  const n=new Date(),c=ST.cm||(ST.cm={y:n.getFullYear(),m:n.getMonth()}),tk=todayK(),by=byKey(days);
+  const first=new Date(c.y,c.m,1),dim=new Date(c.y,c.m+1,0).getDate(),lead=WORDER.indexOf(first.getDay()),sel=ST.sd||tk;
+  let cells=WORDER.map(w=>`<div class="wh">${WDS[w]}</div>`).join('')+'<div class="cd e"></div>'.repeat(lead);
+  for(let d=1;d<=dim;d++){
+    const key=c.y+'-'+pad(c.m+1)+'-'+pad(d),x=by[key];
+    const cls=['cd',key===tk?'td':'',key===sel?'sel':'',S.days[key]?'st':''].join(' ');
+    const dot=x?`<i class="dt ${dayDone(x)?'f':''}"></i>`:'<i class="dt" style="visibility:hidden"></i>';
+    cells+=`<button type="button" class="${cls}" data-act="calsel" data-k="${key}" aria-label="${dlabel(key)}${x?(dayDone(x)?', সম্পন্ন':', সূচি আছে'):''}"><span>${bd(d)}</span>${dot}</button>`;
+  }
+  return `<div class="row sp" style="margin-bottom:10px"><button type="button" class="btn ghost sm" data-act="cnav" data-v="-1" aria-label="আগের মাস">‹</button><b>${MON[c.m]} ${bd(c.y)}</b><span class="row"><button type="button" class="btn ghost sm" data-act="ctoday">আজ</button><button type="button" class="btn ghost sm" data-act="cnav" data-v="1" aria-label="পরের মাস">›</button></span></div>
+  <div class="cal">${cells}</div>
+  <p class="hint2" style="margin-top:8px">ফাঁকা বৃত্ত = সূচি আছে, ভরাট বৃত্ত = সম্পন্ন, হালকা সবুজ ঘর = যেদিন পড়েছেন।</p>
+  <section class="blk card" id="daypanel" tabindex="-1"><h3>${dlabel(sel)}${sel===tk?' · আজ':''}</h3>${dayBody(sel,by)}</section>`;
+}
+function listHtml(days){
+  const tk=todayK(),by=byKey(days),pend=days.filter(x=>!dayDone(x)&&(x.ids.length||x.ref!=null||true));
+  if(!days.length||days.every(dayDone))return '<div class="card"><h3>সব সম্পন্ন!</h3><p class="lead">মাশাআল্লাহ। এখন পড়ার ঘরে নিয়মিত তিলাওয়াত চালিয়ে যান।</p></div>';
+  const lim=ST.ln||10,shown=pend.slice(0,lim),t1=dk(addD(new Date(),1));
+  return shown.map(x=>{
+    const tag=x.key<tk?'<span class="st">পিছিয়ে আছে</span>':x.key===tk?'<span class="st">আজ</span>':x.key===t1?'<span class="st">আগামীকাল</span>':'';
+    return `<section class="card" style="margin-bottom:10px"><div class="row sp"><h3>${dlabel(x.key)}</h3>${tag}</div>${dayBody(x.key,by)}</section>`;
+  }).join('')+(pend.length>lim?'<div class="foot" style="border:0"><button type="button" class="btn ghost" data-act="pmore">আরও দিন দেখি</button></div>':'');
+}
+function lessonRange(ids){
+  const L=[...new Set(ids.map(i=>SESS[i][0]).filter(Boolean))].sort((a,b)=>a-b);
+  if(!L.length)return 'ঝালাই ও পড়ার ঘর';
+  const st=[...new Set(L.map(n=>STAGE[LV[n-1].st]))].join(' → ');
+  return `পাঠ ${bd(L[0])}${L.length>1?'–'+bd(L[L.length-1]):''} (${st})`;
+}
+function monthHtml(days){
+  const g={};days.forEach(x=>{(g[x.key.slice(0,7)]=g[x.key.slice(0,7)]||[]).push(x)});
+  const tm=todayK().slice(0,7);
+  return Object.keys(g).sort().map(k=>{
+    const ds=g[k],ids=[...new Set(ds.flatMap(x=>x.ids))],dn=ids.filter(i=>S.pdone[i]).length,[y,m]=k.split('-').map(Number);
+    const pr=ds.filter(x=>!x.ids.length).length;
+    const lines=ds.filter(x=>x.ids.length).map(x=>`<div class="line"><span class="muted" style="flex:0 0 5.5em">${bd(pdt(x.key).getDate())} ${MON[m-1]}</span><span style="flex:1;min-width:0">${x.ids.map(i=>`<span ${S.pdone[i]?'style="text-decoration:line-through;color:var(--muted)"':''}>${SESS[i][1]}</span>`).join('<br>')}</span></div>`).join('');
+    return `<details class="card mon" style="margin-bottom:10px" ${k===tm?'open':''}><summary><div class="row sp"><h3>${MON[m-1]} ${bd(y)}</h3><span class="muted">${bd(dn)}/${bd(ids.length)} সেশন</span></div><p class="hint2">${bd(ds.length)} দিন · ${lessonRange(ids)}${pr?` · ${bd(pr)}টি অনুশীলনের দিন`:''}</p><div class="bar" style="margin-top:6px"><i style="width:${ids.length?dn/ids.length*100:0}%"></i></div></summary>${lines||'<p class="muted" style="padding:8px 0">এই মাসে শুধু অনুশীলনের দিন।</p>'}<div class="foot" style="border:0;margin:0;padding:8px 0 0"><button type="button" class="btn ghost sm" data-act="mgo" data-y="${y}" data-m="${m-1}">ক্যালেন্ডারে দেখি</button></div></details>`;
+  }).join('');
+}
+function cfgHtml(cfg,isNew){
+  const avg=n=>bd(Math.round(TOTAL_MIN/n)+10);
+  return `<h3>কত মাসে শেষ করতে চান?</h3><div class="chips" role="group" aria-label="সময়কাল">${DUR.map(d=>`<button type="button" class="chip" aria-pressed="${(isNew?cfg.n:cfg.n0)===d[0]}" data-act="pdur" data-v="${d[0]}">${d[1]} (${d[2]}, দৈনিক গড় ~${avg(d[0])} মিনিট)</button>`).join('')}</div>
+  <div class="row" style="margin-top:6px"><label for="ptime">পড়ার সময়</label><input type="time" id="ptime" value="${cfg.time||'20:00'}">${isNew?`<label for="pstart" style="margin-left:8px">শুরুর দিন</label><input type="date" id="pstart" value="${cfg.start||todayK()}">`:''}</div>`;
+}
+function viewPlan(){
+  if(!S.plan){
+    const cfg=ST.np||(ST.np={n:60,time:'20:00',start:todayK()});
+    return `<h1>পরিকল্পনা</h1><p class="lead">শুরুর তারিখ থেকে প্রতিটি দিনের জন্য আলাদা কাজ বসানো হবে, মাস ধরে ক্যালেন্ডারে। সপ্তাহের দিন বাছার দরকার নেই।</p><section class="blk card">${cfgHtml(cfg,true)}<div class="foot" style="border:0;margin-top:12px;padding:0"><button type="button" class="btn" data-act="pcreate">সূচি তৈরি করি</button></div></section>`;
+  }
+  const days=schedule(),tk=todayK(),by=byKey(days);
+  const over=days.filter(x=>x.key<tk).flatMap(x=>x.ids).filter(i=>!S.pdone[i]).length;
+  const doneN=Object.keys(S.pdone).length,last=days.length?dlabel(days[days.length-1].key):'';
+  const pv=ST.pv||'cal';
+  return `<h1>পরিকল্পনা</h1>
+  <div class="card" style="margin-top:10px"><div class="row sp"><b>${bd(doneN)}/${bd(SESS.length)} সেশন সম্পন্ন</b><span class="muted">${doneN<SESS.length?'শেষ দিন: '+last:'সব সম্পন্ন'}</span></div><div class="bar" style="margin-top:8px"><i style="width:${doneN/SESS.length*100}%"></i></div></div>
+  ${over?`<div class="note">${bd(over)}টি সেশন নির্ধারিত দিনের পরে বাকি আছে। <button type="button" class="btn sm" data-act="preplan" style="margin-left:6px">আজ থেকে নতুন করে সাজাই</button></div>`:''}
+  <div class="chips" role="group" aria-label="দৃশ্য">${[['cal','ক্যালেন্ডার'],['month','মাসিক সূচি'],['list','দিনের তালিকা'],['cfg','সেটিং']].map(x=>`<button type="button" class="chip" aria-pressed="${pv===x[0]}" data-act="pv" data-v="${x[0]}">${x[1]}</button>`).join('')}</div>
+  ${pv==='cal'?calHtml(days):pv==='month'?monthHtml(days):pv==='list'?listHtml(days):`<section class="card">${cfgHtml(S.plan,false)}<div class="foot" style="border:0;margin-top:12px;padding:0"><button type="button" class="btn" data-act="pexport">Google Calendar-এর CSV নামাই</button><button type="button" class="btn ghost" data-act="preplan">আজ থেকে নতুন করে সাজাই</button><button type="button" class="btn ghost" data-act="pdel">${ST.pdel?'নিশ্চিত? সূচি মুছুন':'সূচি মুছুন'}</button></div><p class="hint2" style="margin-top:8px">সময়কাল বদলালে বাকি সেশনগুলো আজ থেকে নতুন করে ভাগ হবে। CSV ফাইলটি calendar.google.com-এ ইমপোর্ট করলে প্রতিটি দিন আপনার নির্ধারিত সময়ে ক্যালেন্ডারে যুক্ত হবে এবং ফোনে নোটিফিকেশন পাবেন। এই পেজ নিজে থেকে রিমাইন্ডার পাঠাতে পারে না।</p></section>`}`;
+}
+function todayPlanItems(){
+  if(!S.plan)return [['নিজের সময়সূচি বানাই','#plan']];
+  const days=schedule(),tk=todayK(),t=days.find(x=>x.key===tk);
+  if(t&&!dayDone(t))return [[t.ids.length?`আজকের সেশন: ${t.ids.map(i=>SESS[i][1]).join(' + ')}`:'আজ অনুশীলনের দিন: ঝালাই করুন','#plan']];
+  const nx=days.find(x=>x.key>tk&&!dayDone(x));
+  return nx?[[`পরের সূচি (${dlabel(nx.key)}): ${nx.ids.length?SESS[nx.ids[0]][1]:'অনুশীলনের দিন'}`,'#plan']]:[];
+}
+function buildCsv(){
+  const t=S.plan.time||'20:00',[h,m]=t.split(':').map(Number);
+  const q=s=>'"'+String(s).replace(/"/g,'""')+'"';
+  const f12=d=>{const hh=d.getHours();return pad(hh%12||12)+':'+pad(d.getMinutes())+' '+(hh>=12?'PM':'AM')};
+  const fd=d=>pad(d.getMonth()+1)+'/'+pad(d.getDate())+'/'+d.getFullYear();
+  const rows=[['Subject','Start Date','Start Time','End Date','End Time','Description','All Day Event'].map(q).join(',')];
+  schedule().filter(x=>!dayDone(x)).forEach(x=>{
+    const title=x.ids.length?x.ids.map(i=>SESS[i][1]).join(' + '):'অনুশীলন'+(x.ref!=null?': '+SESS[x.ref][1]:''),
+      mins=(x.ids.length?x.ids.reduce((a,i)=>a+SESS[i][2],0):20)+10,d=pdt(x.key),
+      a=new Date(d.getFullYear(),d.getMonth(),d.getDate(),h,m),e=new Date(a.getTime()+mins*60000);
+    rows.push([q('আরবি শিখি: '+title),q(fd(a)),q(f12(a)),q(fd(e)),q(f12(e)),q(title+' ('+mins+' মিনিট, দৈনিক ঝালাইসহ)'),q('False')].join(','));
+  });
+  return rows.join('\r\n');
+}
+async function exportCsv(){
+  let dl=null;try{dl=window.claude&&window.claude.use?await window.claude.use('downloads'):null}catch(e){}
+  if(!dl){toast('এই ভিউতে ফাইল সংরক্ষণ চালু নেই');return}
+  try{await dl.save({filename:'arabi-shikhi-schedule.csv',data:buildCsv()});toast('ফাইল সংরক্ষিত হয়েছে')}
+  catch(e){if(!(e&&e.code==='declined'))toast('ফাইল সংরক্ষণ করা যায়নি')}
+}
+function replanNow(){
+  const p=S.plan,pend=allIdx().filter(i=>!S.pdone[i]);
+  p.order=pend;p.n=Math.max(7,Math.round(p.n0*pend.length/SESS.length));p.start=todayK();save();
+}
+Object.assign(ACT,{
+  pv:t=>{ST.pv=t.dataset.v;ST.pdel=false;rerender()},
+  cnav:t=>{const c=ST.cm,d=new Date(c.y,c.m+(+t.dataset.v),1);ST.cm={y:d.getFullYear(),m:d.getMonth()};rerender()},
+  ctoday:()=>{const n=new Date();ST.cm={y:n.getFullYear(),m:n.getMonth()};ST.sd=todayK();rerender()},
+  calsel:t=>{ST.sd=t.dataset.k;rerender();const d=document.getElementById('daypanel');if(d&&d.scrollIntoView){d.scrollIntoView(true)}},
+  mgo:t=>{ST.cm={y:+t.dataset.y,m:+t.dataset.m};ST.pv='cal';ST.sd=t.dataset.y+'-'+pad(+t.dataset.m+1)+'-01';rerender()},
+  ptick:t=>{const i=+t.dataset.i;if(S.pdone[i])delete S.pdone[i];else{S.pdone[i]=todayK();markActive()}save();rerender()},
+  prt:t=>{const k=t.dataset.k;if(S.rt[k])delete S.rt[k];else{S.rt[k]=1;markActive()}save();rerender()},
+  pdur:t=>{const v=+t.dataset.v;if(S.plan){S.plan.n0=v;replanNow();toast('বাকি সেশন আজ থেকে নতুন করে ভাগ হয়েছে')}else ST.np.n=v;rerender()},
+  pcreate:()=>{const c=ST.np;S.plan={n0:c.n,n:c.n,order:allIdx(),time:c.time||'20:00',start:c.start||todayK()};ST.np=null;ST.pv='cal';ST.sd=S.plan.start;const d=pdt(S.plan.start);ST.cm={y:d.getFullYear(),m:d.getMonth()};save();rerender()},
+  preplan:()=>{replanNow();toast('আজ থেকে নতুন করে সাজানো হয়েছে');rerender()},
+  pexport:exportCsv,
+  pdel:()=>{if(!ST.pdel){ST.pdel=true;rerender();return}S.plan=null;ST.pdel=false;save();rerender()},
+  pmore:()=>{ST.ln=(ST.ln||10)+10;rerender()}
+});
+document.addEventListener('input',e=>{
+  const id=e.target.id;if(id!=='ptime'&&id!=='pstart')return;
+  const c=S.plan||ST.np;if(!c)return;
+  if(id==='ptime')c.time=e.target.value||'20:00';else if(e.target.value)c.start=e.target.value;
+  if(S.plan)save();
+});
+
+/* তথ্যসূত্র: আরবি পাঠ: The Noble Qur'an Encyclopedia (quranenc.com), বাংলা অনুবাদ: মুহিউদ্দীন খান (tanzil.net) */
+const QDATA=[
+{
+"id": "fatiha",
+"no": 1,
+"n": "আল-ফাতিহা",
+"m": "সূচনা",
+"ty": "মক্কী",
+"g": 1,
+"ar": [
+"بِسۡمِ ٱللَّهِ ٱلرَّحۡمَٰنِ ٱلرَّحِيمِ",
+"ٱلۡحَمۡدُ لِلَّهِ رَبِّ ٱلۡعَٰلَمِينَ",
+"ٱلرَّحۡمَٰنِ ٱلرَّحِيمِ",
+"مَٰلِكِ يَوۡمِ ٱلدِّينِ",
+"إِيَّاكَ نَعۡبُدُ وَإِيَّاكَ نَسۡتَعِينُ",
+"ٱهۡدِنَا ٱلصِّرَٰطَ ٱلۡمُسۡتَقِيمَ",
+"صِرَٰطَ ٱلَّذِينَ أَنۡعَمۡتَ عَلَيۡهِمۡ غَيۡرِ ٱلۡمَغۡضُوبِ عَلَيۡهِمۡ وَلَا ٱلضَّآلِّينَ"
+],
+"mn": [
+"শুরু করছি আল্লাহর নামে যিনি পরম করুণাময়, অতি দয়ালু।",
+"যাবতীয় প্রশংসা আল্লাহ তাআলার যিনি সকল সৃষ্টি জগতের পালনকর্তা।",
+"যিনি নিতান্ত মেহেরবান ও দয়ালু।",
+"যিনি বিচার দিনের মালিক।",
+"আমরা একমাত্র তোমারই ইবাদত করি এবং শুধুমাত্র তোমারই সাহায্য প্রার্থনা করি।",
+"আমাদেরকে সরল পথ দেখাও",
+"সে সমস্ত লোকের পথ, যাদেরকে তুমি নেয়ামত দান করেছ। তাদের পথ নয়, যাদের প্রতি তোমার গজব নাযিল হয়েছে এবং যারা পথভ্রষ্ট হয়েছে।"
+]
+},
+{
+"id": "s91",
+"no": 91,
+"n": "আশ-শামস",
+"m": "সূর্য",
+"ty": "মক্কী",
+"g": 6044,
+"ar": [
+"وَٱلشَّمۡسِ وَضُحَىٰهَا",
+"وَٱلۡقَمَرِ إِذَا تَلَىٰهَا",
+"وَٱلنَّهَارِ إِذَا جَلَّىٰهَا",
+"وَٱلَّيۡلِ إِذَا يَغۡشَىٰهَا",
+"وَٱلسَّمَآءِ وَمَا بَنَىٰهَا",
+"وَٱلۡأَرۡضِ وَمَا طَحَىٰهَا",
+"وَنَفۡسٖ وَمَا سَوَّىٰهَا",
+"فَأَلۡهَمَهَا فُجُورَهَا وَتَقۡوَىٰهَا",
+"قَدۡ أَفۡلَحَ مَن زَكَّىٰهَا",
+"وَقَدۡ خَابَ مَن دَسَّىٰهَا",
+"كَذَّبَتۡ ثَمُودُ بِطَغۡوَىٰهَآ",
+"إِذِ ٱنۢبَعَثَ أَشۡقَىٰهَا",
+"فَقَالَ لَهُمۡ رَسُولُ ٱللَّهِ نَاقَةَ ٱللَّهِ وَسُقۡيَٰهَا",
+"فَكَذَّبُوهُ فَعَقَرُوهَا فَدَمۡدَمَ عَلَيۡهِمۡ رَبُّهُم بِذَنۢبِهِمۡ فَسَوَّىٰهَا",
+"وَلَا يَخَافُ عُقۡبَٰهَا"
+],
+"mn": [
+"শপথ সূর্যের ও তার কিরণের",
+"শপথ চন্দ্রের যখন তা সূর্যের পশ্চাতে আসে",
+"শপথ দিবসের যখন সে সূর্যকে প্রখরভাবে প্রকাশ করে",
+"শপথ রাত্রির যখন সে সূর্যকে আচ্ছাদিত করে",
+"শপথ আকাশের এবং যিনি তা নির্মাণ করেছেন, তাঁর।",
+"শপথ পৃথিবীর এবং যিনি তা বিস্তৃত করেছেন, তাঁর",
+"শপথ প্রাণের এবং যিনি তা সুবিন্যস্ত করেছেন, তাঁর",
+"অতঃপর তাকে তার অসৎকর্ম ও সৎকর্মের জ্ঞান দান করেছেন",
+"যে নিজেকে শুদ্ধ করে, সেই সফলকাম হয়।",
+"এবং যে নিজেকে কলুষিত করে, সে ব্যর্থ মনোরথ হয়।",
+"সামুদ সম্প্রদায় অবাধ্যতা বশতঃ মিথ্যারোপ করেছিল।",
+"যখন তাদের সর্বাধিক হতভাগ্য ব্যক্তি তৎপর হয়ে উঠেছিল।",
+"অতঃপর আল্লাহর রসূল তাদেরকে বলেছিলেনঃ আল্লাহর উষ্ট্রী ও তাকে পানি পান করানোর ব্যাপারে সতর্ক থাক।",
+"অতঃপর ওরা তার প্রতি মিথ্যারোপ করেছিল এবং উষ্ট্রীর পা কর্তন করেছিল। তাদের পাপের কারণে তাদের পালনকর্তা তাদের উপর ধ্বংস নাযিল করে একাকার করে দিলেন।",
+"আল্লাহ তা’আলা এই ধ্বংসের কোন বিরূপ পরিণতির আশংকা করেন না।"
+],
+"tr": [
+"ওয়াশ শামসি ওয়া দুহাহা",
+"ওয়াল ক্বামারি ইযা তালাহা",
+"ওয়ান নাহারি ইযা জাল্লাহা",
+"ওয়াল লাইলি ইযা ইয়াগশাহা",
+"ওয়াস সামা-ই ওয়ামা বানাহা",
+"ওয়াল আরদ্বি ওয়ামা তাহাহা",
+"ওয়া নাফসিঁউ ওয়ামা সাওওয়াহা",
+"ফাআলহামাহা ফুজূরাহা ওয়া তাক্বওয়াহা",
+"ক্বাদ আফলাহা মান যাক্কাহা",
+"ওয়া ক্বাদ খাবা মান দাস্সাহা",
+"কাযযাবাত ছামূদু বিত্বাগওয়াহা",
+"ইযিম বাআছা আশক্বাহা",
+"ফাক্বালা লাহুম রাসূলুল্লাহি নাক্বাতাল্লাহি ওয়া সুক্বইয়াহা",
+"ফাকাযযাবূহু ফাআক্বারূহা ফাদামদামা আলাইহিম রাব্বুহুম বিযাম্বিহিম ফাসাওওয়াহা",
+"ওয়ালা ইয়াখাফু উক্ববাহা"
+]
+},
+{
+"id": "s92",
+"no": 92,
+"n": "আল-লাইল",
+"m": "রাত",
+"ty": "মক্কী",
+"g": 6059,
+"ar": [
+"وَٱلَّيۡلِ إِذَا يَغۡشَىٰ",
+"وَٱلنَّهَارِ إِذَا تَجَلَّىٰ",
+"وَمَا خَلَقَ ٱلذَّكَرَ وَٱلۡأُنثَىٰٓ",
+"إِنَّ سَعۡيَكُمۡ لَشَتَّىٰ",
+"فَأَمَّا مَنۡ أَعۡطَىٰ وَٱتَّقَىٰ",
+"وَصَدَّقَ بِٱلۡحُسۡنَىٰ",
+"فَسَنُيَسِّرُهُۥ لِلۡيُسۡرَىٰ",
+"وَأَمَّا مَنۢ بَخِلَ وَٱسۡتَغۡنَىٰ",
+"وَكَذَّبَ بِٱلۡحُسۡنَىٰ",
+"فَسَنُيَسِّرُهُۥ لِلۡعُسۡرَىٰ",
+"وَمَا يُغۡنِي عَنۡهُ مَالُهُۥٓ إِذَا تَرَدَّىٰٓ",
+"إِنَّ عَلَيۡنَا لَلۡهُدَىٰ",
+"وَإِنَّ لَنَا لَلۡأٓخِرَةَ وَٱلۡأُولَىٰ",
+"فَأَنذَرۡتُكُمۡ نَارٗا تَلَظَّىٰ",
+"لَا يَصۡلَىٰهَآ إِلَّا ٱلۡأَشۡقَى",
+"ٱلَّذِي كَذَّبَ وَتَوَلَّىٰ",
+"وَسَيُجَنَّبُهَا ٱلۡأَتۡقَى",
+"ٱلَّذِي يُؤۡتِي مَالَهُۥ يَتَزَكَّىٰ",
+"وَمَا لِأَحَدٍ عِندَهُۥ مِن نِّعۡمَةٖ تُجۡزَىٰٓ",
+"إِلَّا ٱبۡتِغَآءَ وَجۡهِ رَبِّهِ ٱلۡأَعۡلَىٰ",
+"وَلَسَوۡفَ يَرۡضَىٰ"
+],
+"mn": [
+"শপথ রাত্রির, যখন সে আচ্ছন্ন করে",
+"শপথ দিনের, যখন সে আলোকিত হয়",
+"এবং তাঁর, যিনি নর ও নারী সৃষ্টি করেছেন",
+"নিশ্চয় তোমাদের কর্ম প্রচেষ্টা বিভিন্ন ধরনের।",
+"অতএব, যে দান করে এবং খোদাভীরু হয়",
+"এবং উত্তম বিষয়কে সত্য মনে করে",
+"আমি তাকে সুখের বিষয়ের জন্যে সহজ পথ দান করব।",
+"আর যে কৃপণতা করে ও বেপরওয়া হয়",
+"এবং উত্তম বিষয়কে মিথ্যা মনে করে",
+"আমি তাকে কষ্টের বিষয়ের জন্যে সহজ পথ দান করব।",
+"যখন সে অধঃপতিত হবে, তখন তার সম্পদ তার কোনই কাজে আসবে না।",
+"আমার দায়িত্ব পথ প্রদর্শন করা।",
+"আর আমি মালিক ইহকালের ও পরকালের।",
+"অতএব, আমি তোমাদেরকে প্রজ্বলিত অগ্নি সম্পর্কে সতর্ক করে দিয়েছি।",
+"এতে নিতান্ত হতভাগ্য ব্যক্তিই প্রবেশ করবে",
+"যে মিথ্যারোপ করে ও মুখ ফিরিয়ে নেয়।",
+"এ থেকে দূরে রাখা হবে খোদাভীরু ব্যক্তিকে",
+"যে আত্নশুদ্ধির জন্যে তার ধন-সম্পদ দান করে।",
+"এবং তার উপর কারও কোন প্রতিদানযোগ্য অনুগ্রহ থাকে না।",
+"তার মহান পালনকর্তার সন্তুষ্টি অন্বেষণ ব্যতীত।",
+"সে সত্বরই সন্তুষ্টি লাভ করবে।"
+],
+"tr": [
+"ওয়াল লাইলি ইযা ইয়াগশা",
+"ওয়ান নাহারি ইযা তাজাল্লা",
+"ওয়ামা খালাক্বায যাকারা ওয়াল উনছা",
+"ইন্না সা’ইয়াকুম লাশাত্তা",
+"ফাআম্মা মান আ’ত্বা ওয়াত্তাক্বা",
+"ওয়া সাদ্দাক্বা বিলহুসনা",
+"ফাসানুইয়াসসিরুহু লিলইউসরা",
+"ওয়া আম্মা মান বাখিলা ওয়াসতাগনা",
+"ওয়া কাযযাবা বিলহুসনা",
+"ফাসানুইয়াসসিরুহু লিলউসরা",
+"ওয়ামা ইউগনী আনহু মালুহু ইযা তারাদ্দা",
+"ইন্না আলাইনা লালহুদা",
+"ওয়া ইন্না লানা লাল আখিরাতা ওয়াল ঊলা",
+"ফাআনযারতুকুম নারান তালাযযা",
+"লা ইয়াসলাহা ইল্লাল আশক্বা",
+"আল্লাযী কাযযাবা ওয়া তাওয়াল্লা",
+"ওয়া সাইউজান্নাবুহাল আতক্বা",
+"আল্লাযী ইউ’তী মালাহু ইয়াতাযাক্কা",
+"ওয়ামা লিআহাদিন ইনদাহু মিন নি’মাতিন তুজযা",
+"ইল্লাবতিগা-আ ওয়াজহি রাব্বিহিল আ’লা",
+"ওয়া লাসাওফা ইয়ারদ্বা"
+]
+},
+{
+"id": "s93",
+"no": 93,
+"n": "আদ-দুহা",
+"m": "পূর্বাহ্ন",
+"ty": "মক্কী",
+"g": 6080,
+"ar": [
+"وَٱلضُّحَىٰ",
+"وَٱلَّيۡلِ إِذَا سَجَىٰ",
+"مَا وَدَّعَكَ رَبُّكَ وَمَا قَلَىٰ",
+"وَلَلۡأٓخِرَةُ خَيۡرٞ لَّكَ مِنَ ٱلۡأُولَىٰ",
+"وَلَسَوۡفَ يُعۡطِيكَ رَبُّكَ فَتَرۡضَىٰٓ",
+"أَلَمۡ يَجِدۡكَ يَتِيمٗا فَـَٔاوَىٰ",
+"وَوَجَدَكَ ضَآلّٗا فَهَدَىٰ",
+"وَوَجَدَكَ عَآئِلٗا فَأَغۡنَىٰ",
+"فَأَمَّا ٱلۡيَتِيمَ فَلَا تَقۡهَرۡ",
+"وَأَمَّا ٱلسَّآئِلَ فَلَا تَنۡهَرۡ",
+"وَأَمَّا بِنِعۡمَةِ رَبِّكَ فَحَدِّثۡ"
+],
+"mn": [
+"শপথ পূর্বাহ্নের",
+"শপথ রাত্রির যখন তা গভীর হয়",
+"আপনার পালনকর্তা আপনাকে ত্যাগ করেনি এবং আপনার প্রতি বিরূপও হননি।",
+"আপনার জন্যে পরকাল ইহকাল অপেক্ষা শ্রেয়।",
+"আপনার পালনকর্তা সত্বরই আপনাকে দান করবেন, অতঃপর আপনি সন্তুষ্ট হবেন।",
+"তিনি কি আপনাকে এতীমরূপে পাননি? অতঃপর তিনি আশ্রয় দিয়েছেন।",
+"তিনি আপনাকে পেয়েছেন পথহারা, অতঃপর পথপ্রদর্শন করেছেন।",
+"তিনি আপনাকে পেয়েছেন নিঃস্ব, অতঃপর অভাবমুক্ত করেছেন।",
+"সুতরাং আপনি এতীমের প্রতি কঠোর হবেন না",
+"সওয়ালকারীকে ধমক দেবেন না।",
+"এবং আপনার পালনকর্তার নেয়ামতের কথা প্রকাশ করুন।"
+],
+"tr": [
+"ওয়াদ দুহা",
+"ওয়াল লাইলি ইযা সাজা",
+"মা ওয়াদ্দা’আকা রাব্বুকা ওয়ামা ক্বালা",
+"ওয়া লাল আখিরাতু খাইরুল লাকা মিনাল ঊলা",
+"ওয়া লাসাওফা ইউ’ত্বীকা রাব্বুকা ফাতারদ্বা",
+"আলাম ইয়াজিদকা ইয়াতীমান ফাআওয়া",
+"ওয়া ওয়াজাদাকা দ্বাল্লান ফাহাদা",
+"ওয়া ওয়াজাদাকা আ-ইলান ফাআগনা",
+"ফাআম্মাল ইয়াতীমা ফালা তাক্বহার",
+"ওয়া আম্মাস সা-ইলা ফালা তানহার",
+"ওয়া আম্মা বিনি’মাতি রাব্বিকা ফাহাদ্দিস"
+]
+},
+{
+"id": "s94",
+"no": 94,
+"n": "আশ-শারহ",
+"m": "প্রশস্তকরণ",
+"ty": "মক্কী",
+"g": 6091,
+"ar": [
+"أَلَمۡ نَشۡرَحۡ لَكَ صَدۡرَكَ",
+"وَوَضَعۡنَا عَنكَ وِزۡرَكَ",
+"ٱلَّذِيٓ أَنقَضَ ظَهۡرَكَ",
+"وَرَفَعۡنَا لَكَ ذِكۡرَكَ",
+"فَإِنَّ مَعَ ٱلۡعُسۡرِ يُسۡرًا",
+"إِنَّ مَعَ ٱلۡعُسۡرِ يُسۡرٗا",
+"فَإِذَا فَرَغۡتَ فَٱنصَبۡ",
+"وَإِلَىٰ رَبِّكَ فَٱرۡغَب"
+],
+"mn": [
+"আমি কি আপনার বক্ষ উম্মুক্ত করে দেইনি",
+"আমি লাঘব করেছি আপনার বোঝা",
+"যা ছিল আপনার জন্যে অতিশয় দুঃসহ।",
+"আমি আপনার আলোচনাকে সমুচ্চ করেছি।",
+"নিশ্চয় কষ্টের সাথে স্বস্তি রয়েছে।",
+"নিশ্চয় কষ্টের সাথে স্বস্তি রয়েছে।",
+"অতএব, যখন অবসর পান পরিশ্রম করুন।",
+"এবং আপনার পালনকর্তার প্রতি মনোনিবেশ করুন।"
+],
+"tr": [
+"আলাম নাশরাহ লাকা সাদরাক",
+"ওয়া ওয়াদা’না আনকা বিযরাক",
+"আল্লাযী আনক্বাদ্বা যাহরাক",
+"ওয়া রাফা’না লাকা যিকরাক",
+"ফাইন্না মা’আল উসরি ইউসরা",
+"ইন্না মা’আল উসরি ইউসরা",
+"ফাইযা ফারাগতা ফানসাব",
+"ওয়া ইলা রাব্বিকা ফারগাব"
+]
+},
+{
+"id": "s95",
+"no": 95,
+"n": "আত-তীন",
+"m": "ডুমুর",
+"ty": "মক্কী",
+"g": 6099,
+"ar": [
+"وَٱلتِّينِ وَٱلزَّيۡتُونِ",
+"وَطُورِ سِينِينَ",
+"وَهَٰذَا ٱلۡبَلَدِ ٱلۡأَمِينِ",
+"لَقَدۡ خَلَقۡنَا ٱلۡإِنسَٰنَ فِيٓ أَحۡسَنِ تَقۡوِيمٖ",
+"ثُمَّ رَدَدۡنَٰهُ أَسۡفَلَ سَٰفِلِينَ",
+"إِلَّا ٱلَّذِينَ ءَامَنُواْ وَعَمِلُواْ ٱلصَّـٰلِحَٰتِ فَلَهُمۡ أَجۡرٌ غَيۡرُ مَمۡنُونٖ",
+"فَمَا يُكَذِّبُكَ بَعۡدُ بِٱلدِّينِ",
+"أَلَيۡسَ ٱللَّهُ بِأَحۡكَمِ ٱلۡحَٰكِمِينَ"
+],
+"mn": [
+"শপথ আঞ্জীর (ডুমুর) ও যয়তুনের",
+"এবং সিনাই প্রান্তরস্থ তূর পর্বতের",
+"এবং এই নিরাপদ নগরীর।",
+"আমি সৃষ্টি করেছি মানুষকে সুন্দরতর অবয়বে।",
+"অতঃপর তাকে ফিরিয়ে দিয়েছি নীচ থেকে নীচে।",
+"কিন্তু যারা বিশ্বাস স্থাপন করেছে ও সৎকর্ম করেছে, তাদের জন্যে রয়েছে অশেষ পুরস্কার।",
+"অতঃপর কেন তুমি অবিশ্বাস করছ কেয়ামতকে",
+"আল্লাহ কি বিচারকদের মধ্যে শ্রেষ্টতম বিচারক নন"
+],
+"tr": [
+"ওয়াত তীনি ওয়ায যাইতূন",
+"ওয়া তূরি সীনীন",
+"ওয়া হাযাল বালাদিল আমীন",
+"লাক্বাদ খালাক্বনাল ইনসানা ফী আহসানি তাক্বওয়ীম",
+"ছুম্মা রাদাদনাহু আসফালা সাফিলীন",
+"ইল্লাল্লাযীনা আমানূ ওয়া আমিলুস সালিহাতি ফালাহুম আজরুন গাইরু মামনূন",
+"ফামা ইউকাযযিবুকা বা’দু বিদ্দীন",
+"আলাইসাল্লাহু বিআহকামিল হাকিমীন"
+]
+},
+{
+"id": "s96",
+"no": 96,
+"n": "আল-আলাক্ব",
+"m": "জমাট রক্ত",
+"ty": "মক্কী",
+"g": 6107,
+"ar": [
+"ٱقۡرَأۡ بِٱسۡمِ رَبِّكَ ٱلَّذِي خَلَقَ",
+"خَلَقَ ٱلۡإِنسَٰنَ مِنۡ عَلَقٍ",
+"ٱقۡرَأۡ وَرَبُّكَ ٱلۡأَكۡرَمُ",
+"ٱلَّذِي عَلَّمَ بِٱلۡقَلَمِ",
+"عَلَّمَ ٱلۡإِنسَٰنَ مَا لَمۡ يَعۡلَمۡ",
+"كَلَّآ إِنَّ ٱلۡإِنسَٰنَ لَيَطۡغَىٰٓ",
+"أَن رَّءَاهُ ٱسۡتَغۡنَىٰٓ",
+"إِنَّ إِلَىٰ رَبِّكَ ٱلرُّجۡعَىٰٓ",
+"أَرَءَيۡتَ ٱلَّذِي يَنۡهَىٰ",
+"عَبۡدًا إِذَا صَلَّىٰٓ",
+"أَرَءَيۡتَ إِن كَانَ عَلَى ٱلۡهُدَىٰٓ",
+"أَوۡ أَمَرَ بِٱلتَّقۡوَىٰٓ",
+"أَرَءَيۡتَ إِن كَذَّبَ وَتَوَلَّىٰٓ",
+"أَلَمۡ يَعۡلَم بِأَنَّ ٱللَّهَ يَرَىٰ",
+"كَلَّا لَئِن لَّمۡ يَنتَهِ لَنَسۡفَعَۢا بِٱلنَّاصِيَةِ",
+"نَاصِيَةٖ كَٰذِبَةٍ خَاطِئَةٖ",
+"فَلۡيَدۡعُ نَادِيَهُۥ",
+"سَنَدۡعُ ٱلزَّبَانِيَةَ",
+"كَلَّا لَا تُطِعۡهُ وَٱسۡجُدۡۤ وَٱقۡتَرِب۩"
+],
+"mn": [
+"পাঠ করুন আপনার পালনকর্তার নামে যিনি সৃষ্টি করেছেন",
+"সৃষ্টি করেছেন মানুষকে জমাট রক্ত থেকে।",
+"পাঠ করুন, আপনার পালনকর্তা মহা দয়ালু",
+"যিনি কলমের সাহায্যে শিক্ষা দিয়েছেন",
+"শিক্ষা দিয়েছেন মানুষকে যা সে জানত না।",
+"সত্যি সত্যি মানুষ সীমালংঘন করে",
+"এ কারণে যে, সে নিজেকে অভাবমুক্ত মনে করে।",
+"নিশ্চয় আপনার পালনকর্তার দিকেই প্রত্যাবর্তন হবে।",
+"আপনি কি তাকে দেখেছেন, যে নিষেধ করে",
+"এক বান্দাকে যখন সে নামায পড়ে",
+"আপনি কি দেখেছেন যদি সে সৎপথে থাকে।",
+"অথবা খোদাভীতি শিক্ষা দেয়।",
+"আপনি কি দেখেছেন, যদি সে মিথ্যারোপ করে ও মুখ ফিরিয়ে নেয়।",
+"সে কি জানে না যে, আল্লাহ দেখেন",
+"কখনই নয়, যদি সে বিরত না হয়, তবে আমি মস্তকের সামনের কেশগুচ্ছ ধরে হেঁচড়াবই",
+"মিথ্যাচারী, পাপীর কেশগুচ্ছ।",
+"অতএব, সে তার সভাসদদেরকে আহবান করুক।",
+"আমিও আহবান করব জাহান্নামের প্রহরীদেরকে",
+"কখনই নয়, আপনি তার আনুগত্য করবেন না। আপনি সেজদা করুন ও আমার নৈকট্য অর্জন করুন।"
+],
+"tr": [
+"ইক্বরা বিসমি রাব্বিকাল্লাযী খালাক্ব",
+"খালাক্বাল ইনসানা মিন আলাক্ব",
+"ইক্বরা ওয়া রাব্বুকাল আকরাম",
+"আল্লাযী আল্লামা বিলক্বালাম",
+"আল্লামাল ইনসানা মা লাম ইয়া’লাম",
+"কাল্লা ইন্নাল ইনসানা লাইয়াতগা",
+"আর রাআহুস তাগনা",
+"ইন্না ইলা রাব্বিকার রুজ’আ",
+"আরাআইতাল্লাযী ইয়ানহা",
+"আবদান ইযা সাল্লা",
+"আরাআইতা ইন কানা আলাল হুদা",
+"আও আমারা বিত্তাক্বওয়া",
+"আরাআইতা ইন কাযযাবা ওয়া তাওয়াল্লা",
+"আলাম ইয়া’লাম বিআন্নাল্লাহা ইয়ারা",
+"কাল্লা লাইল লাম ইয়ানতাহি লানাসফা’আম বিন্নাসিয়াহ",
+"নাসিয়াতিন কাযিবাতিন খাত্বিআহ",
+"ফালইয়াদ’উ নাদিয়াহ",
+"সানাদ’উয যাবানিয়াহ",
+"কাল্লা লা তুত্বি’হু ওয়াসজুদ ওয়াক্বতারিব"
+]
+},
+{
+"id": "s97",
+"no": 97,
+"n": "আল-ক্বদর",
+"m": "মহিমান্বিত রাত",
+"ty": "মক্কী",
+"g": 6126,
+"ar": [
+"إِنَّآ أَنزَلۡنَٰهُ فِي لَيۡلَةِ ٱلۡقَدۡرِ",
+"وَمَآ أَدۡرَىٰكَ مَا لَيۡلَةُ ٱلۡقَدۡرِ",
+"لَيۡلَةُ ٱلۡقَدۡرِ خَيۡرٞ مِّنۡ أَلۡفِ شَهۡرٖ",
+"تَنَزَّلُ ٱلۡمَلَـٰٓئِكَةُ وَٱلرُّوحُ فِيهَا بِإِذۡنِ رَبِّهِم مِّن كُلِّ أَمۡرٖ",
+"سَلَٰمٌ هِيَ حَتَّىٰ مَطۡلَعِ ٱلۡفَجۡرِ"
+],
+"mn": [
+"আমি একে নাযিল করেছি শবে-কদরে।",
+"শবে-কদর সমন্ধে আপনি কি জানেন",
+"শবে-কদর হল এক হাজার মাস অপেক্ষা শ্রেষ্ঠ।",
+"এতে প্রত্যেক কাজের জন্যে ফেরেশতাগণ ও রূহ অবতীর্ণ হয় তাদের পালনকর্তার নির্দেশক্রমে।",
+"এটা নিরাপত্তা, যা ফজরের উদয় পর্যন্ত অব্যাহত থাকে।"
+],
+"tr": [
+"ইন্না আনযালনাহু ফী লাইলাতিল ক্বদর",
+"ওয়া মা আদরাকা মা লাইলাতুল ক্বদর",
+"লাইলাতুল ক্বদরি খাইরুম মিন আলফি শাহর",
+"তানাযযালুল মালাইকাতু ওয়ার রূহু ফীহা বিইযনি রাব্বিহিম মিন কুল্লি আমর",
+"সালামুন হিয়া হাত্তা মাত্বলা’ইল ফাজর"
+]
+},
+{
+"id": "s98",
+"no": 98,
+"n": "আল-বাইয়্যিনাহ",
+"m": "সুস্পষ্ট প্রমাণ",
+"ty": "মাদানী",
+"g": 6131,
+"ar": [
+"لَمۡ يَكُنِ ٱلَّذِينَ كَفَرُواْ مِنۡ أَهۡلِ ٱلۡكِتَٰبِ وَٱلۡمُشۡرِكِينَ مُنفَكِّينَ حَتَّىٰ تَأۡتِيَهُمُ ٱلۡبَيِّنَةُ",
+"رَسُولٞ مِّنَ ٱللَّهِ يَتۡلُواْ صُحُفٗا مُّطَهَّرَةٗ",
+"فِيهَا كُتُبٞ قَيِّمَةٞ",
+"وَمَا تَفَرَّقَ ٱلَّذِينَ أُوتُواْ ٱلۡكِتَٰبَ إِلَّا مِنۢ بَعۡدِ مَا جَآءَتۡهُمُ ٱلۡبَيِّنَةُ",
+"وَمَآ أُمِرُوٓاْ إِلَّا لِيَعۡبُدُواْ ٱللَّهَ مُخۡلِصِينَ لَهُ ٱلدِّينَ حُنَفَآءَ وَيُقِيمُواْ ٱلصَّلَوٰةَ وَيُؤۡتُواْ ٱلزَّكَوٰةَۚ وَذَٰلِكَ دِينُ ٱلۡقَيِّمَةِ",
+"إِنَّ ٱلَّذِينَ كَفَرُواْ مِنۡ أَهۡلِ ٱلۡكِتَٰبِ وَٱلۡمُشۡرِكِينَ فِي نَارِ جَهَنَّمَ خَٰلِدِينَ فِيهَآۚ أُوْلَـٰٓئِكَ هُمۡ شَرُّ ٱلۡبَرِيَّةِ",
+"إِنَّ ٱلَّذِينَ ءَامَنُواْ وَعَمِلُواْ ٱلصَّـٰلِحَٰتِ أُوْلَـٰٓئِكَ هُمۡ خَيۡرُ ٱلۡبَرِيَّةِ",
+"جَزَآؤُهُمۡ عِندَ رَبِّهِمۡ جَنَّـٰتُ عَدۡنٖ تَجۡرِي مِن تَحۡتِهَا ٱلۡأَنۡهَٰرُ خَٰلِدِينَ فِيهَآ أَبَدٗاۖ رَّضِيَ ٱللَّهُ عَنۡهُمۡ وَرَضُواْ عَنۡهُۚ ذَٰلِكَ لِمَنۡ خَشِيَ رَبَّهُۥ"
+],
+"mn": [
+"আহলে-কিতাব ও মুশরেকদের মধ্যে যারা কাফের ছিল, তারা প্রত্যাবর্তন করত না যতক্ষণ না তাদের কাছে সুস্পষ্ট প্রমাণ আসত।",
+"অর্থাৎ আল্লাহর একজন রসূল, যিনি আবৃত্তি করতেন পবিত্র সহীফা",
+"যাতে আছে, সঠিক বিষয়বস্তু।",
+"অপর কিতাব প্রাপ্তরা যে বিভ্রান্ত হয়েছে, তা হয়েছে তাদের কাছে সুস্পষ্ট প্রমাণ আসার পরেই।",
+"তাদেরকে এছাড়া কোন নির্দেশ করা হয়নি যে, তারা খাঁটি মনে একনিষ্ঠভাবে আল্লাহর এবাদত করবে, নামায কায়েম করবে এবং যাকাত দেবে। এটাই সঠিক ধর্ম।",
+"আহলে-কিতাব ও মুশরেকদের মধ্যে যারা কাফের, তারা জাহান্নামের আগুনে স্থায়ীভাবে থাকবে। তারাই সৃষ্টির অধম।",
+"যারা ঈমান আনে ও সৎকর্ম করে, তারাই সৃষ্টির সেরা।",
+"তাদের পালনকর্তার কাছে রয়েছে তাদের প্রতিদান চিরকাল বসবাসের জান্নাত, যার তলদেশে নির্ঝরিণী প্রবাহিত। তারা সেখানে থাকবে অনন্তকাল। আল্লাহ তাদের প্রতি সন্তুষ্ট এবং তারা আল্লাহর প্রতি সন্তুষ্ট। এটা তার জন্যে, যে তার পালনকর্তাকে ভয় কর।"
+],
+"tr": [
+"লাম ইয়াকুনিল্লাযীনা কাফারূ মিন আহলিল কিতাবি ওয়াল মুশরিকীনা মুনফাক্কীনা হাত্তা তা’তিয়াহুমুল বাইয়্যিনাহ",
+"রাসূলুম মিনাল্লাহি ইয়াতলূ সুহুফাম মুত্বাহহারাহ",
+"ফীহা কুতুবুন ক্বাইয়্যিমাহ",
+"ওয়ামা তাফাররাক্বাল্লাযীনা ঊতুল কিতাবা ইল্লা মিম বা’দি মা জা-আত্হুমুল বাইয়্যিনাহ",
+"ওয়ামা উমিরূ ইল্লা লিইয়া’বুদুল্লাহা মুখলিসীনা লাহুদ দীনা হুনাফা-আ ওয়া ইউক্বীমুস সালাতা ওয়া ইউ’তুয যাকাতা ওয়া যালিকা দীনুল ক্বাইয়্যিমাহ",
+"ইন্নাল্লাযীনা কাফারূ মিন আহলিল কিতাবি ওয়াল মুশরিকীনা ফী নারি জাহান্নামা খালিদীনা ফীহা উলা-ইকা হুম শাররুল বারিইয়্যাহ",
+"ইন্নাল্লাযীনা আমানূ ওয়া আমিলুস সালিহাতি উলা-ইকা হুম খাইরুল বারিইয়্যাহ",
+"জাযা-উহুম ইনদা রাব্বিহিম জান্নাতু আদনিন তাজরী মিন তাহতিহাল আনহারু খালিদীনা ফীহা আবাদা; রাদিয়াল্লাহু আনহুম ওয়া রাদূ আনহু; যালিকা লিমান খাশিয়া রাব্বাহ"
+]
+},
+{
+"id": "s99",
+"no": 99,
+"n": "আয-যিলযাল",
+"m": "ভূমিকম্প",
+"ty": "মাদানী",
+"g": 6139,
+"ar": [
+"إِذَا زُلۡزِلَتِ ٱلۡأَرۡضُ زِلۡزَالَهَا",
+"وَأَخۡرَجَتِ ٱلۡأَرۡضُ أَثۡقَالَهَا",
+"وَقَالَ ٱلۡإِنسَٰنُ مَا لَهَا",
+"يَوۡمَئِذٖ تُحَدِّثُ أَخۡبَارَهَا",
+"بِأَنَّ رَبَّكَ أَوۡحَىٰ لَهَا",
+"يَوۡمَئِذٖ يَصۡدُرُ ٱلنَّاسُ أَشۡتَاتٗا لِّيُرَوۡاْ أَعۡمَٰلَهُمۡ",
+"فَمَن يَعۡمَلۡ مِثۡقَالَ ذَرَّةٍ خَيۡرٗا يَرَهُۥ",
+"وَمَن يَعۡمَلۡ مِثۡقَالَ ذَرَّةٖ شَرّٗا يَرَهُۥ"
+],
+"mn": [
+"যখন পৃথিবী তার কম্পনে প্রকম্পিত হবে",
+"যখন সে তার বোঝা বের করে দেবে।",
+"এবং মানুষ বলবে, এর কি হল",
+"সেদিন সে তার বৃত্তান্ত বর্ণনা করবে",
+"কারণ, আপনার পালনকর্তা তাকে আদেশ করবেন।",
+"সেদিন মানুষ বিভিন্ন দলে প্রকাশ পাবে, যাতে তাদেরকে তাদের কৃতকর্ম দেখানো হয়।",
+"অতঃপর কেউ অণু পরিমাণ সৎকর্ম করলে তা দেখতে পাবে",
+"এবং কেউ অণু পরিমাণ অসৎকর্ম করলে তাও দেখতে পাবে।"
+],
+"tr": [
+"ইযা যুলযিলাতিল আরদু যিলযালাহা",
+"ওয়া আখরাজাতিল আরদু আছক্বালাহা",
+"ওয়া ক্বালাল ইনসানু মা লাহা",
+"ইয়াওমাইযিন তুহাদ্দিছু আখবারাহা",
+"বিআন্না রাব্বাকা আওহা লাহা",
+"ইয়াওমাইযিই ইয়াসদুরুন নাসু আশতাতাল লিইউরাও আ’মালাহুম",
+"ফামাই ইয়া’মাল মিছক্বালা যাররাতিন খাইরাই ইয়ারাহ",
+"ওয়া মাই ইয়া’মাল মিছক্বালা যাররাতিন শাররাই ইয়ারাহ"
+]
+},
+{
+"id": "s100",
+"no": 100,
+"n": "আল-আদিয়াত",
+"m": "ছুটে চলা অশ্ব",
+"ty": "মক্কী",
+"g": 6147,
+"ar": [
+"وَٱلۡعَٰدِيَٰتِ ضَبۡحٗا",
+"فَٱلۡمُورِيَٰتِ قَدۡحٗا",
+"فَٱلۡمُغِيرَٰتِ صُبۡحٗا",
+"فَأَثَرۡنَ بِهِۦ نَقۡعٗا",
+"فَوَسَطۡنَ بِهِۦ جَمۡعًا",
+"إِنَّ ٱلۡإِنسَٰنَ لِرَبِّهِۦ لَكَنُودٞ",
+"وَإِنَّهُۥ عَلَىٰ ذَٰلِكَ لَشَهِيدٞ",
+"وَإِنَّهُۥ لِحُبِّ ٱلۡخَيۡرِ لَشَدِيدٌ",
+"۞أَفَلَا يَعۡلَمُ إِذَا بُعۡثِرَ مَا فِي ٱلۡقُبُورِ",
+"وَحُصِّلَ مَا فِي ٱلصُّدُورِ",
+"إِنَّ رَبَّهُم بِهِمۡ يَوۡمَئِذٖ لَّخَبِيرُۢ"
+],
+"mn": [
+"শপথ উর্ধ্বশ্বাসে চলমান অশ্বসমূহের",
+"অতঃপর ক্ষুরাঘাতে অগ্নিবিচ্ছুরক অশ্বসমূহের",
+"অতঃপর প্রভাতকালে আক্রমণকারী অশ্বসমূহের",
+"ও যারা সে সময়ে ধুলি উৎক্ষিপ্ত করে",
+"অতঃপর যারা শক্রদলের অভ্যন্তরে ঢুকে পড়ে",
+"নিশ্চয় মানুষ তার পালনকর্তার প্রতি অকৃতজ্ঞ।",
+"এবং সে অবশ্য এ বিষয়ে অবহিত",
+"এবং সে নিশ্চিতই ধন-সম্পদের ভালবাসায় মত্ত।",
+"সে কি জানে না, যখন কবরে যা আছে, তা উত্থিত হবে",
+"এবং অন্তরে যা আছে, তা অর্জন করা হবে",
+"সেদিন তাদের কি হবে, সে সম্পর্কে তাদের পালনকর্তা সবিশেষ জ্ঞাত।"
+],
+"tr": [
+"ওয়াল আদিয়াতি দাবহা",
+"ফাল মূরিয়াতি ক্বাদহা",
+"ফাল মুগীরাতি সুবহা",
+"ফাআছারনা বিহী নাক্বআ",
+"ফাওয়াসাতনা বিহী জামআ",
+"ইন্নাল ইনসানা লিরাব্বিহী লাকানূদ",
+"ওয়া ইন্নাহূ আলা যালিকা লাশাহীদ",
+"ওয়া ইন্নাহূ লিহুব্বিল খাইরি লাশাদীদ",
+"আফালা ইয়া’লামু ইযা বু’ছিরা মা ফিল ক্বুবূর",
+"ওয়া হুসসিলা মা ফিস সুদূর",
+"ইন্না রাব্বাহুম বিহিম ইয়াওমাইযিল লাখাবীর"
+]
+},
+{
+"id": "s101",
+"no": 101,
+"n": "আল-ক্বারিআহ",
+"m": "মহাপ্রলয়",
+"ty": "মক্কী",
+"g": 6158,
+"ar": [
+"ٱلۡقَارِعَةُ",
+"مَا ٱلۡقَارِعَةُ",
+"وَمَآ أَدۡرَىٰكَ مَا ٱلۡقَارِعَةُ",
+"يَوۡمَ يَكُونُ ٱلنَّاسُ كَٱلۡفَرَاشِ ٱلۡمَبۡثُوثِ",
+"وَتَكُونُ ٱلۡجِبَالُ كَٱلۡعِهۡنِ ٱلۡمَنفُوشِ",
+"فَأَمَّا مَن ثَقُلَتۡ مَوَٰزِينُهُۥ",
+"فَهُوَ فِي عِيشَةٖ رَّاضِيَةٖ",
+"وَأَمَّا مَنۡ خَفَّتۡ مَوَٰزِينُهُۥ",
+"فَأُمُّهُۥ هَاوِيَةٞ",
+"وَمَآ أَدۡرَىٰكَ مَا هِيَهۡ",
+"نَارٌ حَامِيَةُۢ"
+],
+"mn": [
+"করাঘাতকারী",
+"করাঘাতকারী কি",
+"করাঘাতকারী সম্পর্কে আপনি কি জানেন",
+"যেদিন মানুষ হবে বিক্ষিপ্ত পতংগের মত",
+"এবং পর্বতমালা হবে ধুনিত রঙ্গীন পশমের মত।",
+"অতএব যার পাল্লা ভারী হবে",
+"সে সুখীজীবন যাপন করবে।",
+"আর যার পাল্লা হালকা হবে",
+"তার ঠিকানা হবে হাবিয়া।",
+"আপনি জানেন তা কি",
+"প্রজ্জ্বলিত অগ্নি"
+],
+"tr": [
+"আল ক্বারিআহ",
+"মাল ক্বারিআহ",
+"ওয়া মা আদরাকা মাল ক্বারিআহ",
+"ইয়াওমা ইয়াকূনুন নাসু কালফারাশিল মাবছূছ",
+"ওয়া তাকূনুল জিবালু কাল ইহনিল মানফূশ",
+"ফাআম্মা মান ছাক্বুলাত মাওয়াযীনুহু",
+"ফাহুওয়া ফী ঈশাতির রাদিয়াহ",
+"ওয়া আম্মা মান খাফফাত মাওয়াযীনুহু",
+"ফাউম্মুহূ হাবিয়াহ",
+"ওয়া মা আদরাকা মা হিয়াহ",
+"নারুন হামিয়াহ"
+]
+},
+{
+"id": "s102",
+"no": 102,
+"n": "আত-তাকাছুর",
+"m": "প্রাচুর্যের প্রতিযোগিতা",
+"ty": "মক্কী",
+"g": 6169,
+"ar": [
+"أَلۡهَىٰكُمُ ٱلتَّكَاثُرُ",
+"حَتَّىٰ زُرۡتُمُ ٱلۡمَقَابِرَ",
+"كَلَّا سَوۡفَ تَعۡلَمُونَ",
+"ثُمَّ كَلَّا سَوۡفَ تَعۡلَمُونَ",
+"كَلَّا لَوۡ تَعۡلَمُونَ عِلۡمَ ٱلۡيَقِينِ",
+"لَتَرَوُنَّ ٱلۡجَحِيمَ",
+"ثُمَّ لَتَرَوُنَّهَا عَيۡنَ ٱلۡيَقِينِ",
+"ثُمَّ لَتُسۡـَٔلُنَّ يَوۡمَئِذٍ عَنِ ٱلنَّعِيمِ"
+],
+"mn": [
+"প্রাচুর্যের লালসা তোমাদেরকে গাফেল রাখে",
+"এমনকি, তোমরা কবরস্থানে পৌছে যাও।",
+"এটা কখনও উচিত নয়। তোমরা সত্ত্বরই জেনে নেবে।",
+"অতঃপর এটা কখনও উচিত নয়। তোমরা সত্ত্বরই জেনে নেবে।",
+"কখনই নয়; যদি তোমরা নিশ্চিত জানতে।",
+"তোমরা অবশ্যই জাহান্নাম দেখবে",
+"অতঃপর তোমরা তা অবশ্যই দেখবে দিব্য প্রত্যয়ে",
+"এরপর অবশ্যই সেদিন তোমরা নেয়ামত সম্পর্কে জিজ্ঞাসিত হবে।"
+],
+"tr": [
+"আলহাকুমুত তাকাছুর",
+"হাত্তা যুরতুমুল মাক্বাবির",
+"কাল্লা সাওফা তা’লামূন",
+"ছুম্মা কাল্লা সাওফা তা’লামূন",
+"কাল্লা লাও তা’লামূনা ইলমাল ইয়াক্বীন",
+"লাতারাউন্নাল জাহীম",
+"ছুম্মা লাতারাউন্নাহা আইনাল ইয়াক্বীন",
+"ছুম্মা লাতুসআলুন্না ইয়াওমাইযিন আনিন নাঈম"
+]
+},
+{
+"id": "s103",
+"no": 103,
+"n": "আল-আসর",
+"m": "সময়",
+"ty": "মক্কী",
+"g": 6177,
+"ar": [
+"وَٱلۡعَصۡرِ",
+"إِنَّ ٱلۡإِنسَٰنَ لَفِي خُسۡرٍ",
+"إِلَّا ٱلَّذِينَ ءَامَنُواْ وَعَمِلُواْ ٱلصَّـٰلِحَٰتِ وَتَوَاصَوۡاْ بِٱلۡحَقِّ وَتَوَاصَوۡاْ بِٱلصَّبۡرِ"
+],
+"mn": [
+"কসম যুগের (সময়ের)",
+"নিশ্চয় মানুষ ক্ষতিগ্রস্ত",
+"কিন্তু তারা নয়, যারা বিশ্বাস স্থাপন করে ও সৎকর্ম করে এবং পরস্পরকে তাকীদ করে সত্যের এবং তাকীদ করে সবরের।"
+],
+"tr": [
+"ওয়াল আসর",
+"ইন্নাল ইনসানা লাফী খুসর",
+"ইল্লাল্লাযীনা আমানূ ওয়া আমিলুস সালিহাতি ওয়া তাওয়াসাও বিলহাক্ক্বি ওয়া তাওয়াসাও বিস সাবর"
+]
+},
+{
+"id": "s104",
+"no": 104,
+"n": "আল-হুমাযাহ",
+"m": "নিন্দুক",
+"ty": "মক্কী",
+"g": 6180,
+"ar": [
+"وَيۡلٞ لِّكُلِّ هُمَزَةٖ لُّمَزَةٍ",
+"ٱلَّذِي جَمَعَ مَالٗا وَعَدَّدَهُۥ",
+"يَحۡسَبُ أَنَّ مَالَهُۥٓ أَخۡلَدَهُۥ",
+"كَلَّاۖ لَيُنۢبَذَنَّ فِي ٱلۡحُطَمَةِ",
+"وَمَآ أَدۡرَىٰكَ مَا ٱلۡحُطَمَةُ",
+"نَارُ ٱللَّهِ ٱلۡمُوقَدَةُ",
+"ٱلَّتِي تَطَّلِعُ عَلَى ٱلۡأَفۡـِٔدَةِ",
+"إِنَّهَا عَلَيۡهِم مُّؤۡصَدَةٞ",
+"فِي عَمَدٖ مُّمَدَّدَةِۭ"
+],
+"mn": [
+"প্রত্যেক পশ্চাতে ও সম্মুখে পরনিন্দাকারীর দুর্ভোগ",
+"যে অর্থ সঞ্চিত করে ও গণনা করে",
+"সে মনে করে যে, তার অর্থ চিরকাল তার সাথে থাকবে",
+"কখনও না, সে অবশ্যই নিক্ষিপ্ত হবে পিষ্টকারীর মধ্যে।",
+"আপনি কি জানেন, পিষ্টকারী কি",
+"এটা আল্লাহর প্রজ্জ্বলিত অগ্নি",
+"যা হৃদয় পর্যন্ত পৌছবে।",
+"এতে তাদেরকে বেঁধে দেয়া হবে",
+"লম্বা লম্বা খুঁটিতে।"
+],
+"tr": [
+"ওয়াইলুল লিকুল্লি হুমাযাতিল লুমাযাহ",
+"আল্লাযী জামাআ মালাঁও ওয়া আদ্দাদাহ",
+"ইয়াহসাবু আন্না মালাহূ আখলাদাহ",
+"কাল্লা লাইয়ুম্বাযান্না ফিল হুতামাহ",
+"ওয়া মা আদরাকা মাল হুতামাহ",
+"নারুল্লাহিল মূক্বাদাহ",
+"আল্লাতী তাত্তালিউ আলাল আফইদাহ",
+"ইন্নাহা আলাইহিম মু’সাদাহ",
+"ফী আমাদিম মুমাদ্দাদাহ"
+]
+},
+{
+"id": "s105",
+"no": 105,
+"n": "আল-ফীল",
+"m": "হাতি",
+"ty": "মক্কী",
+"g": 6189,
+"ar": [
+"أَلَمۡ تَرَ كَيۡفَ فَعَلَ رَبُّكَ بِأَصۡحَٰبِ ٱلۡفِيلِ",
+"أَلَمۡ يَجۡعَلۡ كَيۡدَهُمۡ فِي تَضۡلِيلٖ",
+"وَأَرۡسَلَ عَلَيۡهِمۡ طَيۡرًا أَبَابِيلَ",
+"تَرۡمِيهِم بِحِجَارَةٖ مِّن سِجِّيلٖ",
+"فَجَعَلَهُمۡ كَعَصۡفٖ مَّأۡكُولِۭ"
+],
+"mn": [
+"আপনি কি দেখেননি আপনার পালনকর্তা হস্তীবাহিনীর সাথে কিরূপ ব্যবহার করেছেন",
+"তিনি কি তাদের চক্রান্ত নস্যাৎ করে দেননি",
+"তিনি তাদের উপর প্রেরণ করেছেন ঝাঁকে ঝাঁকে পাখী",
+"যারা তাদের উপর পাথরের কংকর নিক্ষেপ করছিল।",
+"অতঃপর তিনি তাদেরকে ভক্ষিত তৃণসদৃশ করে দেন।"
+],
+"tr": [
+"আলাম তারা কাইফা ফাআলা রাব্বুকা বিআসহাবিল ফীল",
+"আলাম ইয়াজ’আল কাইদাহুম ফী তাদলীল",
+"ওয়া আরসালা আলাইহিম তাইরান আবাবীল",
+"তারমীহিম বিহিজারাতিম মিন সিজ্জীল",
+"ফাজা’আলাহুম কা’আসফিম মা’কূল"
+]
+},
+{
+"id": "s106",
+"no": 106,
+"n": "কুরাইশ",
+"m": "কুরাইশ বংশ",
+"ty": "মক্কী",
+"g": 6194,
+"ar": [
+"لِإِيلَٰفِ قُرَيۡشٍ",
+"إِۦلَٰفِهِمۡ رِحۡلَةَ ٱلشِّتَآءِ وَٱلصَّيۡفِ",
+"فَلۡيَعۡبُدُواْ رَبَّ هَٰذَا ٱلۡبَيۡتِ",
+"ٱلَّذِيٓ أَطۡعَمَهُم مِّن جُوعٖ وَءَامَنَهُم مِّنۡ خَوۡفِۭ"
+],
+"mn": [
+"কোরাইশের আসক্তির কারণে",
+"আসক্তির কারণে তাদের শীত ও গ্রীষ্মকালীন সফরের।",
+"অতএব তারা যেন এবাদত করে এই ঘরের পালনকর্তার",
+"যিনি তাদেরকে ক্ষুধায় আহার দিয়েছেন এবং যুদ্ধভীতি থেকে তাদেরকে নিরাপদ করেছেন।"
+],
+"tr": [
+"লিঈলাফি কুরাইশ",
+"ঈলাফিহিম রিহলাতাশ শিতা-ই ওয়াস সাইফ",
+"ফালইয়া’বুদূ রাব্বা হাযাল বাইত",
+"আল্লাযী আত’আমাহুম মিন জূ’ইঁও ওয়া আমানাহুম মিন খাওফ"
+]
+},
+{
+"id": "s107",
+"no": 107,
+"n": "আল-মাঊন",
+"m": "নিত্যব্যবহার্য বস্তু",
+"ty": "মক্কী",
+"g": 6198,
+"ar": [
+"أَرَءَيۡتَ ٱلَّذِي يُكَذِّبُ بِٱلدِّينِ",
+"فَذَٰلِكَ ٱلَّذِي يَدُعُّ ٱلۡيَتِيمَ",
+"وَلَا يَحُضُّ عَلَىٰ طَعَامِ ٱلۡمِسۡكِينِ",
+"فَوَيۡلٞ لِّلۡمُصَلِّينَ",
+"ٱلَّذِينَ هُمۡ عَن صَلَاتِهِمۡ سَاهُونَ",
+"ٱلَّذِينَ هُمۡ يُرَآءُونَ",
+"وَيَمۡنَعُونَ ٱلۡمَاعُونَ"
+],
+"mn": [
+"আপনি কি দেখেছেন তাকে, যে বিচারদিবসকে মিথ্যা বলে",
+"সে সেই ব্যক্তি, যে এতীমকে গলা ধাক্কা দেয়",
+"এবং মিসকীনকে অন্ন দিতে উৎসাহিত করে না।",
+"অতএব দুর্ভোগ সেসব নামাযীর",
+"যারা তাদের নামায সম্বন্ধে বে-খবর",
+"যারা তা লোক-দেখানোর জন্য করে",
+"এবং নিত্য ব্যবহার্য্য বস্তু অন্যকে দেয় না।"
+],
+"tr": [
+"আরাআইতাল্লাযী ইউকাযযিবু বিদ্দীন",
+"ফাযালিকাল্লাযী ইয়াদু’উল ইয়াতীম",
+"ওয়ালা ইয়াহুদ্দু আলা তা’আমিল মিসকীন",
+"ফাওয়াইলুল লিলমুসাল্লীন",
+"আল্লাযীনা হুম আন সালাতিহিম সাহূন",
+"আল্লাযীনা হুম ইউরাঊন",
+"ওয়া ইয়ামনাঊনাল মা’ঊন"
+]
+},
+{
+"id": "kawthar",
+"no": 108,
+"n": "আল-কাওসার",
+"m": "প্রাচুর্য",
+"ty": "মক্কী",
+"g": 6205,
+"ar": [
+"إِنَّآ أَعۡطَيۡنَٰكَ ٱلۡكَوۡثَرَ",
+"فَصَلِّ لِرَبِّكَ وَٱنۡحَرۡ",
+"إِنَّ شَانِئَكَ هُوَ ٱلۡأَبۡتَرُ"
+],
+"mn": [
+"নিশ্চয় আমি আপনাকে কাওসার দান করেছি।",
+"অতএব আপনার পালনকর্তার উদ্দেশ্যে নামায পড়ুন এবং কোরবানী করুন।",
+"যে আপনার শত্রু, সেই তো লেজকাটা, নির্বংশ।"
+]
+},
+{
+"id": "s109",
+"no": 109,
+"n": "আল-কাফিরূন",
+"m": "অবিশ্বাসীগণ",
+"ty": "মক্কী",
+"g": 6208,
+"ar": [
+"قُلۡ يَـٰٓأَيُّهَا ٱلۡكَٰفِرُونَ",
+"لَآ أَعۡبُدُ مَا تَعۡبُدُونَ",
+"وَلَآ أَنتُمۡ عَٰبِدُونَ مَآ أَعۡبُدُ",
+"وَلَآ أَنَا۠ عَابِدٞ مَّا عَبَدتُّمۡ",
+"وَلَآ أَنتُمۡ عَٰبِدُونَ مَآ أَعۡبُدُ",
+"لَكُمۡ دِينُكُمۡ وَلِيَ دِينِ"
+],
+"mn": [
+"বলুন, হে কাফেরকূল",
+"আমি এবাদত করিনা, তোমরা যার এবাদত কর।",
+"এবং তোমরাও এবাদতকারী নও, যার এবাদত আমি করি",
+"এবং আমি এবাদতকারী নই, যার এবাদত তোমরা কর।",
+"তোমরা এবাদতকারী নও, যার এবাদত আমি করি।",
+"তোমাদের কর্ম ও কর্মফল তোমাদের জন্যে এবং আমার কর্ম ও কর্মফল আমার জন্যে।"
+],
+"tr": [
+"কুল ইয়া আইয়্যুহাল কাফিরূন",
+"লা আ’বুদু মা তা’বুদূন",
+"ওয়ালা আনতুম আবিদূনা মা আ’বুদ",
+"ওয়ালা আনা আবিদুম মা আবাদতুম",
+"ওয়ালা আনতুম আবিদূনা মা আ’বুদ",
+"লাকুম দীনুকুম ওয়ালিয়া দীন"
+]
+},
+{
+"id": "s110",
+"no": 110,
+"n": "আন-নাসর",
+"m": "সাহায্য",
+"ty": "মাদানী",
+"g": 6214,
+"ar": [
+"إِذَا جَآءَ نَصۡرُ ٱللَّهِ وَٱلۡفَتۡحُ",
+"وَرَأَيۡتَ ٱلنَّاسَ يَدۡخُلُونَ فِي دِينِ ٱللَّهِ أَفۡوَاجٗا",
+"فَسَبِّحۡ بِحَمۡدِ رَبِّكَ وَٱسۡتَغۡفِرۡهُۚ إِنَّهُۥ كَانَ تَوَّابَۢا"
+],
+"mn": [
+"যখন আসবে আল্লাহর সাহায্য ও বিজয়",
+"এবং আপনি মানুষকে দলে দলে আল্লাহর দ্বীনে প্রবেশ করতে দেখবেন",
+"তখন আপনি আপনার পালনকর্তার পবিত্রতা বর্ণনা করুন এবং তাঁর কাছে ক্ষমা প্রার্থনা করুন। নিশ্চয় তিনি ক্ষমাকারী।"
+],
+"tr": [
+"ইযা জাআ নাসরুল্লাহি ওয়াল ফাতহ",
+"ওয়া রাআইতান নাসা ইয়াদখুলূনা ফী দীনিল্লাহি আফওয়াজা",
+"ফাসাব্বিহ বিহামদি রাব্বিকা ওয়াসতাগফিরহু; ইন্নাহূ কানা তাওওয়াবা"
+]
+},
+{
+"id": "s111",
+"no": 111,
+"n": "আল-লাহাব",
+"m": "অগ্নিশিখা",
+"ty": "মক্কী",
+"g": 6217,
+"ar": [
+"تَبَّتۡ يَدَآ أَبِي لَهَبٖ وَتَبَّ",
+"مَآ أَغۡنَىٰ عَنۡهُ مَالُهُۥ وَمَا كَسَبَ",
+"سَيَصۡلَىٰ نَارٗا ذَاتَ لَهَبٖ",
+"وَٱمۡرَأَتُهُۥ حَمَّالَةَ ٱلۡحَطَبِ",
+"فِي جِيدِهَا حَبۡلٞ مِّن مَّسَدِۭ"
+],
+"mn": [
+"আবু লাহাবের হস্তদ্বয় ধ্বংস হোক এবং ধ্বংস হোক সে নিজে",
+"কোন কাজে আসেনি তার ধন-সম্পদ ও যা সে উপার্জন করেছে।",
+"সত্বরই সে প্রবেশ করবে লেলিহান অগ্নিতে",
+"এবং তার স্ত্রীও-যে ইন্ধন বহন করে",
+"তার গলদেশে খর্জুরের রশি নিয়ে।"
+],
+"tr": [
+"তাব্বাত ইয়াদা আবী লাহাবিঁউ ওয়া তাব্ব",
+"মা আগনা আনহু মালুহূ ওয়ামা কাসাব",
+"সাইয়াসলা নারান যাতা লাহাব",
+"ওয়ামরাআতুহূ হাম্মালাতাল হাতাব",
+"ফী জীদিহা হাবলুম মিম মাসাদ"
+]
+},
+{
+"id": "ikhlas",
+"no": 112,
+"n": "আল-ইখলাস",
+"m": "একনিষ্ঠতা",
+"ty": "মক্কী",
+"g": 6222,
+"ar": [
+"قُلۡ هُوَ ٱللَّهُ أَحَدٌ",
+"ٱللَّهُ ٱلصَّمَدُ",
+"لَمۡ يَلِدۡ وَلَمۡ يُولَدۡ",
+"وَلَمۡ يَكُن لَّهُۥ كُفُوًا أَحَدُۢ"
+],
+"mn": [
+"বলুন, তিনি আল্লাহ, এক",
+"আল্লাহ অমুখাপেক্ষী",
+"তিনি কাউকে জন্ম দেননি এবং কেউ তাকে জন্ম দেয়নি",
+"এবং তার সমতুল্য কেউ নেই।"
+]
+},
+{
+"id": "falaq",
+"no": 113,
+"n": "আল-ফালাক্ব",
+"m": "ভোরের আলো",
+"ty": "মক্কী",
+"g": 6226,
+"ar": [
+"قُلۡ أَعُوذُ بِرَبِّ ٱلۡفَلَقِ",
+"مِن شَرِّ مَا خَلَقَ",
+"وَمِن شَرِّ غَاسِقٍ إِذَا وَقَبَ",
+"وَمِن شَرِّ ٱلنَّفَّـٰثَٰتِ فِي ٱلۡعُقَدِ",
+"وَمِن شَرِّ حَاسِدٍ إِذَا حَسَدَ"
+],
+"mn": [
+"বলুন, আমি আশ্রয় গ্রহণ করছি প্রভাতের পালনকর্তার",
+"তিনি যা সৃষ্টি করেছেন, তার অনিষ্ট থেকে",
+"অন্ধকার রাত্রির অনিষ্ট থেকে, যখন তা সমাগত হয়",
+"গ্রন্থিতে ফুঁৎকার দিয়ে জাদুকারিনীদের অনিষ্ট থেকে",
+"এবং হিংসুকের অনিষ্ট থেকে যখন সে হিংসা করে।"
+]
+},
+{
+"id": "nas",
+"no": 114,
+"n": "আন-নাস",
+"m": "মানবজাতি",
+"ty": "মক্কী",
+"g": 6231,
+"ar": [
+"قُلۡ أَعُوذُ بِرَبِّ ٱلنَّاسِ",
+"مَلِكِ ٱلنَّاسِ",
+"إِلَٰهِ ٱلنَّاسِ",
+"مِن شَرِّ ٱلۡوَسۡوَاسِ ٱلۡخَنَّاسِ",
+"ٱلَّذِي يُوَسۡوِسُ فِي صُدُورِ ٱلنَّاسِ",
+"مِنَ ٱلۡجِنَّةِ وَٱلنَّاسِ"
+],
+"mn": [
+"বলুন, আমি আশ্রয় গ্রহণ করিতেছি মানুষের পালনকর্তার",
+"মানুষের অধিপতির",
+"মানুষের মা’বুদের",
+"তার অনিষ্ট থেকে, যে কুমন্ত্রণা দেয় ও আত্নগোপন করে",
+"যে কুমন্ত্রণা দেয় মানুষের অন্তরে",
+"জ্বিনের মধ্য থেকে অথবা মানুষের মধ্য থেকে।"
+]
+}
+];
+
+/* ---------- আল-কুরআন ---------- */
+const QS=QDATA.map(d=>({...d,tr:d.tr||TEXTS.find(x=>x.id===d.id).bn}));
+let QPLAY=null;
+function qstop(){QPLAY=null;try{speechSynthesis.cancel()}catch(e){}document.querySelectorAll('.ay.on').forEach(x=>x.classList.remove('on'))}
+function qplay(s,from){
+  if(!('speechSynthesis' in window)){toast('এই ব্রাউজারে উচ্চারণ শোনার সুবিধা নেই');return}
+  qstop();const tok=QPLAY={};loadVoices();
+  const v=VOICES.find(x=>/^ar/i.test(x.lang||''));
+  const next=i=>{
+    if(QPLAY!==tok)return;
+    document.querySelectorAll('.ay.on').forEach(x=>x.classList.remove('on'));
+    if(i>=s.ar.length){QPLAY=null;const b=document.getElementById('qplaybtn');if(b)b.textContent='▶ পুরো সূরা শুনি';return}
+    const el=document.getElementById('ay'+i);if(el){el.classList.add('on');try{el.scrollIntoView({block:'center',behavior:'smooth'})}catch(e){}}
+    const u=new SpeechSynthesisUtterance(s.ar[i]);u.lang=v?v.lang:'ar-SA';if(v)u.voice=v;u.rate=.65;
+    u.onend=()=>setTimeout(()=>next(i+1),350);
+    u.onerror=()=>{if(QPLAY===tok){QPLAY=null;toast('শব্দ চালানো যায়নি। ডিভাইসে আরবি ভয়েস আছে কি না দেখুন।')}};
+    speechSynthesis.speak(u);
+  };
+  next(from||0);
+}
+function viewQuran(id){
+  const s=QS.find(x=>x.id===id);
+  if(!s)return `<h1>আল-কুরআন</h1><p class="lead">প্রতিটি আয়াতে প্রথমে আরবি, তার নিচে বাংলা উচ্চারণ, তারপর বাংলা অর্থ। এখন ${bd(QS.length)}টি সূরা আছে।</p>
+  <div>${QS.map(x=>`<a class="card" href="#quran-${x.id}" style="display:block;text-decoration:none;color:inherit;margin-bottom:10px"><div class="row sp"><b>${bd(x.no)}. সূরা ${x.n}</b><small class="muted">${bd(x.ar.length)} আয়াত</small></div><div class="muted">${x.m} · ${x.ty}</div><p class="ar" lang="ar" dir="rtl" style="font-size:1.5em;line-height:2;margin:4px 0 0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${x.ar[0]}</p></a>`).join('')}</div>
+  <p class="muted" style="margin-top:14px">আরও সূরা পরের ধাপে যুক্ত হবে। আরবি পাঠ: The Noble Qur’an Encyclopedia (quranenc.com)। বাংলা অনুবাদ: মুহিউদ্দীন খান (tanzil.net)। বাংলা উচ্চারণ শেখার সহায়ক মাত্র; সঠিক উচ্চারণের জন্য ক্বারীর তেলাওয়াত শুনুন ও শিক্ষকের কাছে যাচাই করুন।</p>`;
+  const i=QS.indexOf(s),pv=QS[i-1],nx=QS[i+1];
+  return `<a class="back" href="#quran">← সব সূরা</a><h1>সূরা ${s.n}</h1><p class="muted">${s.m} · ${s.ty} · ${bd(s.ar.length)} আয়াত</p>
+  <div class="row" style="margin:10px 0"><button type="button" class="btn" id="qplaybtn" data-act="qplay" data-id="${s.id}">▶ পুরো সূরা শুনি</button><button type="button" class="btn ghost" data-act="qstop">থামাই</button></div>
+  ${s.ar.map((l,k)=>`<section class="card ay" id="ay${k}" style="margin-bottom:10px"><div class="row sp"><span class="st">${bd(k+1)}</span><button type="button" class="say" data-act="qay" data-id="${s.id}" data-k="${k}" aria-label="আয়াত ${bd(k+1)} শুনুন">${ICON_SPK}</button></div>
+  <p class="ar" lang="ar" dir="rtl" style="font-size:1.9em;line-height:2.1;margin:6px 0">${l}</p>
+  <p class="tr" style="font-weight:600">${s.tr[k]}</p><p class="muted" style="margin-top:4px">${s.mn[k]}</p></section>`).join('')}
+  <p class="hint2">ডিভাইসের আরবি ভয়েসে ধীর গতিতে শোনানো হয়; এটি কোনো ক্বারীর রেকর্ড করা তেলাওয়াত নয়।</p>
+  <div class="row sp" style="margin-top:12px">${pv?`<a class="btn ghost sm" href="#quran-${pv.id}">← ${pv.n}</a>`:'<span></span>'}${nx?`<a class="btn ghost sm" href="#quran-${nx.id}">${nx.n} →</a>`:''}</div>`;
+}
+Object.assign(ACT,{qay:t=>{const s=QS.find(x=>x.id===t.dataset.id),k=+t.dataset.k;if(!s)return;if(window.qAudio)window.qAudio(s,k,false);else speak(s.ar[k])},qplay:t=>{const s=QS.find(x=>x.id===t.dataset.id);if(s){qplay(s,0);t.textContent='▶ চলছে…'}},qstop:()=>{qstop();const b=document.getElementById('qplaybtn');if(b)b.textContent='▶ পুরো সূরা শুনি'}});
+window.addEventListener('hashchange',qstop);
+
+/* ---------- হোম: ক্যালেন্ডার দিয়ে শুরু ---------- */
+const _homeBase=viewHome;
+viewHome=function(){
+  if(!S.plan){S.plan={n0:60,n:60,order:allIdx(),time:'20:00',start:todayK()};save()}
+  const days=schedule(),tk=todayK(),over=days.filter(x=>x.key<tk).flatMap(x=>x.ids).filter(i=>!S.pdone[i]).length;
+  const doneN=Object.keys(S.pdone).length,last=days.length?dlabel(days[days.length-1].key):'';
+  const first=days.length?dlabel(days[0].key):'';
+  const head=`<section class="blk"><div class="row sp"><h1 style="margin:0">আমার ক্যালেন্ডার</h1><a class="btn ghost sm" href="#plan">মাসিক সূচি ও সেটিং</a></div>
+  <p class="lead">${bd(S.plan.n)} দিনে ${bd(SESS.length)}টি সেশনে পুরো কোর্স ভাগ করা আছে: ${first} থেকে ${last} পর্যন্ত। প্রতিদিনের কাজ সম্পন্ন হলে টিক দিন।</p>
+  <div class="card" style="margin-bottom:10px"><div class="row sp"><b>${bd(doneN)}/${bd(SESS.length)} সেশন সম্পন্ন</b><span class="muted">${bd(S.plan.n)} দিনের সূচি</span></div><div class="bar" style="margin-top:8px"><i style="width:${doneN/SESS.length*100}%"></i></div></div>
+  ${over?`<div class="note">${bd(over)}টি সেশন নির্ধারিত দিনের পরে বাকি আছে। <button type="button" class="btn sm" data-act="preplan" style="margin-left:6px">আজ থেকে নতুন করে সাজাই</button></div>`:''}
+  ${calHtml(days)}</section>`;
+  return head+_homeBase();
+};
+
+/* ---------- রিডিজাইন: ৫ ট্যাব, আজ-কেন্দ্রিক হোম, দোয়া ট্যাব ---------- */
+(function(){
+const css=document.createElement('style');
+css.textContent=`
+nav.tabs .tabs-in{display:flex;gap:4px;overflow:visible}
+@media(max-width:720px){
+  nav.tabs .tabs-in{display:grid;grid-template-columns:repeat(5,1fr);gap:0;padding:0 4px}
+  .tabs a{flex-direction:column;gap:2px;padding:8px 2px;font-size:.78em;border-bottom:0;border-top:3px solid transparent;background:none;justify-content:center}
+  .tabs a svg{width:22px;height:22px}
+  .tabs a[aria-current="page"]{border-top-color:var(--green);border-bottom-color:transparent;background:none}
+}
+.hero{align-items:stretch;background:var(--green);color:#fff;border-radius:22px;padding:18px;display:flex;flex-direction:column;gap:12px;margin:0 0 14px}
+.hero .t{font-size:1.35em;font-weight:700;line-height:1.35}
+.hero .m{font-size:.85em;opacity:.92}
+.hero .pb{width:100%;box-sizing:border-box;display:flex;align-items:center;justify-content:center;gap:8px;background:#fff;color:#0b5a33;font-weight:700;font-size:1.1em;border-radius:16px;min-height:56px;text-decoration:none}
+.hero .bar{height:8px;width:100%;display:block;background:rgba(255,255,255,.3)}.hero .bar i{background:#fff}
+.chip{display:inline-flex;align-items:center;gap:6px;background:#0d1f15;color:#fff;border-radius:999px;padding:8px 14px;font-weight:600}
+.goal{display:flex;align-items:center;gap:12px;min-height:48px;text-decoration:none;color:inherit}
+.goal .ck{width:26px;height:26px;border-radius:50%;border:2px solid var(--muted);flex:none;display:flex;align-items:center;justify-content:center;color:#fff;font-size:14px}
+.goal.ok .ck{background:var(--green);border-color:var(--green)}
+.wk{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:6px;text-align:center}
+.wk a{display:flex;flex-direction:column;align-items:center;gap:4px;font-size:.78em;color:var(--muted);text-decoration:none}
+.wk b{width:38px;height:38px;border-radius:12px;display:flex;align-items:center;justify-content:center;background:var(--green-l);color:var(--fg);font-size:1.15em}
+.wk .dn b{background:#d7efdf;color:#0b5a33}.wk .tdy b{background:var(--green);color:#fff}
+.subnav{display:flex;gap:8px;overflow-x:auto;margin:0 0 14px;padding-bottom:2px}
+.subnav a{flex:none;padding:10px 16px;border-radius:999px;background:var(--card);border:1.5px solid var(--line);color:var(--fg);text-decoration:none;font-weight:600}
+.subnav a[aria-current="page"]{background:var(--green);border-color:var(--green);color:#fff}
+.dua{background:var(--card);border-radius:18px;padding:16px;margin-bottom:12px;border:1px solid var(--line)}
+.dua .arx{font-size:1.9em;line-height:1.9;text-align:right}
+`;
+document.head.appendChild(css);
+
+/* নতুন ৫-ট্যাব মেনু */
+const I=(d)=>`<svg viewBox="0 0 24 24"><path d="${d}"/></svg>`;
+const tabs=document.querySelector('nav.tabs .tabs-in');
+if(tabs)tabs.innerHTML=
+ `<a href="#home" data-tab="home">${I('M3 11l9-8 9 8v10h-6v-6H9v6H3z')}আজ</a>`+
+ `<a href="#lessons" data-tab="lessons">${I('M4 6h16M4 12h16M4 18h10')}পাঠ</a>`+
+ `<a href="#quran" data-tab="quran">${I('M5 4h11a3 3 0 013 3v13H8a3 3 0 01-3-3zM9 8h6')}কুরআন</a>`+
+ `<a href="#dua" data-tab="dua">${I('M12 21s-7-4.5-7-10a4 4 0 017-2.5A4 4 0 0119 11c0 5.5-7 10-7 10z')}দোয়া</a>`+
+ `<a href="#progress" data-tab="progress">${I('M5 20V11M12 20V4M19 20v-6')}আমি</a>`;
+
+const _levels=_homeBase;
+const nextSess=()=>{
+  const days=schedule(),tk=todayK();
+  for(const x of days){if(x.key>tk)break;for(const i of x.ids)if(!S.pdone[i])return{i,x,days}}
+  const t=days.find(x=>x.key===tk);
+  if(t&&t.ids.length)return{i:t.ids[t.ids.length-1],x:t,days,all:true};
+  for(const x of days){if(x.key>tk)for(const i of x.ids)if(!S.pdone[i])return{i,x,days,later:true}}
+  return{i:null,days};
+};
+
+viewHome=function(){
+  if(!S.plan){S.plan={n0:60,n:60,order:allIdx(),time:'20:00',start:todayK()};save()}
+  const ns=nextSess(),days=ns.days,tk=todayK(),doneN=Object.keys(S.pdone).length;
+  const dayNo=Math.max(1,days.findIndex(x=>x.key===tk)+1);
+  const nm=S.name?` ${esc(S.name)}`:'';
+  let hero;
+  if(ns.i==null){
+    hero=`<div class="hero"><div class="m">কোর্স সম্পন্ন</div><div class="t">মাশা-আল্লাহ! সব সেশন শেষ। এবার ঝালাই করুন।</div><a class="pb" href="#practice-weak" data-act="qstart">অনুশীলন করুন</a></div>`;
+  }else{
+    const s=SESS[ns.i],L=s[3][0],pa=L[1].startsWith('#practice')?' data-act="qstart"':'';
+    const tag=ns.later?'আগামী সেশন':ns.x.key<tk?'বাকি থাকা পাঠ':ns.all?'আজকের পাঠ (সম্পন্ন)':'আজকের পাঠ';
+    hero=`<div class="hero"><div class="row sp m"><span>দিন ${bd(dayNo)} · ${dlabel(tk)}</span><span>${bd(S.plan.n)} দিনের কোর্স</span></div>
+    <div><div class="m">${tag}</div><div class="t">${esc(s[1])}</div><div class="m">${bd(s[2])} মিনিট</div></div>
+    <div class="bar"><i style="width:${doneN/SESS.length*100}%"></i></div>
+    <a class="pb" href="${L[1]}"${pa}>পাঠ শুরু করুন <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a></div>`;
+  }
+  const todayN=S.days[tk]||0;
+  const goals=[
+    ['আজকের পাঠ শেষ করুন',ns.i!=null&&ns.x&&ns.x.key===tk?'':'',ns.i==null||(ns.x&&ns.x.key===tk&&ns.x.ids.every(i=>S.pdone[i]))||ns.later,'#lessons'],
+    [`১০টি অনুশীলন প্রশ্ন (${bd(Math.min(10,todayN))}/১০)`,'',todayN>=10,'#practice'],
+    ['সূরা আল-ফাতিহা শুনুন','৭ আয়াত',!!S.heard,'#quran-fatiha']
+  ];
+  const gDone=goals.filter(g=>g[2]).length;
+  const goalsH=goals.map(g=>`<a class="goal ${g[2]?'ok':''}" href="${g[3]}"><span class="ck">${g[2]?'✓':''}</span><span style="flex:1">${g[0]}</span><small class="muted">${g[1]}</small></a>`).join('');
+  const wk=[];for(let d=-3;d<=3;d++){const dt=addD(new Date(),d),k=dk(dt),x=days.find(y=>y.key===k);
+    wk.push(`<a href="#plan" class="${d===0?'tdy':x&&dayDone(x)?'dn':''}"><span>${WDS[dt.getDay()]}</span><b>${bd(dt.getDate())}</b></a>`)}
+  const weak=(S.weak||[]).length;
+  return `<section class="blk"><div class="row sp" style="margin-bottom:12px"><div><div class="muted">আসসালামু আলাইকুম${nm}</div><h1 style="margin:0">আজকের পাঠ</h1></div><span class="chip">🔥 ${bd(S.streak.n||0)} দিন</span></div>
+  ${hero}
+  <div class="card" style="margin-bottom:14px"><div class="row sp"><b>আজকের লক্ষ্য</b><small class="muted">${bd(gDone)}/${bd(goals.length)} সম্পন্ন</small></div>${goalsH}</div>
+  <div class="card" style="margin-bottom:14px"><div class="row sp" style="margin-bottom:10px"><b>${MON[new Date().getMonth()]} মাস</b><a href="#plan" style="font-weight:600">পুরো সূচি দেখুন</a></div><div class="wk">${wk.join('')}</div></div>
+  <div class="row" style="gap:10px;align-items:stretch">
+    <a class="card" href="#practice-weak" data-act="qstart" style="flex:1;text-decoration:none;color:inherit"><small class="muted">পুনরাবৃত্তি</small><br><b>${weak?bd(weak)+'টি বিষয় ঝালাই করুন':'অনুশীলন শুরু করুন'}</b></a>
+    <a class="card" href="#tutor" style="flex:1;text-decoration:none;color:inherit"><small class="muted">প্রশ্ন আছে?</small><br><b>ওস্তাদকে জিজ্ঞেস করুন</b></a>
+  </div></section>`;
+};
+
+/* পাঠ ট্যাব: সব লেভেল + সাব-মেনু */
+const sub=(cur,items)=>`<nav class="subnav" aria-label="উপ-মেনু">${items.map(i=>`<a href="${i[0]}" ${i[2]===cur?'aria-current="page"':''}>${i[1]}</a>`).join('')}</nav>`;
+const LSUB=[['#lessons','পাঠ','lessons'],['#practice','অনুশীলন','practice'],['#cards','কার্ড','cards'],['#read','পড়ার ঘর','read']];
+const MSUB=[['#progress','অগ্রগতি','progress'],['#plan','পরিকল্পনা ও সূচি','plan']];
+
+/* দোয়া ট্যাব */
+const DUAS=[
+ ['সকাল-সন্ধ্যা','ঘুম থেকে উঠে','الْحَمْدُ لِلَّهِ الَّذِي أَحْيَانَا بَعْدَ مَا أَمَاتَنَا وَإِلَيْهِ النُّشُورُ','আলহামদু লিল্লাহিল্লাযী আহইয়ানা বা‘দা মা আমাতানা ওয়া ইলাইহিন নুশূর','সমস্ত প্রশংসা আল্লাহর, যিনি মৃত্যুর (ঘুমের) পর আমাদের জীবিত করেছেন, আর তাঁর কাছেই ফিরে যেতে হবে।'],
+ ['সকাল-সন্ধ্যা','ঘুমানোর আগে','بِاسْمِكَ اللَّهُمَّ أَمُوتُ وَأَحْيَا','বিসমিকাল্লাহুম্মা আমূতু ওয়া আহইয়া','হে আল্লাহ, আপনার নামেই আমি মরি (ঘুমাই) ও বাঁচি (জাগি)।'],
+ ['খাওয়া','খাওয়ার আগে','بِسْمِ اللَّهِ وَعَلَى بَرَكَةِ اللَّهِ','বিসমিল্লাহি ওয়া আলা বারাকাতিল্লাহ','আল্লাহর নামে এবং আল্লাহর বরকতের ওপর (শুরু করছি)।'],
+ ['খাওয়া','খাওয়ার পরে','الْحَمْدُ لِلَّهِ الَّذِي أَطْعَمَنَا وَسَقَانَا وَجَعَلَنَا مِنَ الْمُسْلِمِينَ','আলহামদু লিল্লাহিল্লাযী আতআমানা ওয়া সাক্বানা ওয়া জাআলানা মিনাল মুসলিমীন','সমস্ত প্রশংসা আল্লাহর, যিনি আমাদের খাইয়েছেন, পান করিয়েছেন এবং মুসলিম বানিয়েছেন।'],
+ ['বাইরে ও মসজিদ','ঘর থেকে বের হওয়ার সময়','بِسْمِ اللَّهِ تَوَكَّلْتُ عَلَى اللَّهِ وَلَا حَوْلَ وَلَا قُوَّةَ إِلَّا بِاللَّهِ','বিসমিল্লাহি তাওয়াক্কালতু আলাল্লাহি, ওয়া লা হাওলা ওয়া লা কুওয়াতা ইল্লা বিল্লাহ','আল্লাহর নামে, আল্লাহর ওপর ভরসা করলাম। আল্লাহর সাহায্য ছাড়া কোনো উপায় ও শক্তি নেই।'],
+ ['বাইরে ও মসজিদ','মসজিদে প্রবেশের সময়','اللَّهُمَّ افْتَحْ لِي أَبْوَابَ رَحْمَتِكَ','আল্লাহুম্মাফতাহ লী আবওয়াবা রাহমাতিক','হে আল্লাহ, আমার জন্য আপনার রহমতের দরজা খুলে দিন।']
+];
+const DSUR=[['ikhlas','সূরা আল-ইখলাস','الإخلاص'],['falaq','সূরা আল-ফালাক','الفلق'],['nas','সূরা আন-নাস','الناس'],['kawthar','সূরা আল-কাউসার','الكوثر'],['fatiha','সূরা আল-ফাতিহা','الفاتحة']];
+window.viewDua=function(){
+  let last='';
+  const list=DUAS.map((d,i)=>{
+    const h=d[0]!==last?`<h2 style="margin:18px 0 8px">${d[0]}</h2>`:'';last=d[0];
+    return h+`<div class="dua"><div class="muted">${d[1]}</div><div class="arx ar" lang="ar" dir="rtl">${d[2]}</div><div style="color:var(--green);font-weight:600;margin:6px 0">${d[3]}</div><p style="margin:0 0 10px">${d[4]}</p><button type="button" class="btn sm" data-act="duaplay" data-i="${i}">🔊 শুনুন</button></div>`}).join('');
+  const sur=DSUR.map(s=>`<a class="card" href="#quran-${s[0]}" style="display:flex;justify-content:space-between;align-items:center;text-decoration:none;color:inherit;margin-bottom:8px;min-height:44px"><span>${s[1]}</span><span class="ar" lang="ar" dir="rtl" style="font-size:1.4em">${s[2]}</span></a>`).join('');
+  return `<section class="blk"><div class="muted">প্রতিদিনের ব্যবহার</div><h1 style="margin:0 0 6px">নামাজ ও দোয়া</h1>
+  <p class="lead">নামাজে পড়ার ছোট সূরা এবং দৈনন্দিন দোয়া, আরবি, বাংলা উচ্চারণ ও অর্থসহ।</p>
+  <h2 style="margin:8px 0">নামাজে পড়ার সূরা</h2>${sur}${list}
+  <p class="muted" style="margin-top:12px">দোয়াগুলোর উচ্চারণ ও অর্থ কোনো আলেম বা শিক্ষকের কাছ থেকে মিলিয়ে নিন।</p></section>`;
+};
+Object.assign(ACT,{duaplay:t=>{const d=DUAS[+t.dataset.i];if(d)speak(d[2])}});
+
+/* রাউটার */
+render=function(keepScroll){
+  const h=(location.hash||'#home').slice(1),i=h.indexOf('-');
+  const a=i<0?h:h.slice(0,i),b=i<0?'':h.slice(i+1);
+  if(a!=='tutor')ST.from=location.hash||'#home';
+  let html;
+  switch(a){
+    case'level':html=viewLevel(+b);break;
+    case'lessons':html=sub('lessons',LSUB)+_levels();break;
+    case'practice':html=sub('practice',LSUB)+viewPractice(b);break;
+    case'cards':html=sub('cards',LSUB)+viewCards(b);break;
+    case'read':html=sub('read',LSUB)+viewRead(b);break;
+    case'tutor':html=viewTutor();break;
+    case'plan':html=sub('plan',MSUB)+viewPlan();break;
+    case'quran':html=viewQuran(b);break;
+    case'dua':html=viewDua();break;
+    case'progress':html=sub('progress',MSUB)+viewProgress();break;
+    default:html=viewHome();
+  }
+  app.innerHTML=html;
+  const tab=({home:'home',level:'lessons',lessons:'lessons',practice:'lessons',cards:'lessons',read:'lessons',quran:'quran',dua:'dua',plan:'progress',progress:'progress'})[a]||'home';
+  document.querySelectorAll('[data-tab]').forEach(x=>{if(x.dataset.tab===tab)x.setAttribute('aria-current','page');else x.removeAttribute('aria-current')});
+  const fab=$('#askfab');if(fab)fab.hidden=(a==='tutor');
+  document.body.classList.toggle('ai',a==='tutor');
+  if(a==='tutor'){const c=$('#tchat');if(c)c.scrollTop=c.scrollHeight}
+  if(!keepScroll)window.scrollTo(0,0);
+};
+})();
+
+/* ---------- অ্যাপ আপডেট (স্বতন্ত্র অ্যাপ সংস্করণ) ---------- */
+const APP_VERSION='1.4.0';
+const UPD={info:null,msg:'',busy:false,last:0};
+const verParts=v=>String(v).split('.').map(n=>parseInt(n,10)||0);
+const verGt=(a,b)=>{const x=verParts(a),y=verParts(b);for(let i=0;i<3;i++){if((x[i]||0)!==(y[i]||0))return (x[i]||0)>(y[i]||0)}return false};
+async function fetchInfo(){
+  const base=(window.ARABI_CONFIG||{}).versionUrl||'version.json';
+  const r=await fetch(base+(base.indexOf('?')<0?'?':'&')+'t='+Date.now(),{cache:'no-store'});
+  if(!r.ok)throw new Error('http '+r.status);
+  return r.json();
+}
+function updBar(){
+  let b=document.getElementById('updbar');
+  const i=UPD.info;
+  if(!i||!verGt(i.version,APP_VERSION)){if(b)b.hidden=true;return}
+  if(!b){b=document.createElement('div');b.id='updbar';b.className='updbar';b.setAttribute('role','status');document.body.appendChild(b)}
+  b.hidden=false;
+  b.innerHTML=`<div class="updin"><div style="min-width:0;flex:1"><b>নতুন আপডেট এসেছে (${bd(i.version)})</b><div class="updn">${(i.notes||[]).slice(0,3).map(n=>'• '+n).join('<br>')}</div></div><button type="button" class="pbtn" data-act="updnow" style="min-height:44px">আপডেট করুন</button><button type="button" class="updx" data-act="updhide" aria-label="বন্ধ করুন">×</button></div>`;
+}
+async function checkUpdate(manual){
+  if(UPD.busy)return;UPD.busy=true;
+  try{
+    UPD.info=await fetchInfo();UPD.last=Date.now();
+    UPD.msg=verGt(UPD.info.version,APP_VERSION)?`নতুন সংস্করণ ${bd(UPD.info.version)} পাওয়া গেছে।`:'আপনার অ্যাপ সর্বশেষ সংস্করণে আছে।';
+    updBar();
+  }catch(e){UPD.msg='এখন আপডেট দেখা যাচ্ছে না। ইন্টারনেট সংযোগ দেখে আবার চেষ্টা করুন।'}
+  finally{UPD.busy=false}
+  if(manual&&location.hash==='#progress')rerender(true);
+}
+async function applyUpdate(){
+  const apk=(window.ARABI_CONFIG||{}).apkUrl;
+  if(apk&&window.Capacitor){try{window.open(apk,'_blank')}catch(e){location.href=apk}return}
+  try{localStorage.setItem('arabi-just-updated',(UPD.info&&UPD.info.version)||'')}catch(e){}
+  try{if('serviceWorker' in navigator){const rs=await navigator.serviceWorker.getRegistrations();await Promise.all(rs.map(r=>r.unregister()))}}catch(e){}
+  try{if(window.caches){const ks=await caches.keys();await Promise.all(ks.filter(k=>k.startsWith('arabi-shikhi-')).map(k=>caches.delete(k)))}}catch(e){}
+  location.reload();
+}
+const _progBase=viewProgress;
+viewProgress=function(){
+  const i=UPD.info,newer=i&&verGt(i.version,APP_VERSION);
+  const sec=`<section class="blk card"><h2>অ্যাপ আপডেট</h2><p class="muted">বর্তমান সংস্করণ: ${bd(APP_VERSION)}</p>
+  ${UPD.msg?`<p style="margin:8px 0"><b>${UPD.msg}</b></p>`:''}
+  ${i&&(i.notes||[]).length?`<p class="muted" style="margin-top:6px">${newer?'নতুন সংস্করণে যা আছে':'সর্বশেষ পরিবর্তন'} (${bd(i.version)}):</p><ul style="margin:4px 0 8px 1.2em">${i.notes.map(n=>`<li>${n}</li>`).join('')}</ul>`:''}
+  <div class="row"><button type="button" class="btn ghost" data-act="updcheck">${UPD.busy?'দেখা হচ্ছে…':'আপডেট আছে কি না দেখি'}</button>${newer?'<button type="button" class="btn" data-act="updnow">এখনই আপডেট করি</button>':''}</div>
+  <p class="hint2" style="margin-top:8px">আপডেটে আপনার অগ্রগতি, তারা ও সূচি মোছে না; সেগুলো এই ডিভাইসেই সংরক্ষিত থাকে।</p></section>`;
+  return _progBase()+sec;
+};
+Object.assign(ACT,{
+  updcheck:()=>{checkUpdate(true);rerender(true)},
+  updnow:()=>applyUpdate(),
+  updhide:()=>{const b=document.getElementById('updbar');if(b)b.hidden=true},
+  pexport:async()=>{
+    try{
+      const blob=new Blob(['﻿'+buildCsv()],{type:'text/csv;charset=utf-8'});
+      const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='arabi-shikhi-schedule.csv';
+      document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(a.href),4000);
+      toast('ফাইল নামানো হয়েছে। Google Calendar-এ ইমপোর্ট করুন।');
+    }catch(e){toast('ফাইল নামানো যায়নি')}
+  }
+});
+/* AI ওস্তাদ: নিজের প্রক্সি সার্ভার (Cloudflare Worker) থাকলে version.json-এ "tutorEndpoint" দিন */
+async function tutorEndpoint(){
+  const c=(window.ARABI_CONFIG||{}).tutorEndpoint;if(c)return c;
+  if(UPD.ep!==undefined)return UPD.ep;
+  try{const i=await fetchInfo();UPD.ep=i.tutorEndpoint||'';}catch(e){UPD.ep=''}
+  return UPD.ep;
+}
+function deviceId(){
+  try{let d=localStorage.getItem('arabi-device');if(!d){d=(crypto.randomUUID?crypto.randomUUID():String(Date.now())+Math.random().toString(16).slice(2));localStorage.setItem('arabi-device',d)}return d}catch(e){return ''}
+}
+getSample=async()=>{
+  const ep=await tutorEndpoint();if(!ep)return null;
+  return async(msgs,opts)=>{
+    const arr=Array.isArray(msgs)?msgs:[{role:'user',content:String(msgs)}];
+    const system=arr[0]&&arr[0].role==='user'&&arr.length>1?arr[0].content:'';
+    const messages=(system?arr.slice(1):arr).map(m=>({role:m.role,content:m.content}));
+    let r;
+    try{r=await fetch(ep,{method:'POST',headers:{'content-type':'application/json'},body:JSON.stringify({device:deviceId(),system,messages}),signal:opts&&opts.signal})}
+    catch(e){if(e&&e.name==='AbortError')throw {code:'aborted'};throw {code:'upstream_error'}}
+    if(r.status===429){
+      let j={};try{j=await r.json()}catch(e){}
+      const m=Math.max(1,Math.ceil((j.retryAfter||3600)/60));
+      ERR.rate_limited=j.error==='limit'?`এই ঘণ্টার ${bd(j.limit||'')}টি প্রশ্নের সীমা শেষ। প্রায় ${bd(m)} মিনিট পর আবার জিজ্ঞাসা করুন। ততক্ষণ পাঠ ও অনুশীলন চালিয়ে যান।`:'এখন অনেকেই ওস্তাদকে প্রশ্ন করছে। এক মিনিট পর আবার চেষ্টা করুন।';
+      throw {code:'rate_limited'};
+    }
+    if(!r.ok)throw {code:'upstream_error'};
+    const j=await r.json();if(!j.text)throw {code:'upstream_error'};
+    const t=j.text+(typeof j.remaining==='number'&&j.remaining<=2?`\n\n(এই ঘণ্টায় আর ${bd(j.remaining)}টি প্রশ্ন করা যাবে)`:'');
+    if(opts&&opts.onText)opts.onText({text:t});return {text:t};
+  };
+};
+/* শুরু: সার্ভিস ওয়ার্কার + আপডেট যাচাই */
+if('serviceWorker' in navigator&&/^https?:$/.test(location.protocol)&&!window.Capacitor){
+  window.addEventListener('load',()=>{navigator.serviceWorker.register('sw.js').catch(()=>{})});
+}
+try{
+  const ju=localStorage.getItem('arabi-just-updated');
+  if(ju){localStorage.removeItem('arabi-just-updated');setTimeout(()=>toast(`আপডেট সম্পন্ন: সংস্করণ ${bd(APP_VERSION)}`),600)}
+}catch(e){}
+if(/^https?:$/.test(location.protocol)){
+  setTimeout(()=>checkUpdate(false),2500);
+  document.addEventListener('visibilitychange',()=>{if(!document.hidden&&Date.now()-UPD.last>6*3600*1000)checkUpdate(false)});
+}
+
+/* ---------- Android অ্যাপে ফোনের নিজস্ব Text-to-Speech ---------- */
+const NATIVE=!!(window.Capacitor&&typeof window.Capacitor.isNativePlatform==='function'&&window.Capacitor.isNativePlatform());
+let NTTS=null;
+if(NATIVE){try{NTTS=window.Capacitor.registerPlugin('TextToSpeech')}catch(e){NTTS=null}}
+const TTS_HELP='আরবি ভয়েস চালানো যায়নি। ফোনের সেটিংস > ভাষা > Text-to-speech এ গিয়ে Google ইঞ্জিনের আরবি ভয়েস ডাউনলোড করুন।';
+function nspeak(t,rate){
+  return Promise.resolve(NTTS.stop()).catch(()=>{}).then(()=>NTTS.speak({text:t,lang:'ar-SA',rate:rate||.7,pitch:1,volume:1,category:'ambient'}));
+}
+if(NTTS){
+  speak=function(t){nspeak(t,.7).catch(()=>toast(TTS_HELP))};
+}
+
+/* ---------- ক্বারীর তেলাওয়াত (ইন্টারনেট থেকে) ---------- */
+const RECS=[
+ {id:'alafasy',n:'মিশারী আল-আফাসি',ea:'Alafasy_128kbps',isl:'ar.alafasy'},
+ {id:'husary',n:'মাহমুদ খলীল আল-হুসারী (ধীর, শেখার জন্য সেরা)',ea:'Husary_128kbps',isl:'ar.husary'},
+ {id:'sudais',n:'আবদুর রহমান আস-সুদাইস',ea:'Abdurrahmaan_As-Sudais_192kbps',isl:'ar.abdurrahmaansudais'},
+ {id:'basit',n:'আবদুল বাসিত আবদুস সামাদ (মুরাত্তাল)',ea:'Abdul_Basit_Murattal_192kbps',isl:'ar.abdulbasitmurattal'},
+ {id:'minshawi',n:'মুহাম্মদ সিদ্দীক আল-মিনশাবী (মুরাত্তাল)',ea:'Minshawy_Murattal_128kbps',isl:'ar.minshawi'}
+];
+let REC=(()=>{try{const v=localStorage.getItem('arabi-reciter');if(RECS.some(r=>r.id===v))return v}catch(e){}return 'alafasy'})();
+const recObj=()=>RECS.find(r=>r.id===REC)||RECS[0];
+const p3=n=>String(n).padStart(3,'0');
+function ayUrls(s,k){
+  const r=recObj(),u=[`https://everyayah.com/data/${r.ea}/${p3(s.no)}${p3(k+1)}.mp3`];
+  if(s.g!=null)u.push(`https://cdn.islamic.network/quran/audio/128/${r.isl}/${s.g+k}.mp3`);
+  return u;
+}
+const QA=new Audio();QA.preload='auto';let QTOK=null,QWARN=false;
+function qhl(k){
+  document.querySelectorAll('.ay.on').forEach(x=>x.classList.remove('on'));
+  if(k==null)return;const el=document.getElementById('ay'+k);
+  if(el){el.classList.add('on');try{el.scrollIntoView({block:'center',behavior:'smooth'})}catch(e){}}
+}
+function qreset(){const b=document.getElementById('qplaybtn');if(b)b.textContent='▶ পুরো সূরা শুনি'}
+function stopAll(){QTOK=null;try{QA.pause()}catch(e){}try{speechSynthesis.cancel()}catch(e){}try{if(NTTS)NTTS.stop()}catch(e){}qhl(null)}
+function playOne(s,k,tok){
+  return new Promise(res=>{
+    const urls=ayUrls(s,k);let i=0;
+    const fallback=()=>{
+      if(QTOK!==tok)return res();
+      if(!QWARN){QWARN=true;toast('ক্বারীর অডিও পাওয়া যায়নি (ইন্টারনেট দেখুন)। ডিভাইসের ভয়েসে শোনানো হচ্ছে।')}
+      if(NTTS){nspeak(s.ar[k],.65).then(()=>res(),()=>{toast(TTS_HELP);res()});return}
+      if(!('speechSynthesis' in window))return res();
+      loadVoices();const v=VOICES.find(x=>/^ar/i.test(x.lang||'')),u=new SpeechSynthesisUtterance(s.ar[k]);
+      u.lang=v?v.lang:'ar-SA';if(v)u.voice=v;u.rate=.65;u.onend=()=>res();u.onerror=()=>res();
+      speechSynthesis.cancel();speechSynthesis.speak(u);
+    };
+    let cur=0,fell=false;
+    const tryNext=()=>{
+      if(QTOK!==tok)return res();
+      if(i>=urls.length){if(!fell){fell=true;fallback()}return}
+      const my=++cur;
+      const bad=()=>{if(my===cur&&QTOK===tok){cur++;tryNext()}else if(QTOK!==tok)res()};
+      QA.onended=()=>{if(my===cur)res()};
+      QA.onerror=bad;
+      QA.src=urls[i++];
+      const pr=QA.play();if(pr&&pr.catch)pr.catch(e=>{if(!(e&&e.name==='AbortError'))bad()});
+    };
+    tryNext();
+  });
+}
+async function runAyat(s,from,all){
+  stopAll();const tok=QTOK={};
+  for(let k=from;k<s.ar.length;k++){
+    if(QTOK!==tok)return;
+    qhl(k);await playOne(s,k,tok);
+    if(!all)break;
+    if(QTOK!==tok)return;
+    await new Promise(r=>setTimeout(r,250));
+  }
+  if(QTOK===tok){QTOK=null;qhl(null);qreset()}
+}
+window.qAudio=(s,k,all)=>{runAyat(s,k,all)};
+qplay=function(s,from){QWARN=false;runAyat(s,from||0,true)};
+qstop=function(){stopAll();qreset()};
+window.addEventListener('hashchange',()=>{stopAll()});
+const _vq=viewQuran;
+viewQuran=function(id){
+  const h=_vq(id);if(!id||!QS.find(x=>x.id===id))return h;
+  const sel=`<div style="margin:8px 0"><label for="qrec" class="muted">ক্বারী</label><br><select id="qrec" style="font:inherit;padding:8px;border-radius:10px;border:1.5px solid var(--green);background:var(--card);color:var(--fg);max-width:100%">${RECS.map(r=>`<option value="${r.id}" ${r.id===REC?'selected':''}>${r.n}</option>`).join('')}</select></div>`;
+  return h.replace('<div class="row" style="margin:10px 0"><button type="button" class="btn" id="qplaybtn"',sel+'<div class="row" style="margin:10px 0"><button type="button" class="btn" id="qplaybtn"').replace('ডিভাইসের আরবি ভয়েসে ধীর গতিতে শোনানো হয়; এটি কোনো ক্বারীর রেকর্ড করা তেলাওয়াত নয়।','ক্বারীর তেলাওয়াত ইন্টারনেট থেকে চলে (EveryAyah ও Islamic Network)। ইন্টারনেট না থাকলে ডিভাইসের আরবি ভয়েসে শোনানো হয়।');
+};
+document.addEventListener('change',e=>{
+  if(e.target&&e.target.id==='qrec'){REC=e.target.value;try{localStorage.setItem('arabi-reciter',REC)}catch(x){}stopAll();qreset();toast('ক্বারী বদলানো হয়েছে')}
+});
+
+prefs();render();
+if('speechSynthesis' in window)try{speechSynthesis.getVoices()}catch(e){}
+</script>
+</body>
+</html>
