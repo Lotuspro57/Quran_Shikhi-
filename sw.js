@@ -1,5 +1,5 @@
 /* আরবি শিখি – সার্ভিস ওয়ার্কার. VERSION বদলাতে release.js ব্যবহার করুন */
-const VERSION='1.4.0';
+const VERSION='1.4.4';
 const CACHE='arabi-shikhi-'+VERSION;
 const CORE=['./','index.html','manifest.webmanifest','icons/icon-192.png','icons/icon-512.png','icons/apple-touch-icon.png'];
 self.addEventListener('install',e=>{
