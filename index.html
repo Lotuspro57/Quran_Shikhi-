@@ -30,14 +30,14 @@
   --f-ui:'Hind Siliguri','Amiri','Noto Sans Bengali',system-ui,sans-serif;
   --f-head:'Anek Bangla','Hind Siliguri',system-ui,sans-serif;
   --f-ar:'Amiri','Noto Naskh Arabic','Traditional Arabic',serif;
-  --scale:1; --r:12px; --fs:1;
+  --scale:1; --r:12px; --fs:1; --hero:#0b5a33; --chip:#0d1f15;
 }
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
-  --bg:#040906; --bg2:#0B140E; --card:#09110C; --fg:#F1F8F3; --muted:#9CB2A3; --line:#1D2D23;
-  --green:#3ED47C; --green-d:#2DB766; --green-l:#0E2417; --on-green:#03100A; color-scheme:dark}}
+  --bg:#0f1a14; --bg2:#152219; --card:#1a2a20; --fg:#e8f0ea; --muted:#a6bbad; --line:#2d4236;
+  --green:#6fd09b; --green-d:#58bb86; --green-l:#1f3a2b; --on-green:#0a1a11; --hero:#1d6a43; --chip:#24392c; color-scheme:dark}}
 :root[data-theme="dark"]{
-  --bg:#040906; --bg2:#0B140E; --card:#09110C; --fg:#F1F8F3; --muted:#9CB2A3; --line:#1D2D23;
-  --green:#3ED47C; --green-d:#2DB766; --green-l:#0E2417; --on-green:#03100A; color-scheme:dark}
+  --bg:#0f1a14; --bg2:#152219; --card:#1a2a20; --fg:#e8f0ea; --muted:#a6bbad; --line:#2d4236;
+  --green:#6fd09b; --green-d:#58bb86; --green-l:#1f3a2b; --on-green:#0a1a11; --hero:#1d6a43; --chip:#24392c; color-scheme:dark}
 :root[data-age="kid"]{--scale:1.16;--r:22px}
 *{box-sizing:border-box}
 html{-webkit-text-size-adjust:100%}
@@ -2241,24 +2241,30 @@ nav.tabs .tabs-in{display:flex;gap:4px;overflow:visible}
   .tabs a svg{width:22px;height:22px}
   .tabs a[aria-current="page"]{border-top-color:var(--green);border-bottom-color:transparent;background:none}
 }
-.hero{align-items:stretch;background:var(--green);color:#fff;border-radius:22px;padding:18px;display:flex;flex-direction:column;gap:12px;margin:0 0 14px}
+.hero{align-items:stretch;background:var(--hero);color:#fff;border-radius:22px;padding:18px;display:flex;flex-direction:column;gap:12px;margin:0 0 14px}
 .hero .t{font-size:1.35em;font-weight:700;line-height:1.35}
 .hero .m{font-size:.85em;opacity:.92}
 .hero .pb{width:100%;box-sizing:border-box;display:flex;align-items:center;justify-content:center;gap:8px;background:#fff;color:#0b5a33;font-weight:700;font-size:1.1em;border-radius:16px;min-height:56px;text-decoration:none}
 .hero .bar{height:8px;width:100%;display:block;background:rgba(255,255,255,.3)}.hero .bar i{background:#fff}
-.chip{display:inline-flex;align-items:center;gap:6px;background:#0d1f15;color:#fff;border-radius:999px;padding:8px 14px;font-weight:600}
+.chip{display:inline-flex;align-items:center;gap:6px;background:var(--chip);color:var(--fg);border-radius:999px;padding:8px 14px;font-weight:600}
 .goal{display:flex;align-items:center;gap:12px;min-height:48px;text-decoration:none;color:inherit}
-.goal .ck{width:26px;height:26px;border-radius:50%;border:2px solid var(--muted);flex:none;display:flex;align-items:center;justify-content:center;color:#fff;font-size:14px}
+.goal .ck{width:26px;height:26px;border-radius:50%;border:2px solid var(--muted);flex:none;display:flex;align-items:center;justify-content:center;color:var(--on-green);font-size:14px}
 .goal.ok .ck{background:var(--green);border-color:var(--green)}
 .wk{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:6px;text-align:center}
 .wk a{display:flex;flex-direction:column;align-items:center;gap:4px;font-size:.78em;color:var(--muted);text-decoration:none}
 .wk b{width:38px;height:38px;border-radius:12px;display:flex;align-items:center;justify-content:center;background:var(--green-l);color:var(--fg);font-size:1.15em}
-.wk .dn b{background:#d7efdf;color:#0b5a33}.wk .tdy b{background:var(--green);color:#fff}
+.wk .dn b{background:var(--green-l);color:var(--green)}.wk .tdy b{background:var(--green);color:var(--on-green)}
 .subnav{display:flex;gap:8px;overflow-x:auto;margin:0 0 14px;padding-bottom:2px}
 .subnav a{flex:none;padding:10px 16px;border-radius:999px;background:var(--card);border:1.5px solid var(--line);color:var(--fg);text-decoration:none;font-weight:600}
-.subnav a[aria-current="page"]{background:var(--green);border-color:var(--green);color:#fff}
+.subnav a[aria-current="page"]{background:var(--green);border-color:var(--green);color:var(--on-green)}
 .dua{background:var(--card);border-radius:18px;padding:16px;margin-bottom:12px;border:1px solid var(--line)}
 .dua .arx{font-size:1.9em;line-height:1.9;text-align:right}
+@media(max-width:720px){
+  .fab{width:56px;height:56px;padding:0;justify-content:center;font-size:0;gap:0;border-radius:50%}
+  .fab svg{width:26px;height:26px}
+  body{padding-bottom:calc(150px + env(safe-area-inset-bottom,0px))}
+  body.ai{padding-bottom:0}
+}
 `;
 document.head.appendChild(css);
 
@@ -2363,6 +2369,7 @@ render=function(keepScroll){
     case'plan':html=sub('plan',MSUB)+viewPlan();break;
     case'quran':html=viewQuran(b);break;
     case'dua':html=viewDua();break;
+    case'ai':html=viewAI();break;
     case'progress':html=sub('progress',MSUB)+viewProgress();break;
     default:html=viewHome();
   }
@@ -2377,7 +2384,7 @@ render=function(keepScroll){
 })();
 
 /* ---------- অ্যাপ আপডেট (স্বতন্ত্র অ্যাপ সংস্করণ) ---------- */
-const APP_VERSION='1.4.0';
+const APP_VERSION='1.4.4';
 const UPD={info:null,msg:'',busy:false,last:0};
 const verParts=v=>String(v).split('.').map(n=>parseInt(n,10)||0);
 const verGt=(a,b)=>{const x=verParts(a),y=verParts(b);for(let i=0;i<3;i++){if((x[i]||0)!==(y[i]||0))return (x[i]||0)>(y[i]||0)}return false};
@@ -2566,6 +2573,130 @@ viewQuran=function(id){
 document.addEventListener('change',e=>{
   if(e.target&&e.target.id==='qrec'){REC=e.target.value;try{localStorage.setItem('arabi-reciter',REC)}catch(x){}stopAll();qreset();toast('ক্বারী বদলানো হয়েছে')}
 });
+
+/* ---------- AI সংযুক্ত করুন: ব্যবহারকারীর নিজের কী দিয়ে সরাসরি Gemini/Claude ---------- */
+const AIK='arabi-ai';
+const aiGet=()=>{try{return JSON.parse(localStorage.getItem(AIK)||'null')}catch(e){return null}};
+const aiSet=v=>{try{if(v)localStorage.setItem(AIK,JSON.stringify(v));else localStorage.removeItem(AIK)}catch(e){}};
+ERR.bad_key='AI কী কাজ করছে না। ‘AI সংযুক্ত করুন’ পাতায় গিয়ে কী যাচাই করুন।';
+const _gsBase=getSample;
+getSample=async()=>{
+  const cfg=aiGet();
+  if(!cfg||!cfg.k)return _gsBase();
+  return async(msgs,opts)=>{
+    const arr=Array.isArray(msgs)?msgs:[{role:'user',content:String(msgs)}];
+    const system=arr[0]&&arr[0].role==='user'&&arr.length>1?arr[0].content:'';
+    const ms=(system?arr.slice(1):arr).map(m=>({role:m.role,content:m.content}));
+    let r;
+    try{
+      if(cfg.p==='claude'){
+        r=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',signal:opts&&opts.signal,
+          headers:{'content-type':'application/json','x-api-key':cfg.k,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},
+          body:JSON.stringify({model:'claude-haiku-5-5',max_tokens:1024,system,messages:ms})});
+      }else{
+        r=await fetch('https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent',{method:'POST',signal:opts&&opts.signal,
+          headers:{'content-type':'application/json','x-goog-api-key':cfg.k},
+          body:JSON.stringify({systemInstruction:system?{parts:[{text:system}]}:undefined,
+            contents:ms.map(m=>({role:m.role==='assistant'?'model':'user',parts:[{text:m.content}]})),
+            generationConfig:{maxOutputTokens:1024}})});
+      }
+    }catch(e){if(e&&e.name==='AbortError')throw {code:'aborted'};throw {code:'upstream_error'}}
+    if(r.status===400||r.status===401||r.status===403)throw {code:'bad_key'};
+    if(r.status===429){ERR.rate_limited='এই কী-এর ফ্রি সীমা এখন শেষ। কিছুক্ষণ পর আবার চেষ্টা করুন।';throw {code:'rate_limited'}}
+    if(!r.ok)throw {code:'upstream_error'};
+    const j=await r.json();
+    const t=cfg.p==='claude'?((j.content||[]).map(x=>x.text||'').join('')):((((j.candidates||[])[0]||{}).content||{}).parts||[]).map(x=>x.text||'').join('');
+    if(!t)throw {code:'upstream_error'};
+    if(opts&&opts.onText)opts.onText({text:t});return {text:t};
+  };
+};
+
+window.viewAI=function(){
+  const c=aiGet()||{p:'gemini',k:''};
+  const st=ST.aist||'';
+  return `<section class="blk"><a href="#tutor" class="btn ghost sm">← ওস্তাদে ফিরি</a>
+  <h1 style="margin:10px 0 6px">AI সংযুক্ত করুন</h1>
+  <p class="lead">নিজের AI অ্যাকাউন্ট থেকে একটি ‘কী’ (চাবি) বানিয়ে এখানে বসালেই ওস্তাদ উত্তর দেবে। কী শুধু আপনার ফোনেই থাকে।</p>
+  <div class="note">দুঃখিত, claude.ai-এর চ্যাট লগইন দিয়ে অন্য অ্যাপে AI চালানো যায় না। তাই এই কী পদ্ধতি। Google Gemini-তে ফ্রি কী পাওয়া যায়।</div>
+  <div class="card" style="margin:12px 0"><b>১. AI বেছে নিন</b>
+    <div class="row" style="gap:8px;margin-top:8px">
+      <button type="button" class="btn ${c.p==='gemini'?'':'ghost'}" data-act="aiprov" data-v="gemini">Gemini (ফ্রি)</button>
+      <button type="button" class="btn ${c.p==='claude'?'':'ghost'}" data-act="aiprov" data-v="claude">Claude (পেইড API)</button>
+    </div></div>
+  <div class="card" style="margin-bottom:12px"><b>২. কী তৈরি করুন</b>
+    <p class="muted" style="margin:6px 0 10px">${c.p==='claude'?'Anthropic Console-এ লগইন করে API key বানান (এতে ক্রেডিট লাগে)।':'Google অ্যাকাউন্টে লগইন করে ‘Create API key’ চাপুন, তারপর কী কপি করুন।'}</p>
+    <a class="btn" target="_blank" rel="noopener" href="${c.p==='claude'?'https://console.anthropic.com/settings/keys':'https://aistudio.google.com/apikey'}">${c.p==='claude'?'Anthropic Console খুলুন':'Google AI Studio খুলুন'}</a></div>
+  <div class="card" style="margin-bottom:12px"><b>৩. কী এখানে বসান</b>
+    <label for="aikey" class="muted" style="display:block;margin:8px 0 4px">API key</label>
+    <input id="aikey" type="password" autocomplete="off" autocapitalize="off" spellcheck="false" value="${esc(c.k||'')}" style="width:100%;box-sizing:border-box;min-height:48px;font:inherit;padding:0 12px;border:1.5px solid var(--line);border-radius:12px;background:var(--card);color:var(--fg)">
+    <div class="row" style="gap:8px;margin-top:10px;flex-wrap:wrap">
+      <button type="button" class="btn" data-act="aisave">সংরক্ষণ ও পরীক্ষা</button>
+      ${c.k?'<button type="button" class="btn ghost" data-act="aiclear">কী মুছুন</button>':''}
+    </div>
+    <p id="aistat" role="status" style="margin:10px 0 0">${esc(st)}</p></div>
+  <p class="hint2">কী কাউকে দেবেন না। Gemini-র ফ্রি কী-এর প্রতিদিন/প্রতি মিনিটে সীমা আছে।</p></section>`;
+};
+Object.assign(ACT,{
+  aiprov:t=>{const c=aiGet()||{p:'gemini',k:''};const k=($('#aikey')||{}).value;aiSet({p:t.dataset.v,k:k!=null&&k!==''?k:c.k});ST.aist='';rerender()},
+  aiclear:()=>{aiSet(null);ST.aist='কী মুছে ফেলা হয়েছে।';rerender()},
+  aisave:async()=>{
+    const k=(($('#aikey')||{}).value||'').trim(),c=aiGet()||{p:'gemini'};
+    if(!k){ST.aist='আগে কী বসান।';const e=$('#aistat');if(e)e.textContent=ST.aist;return}
+    aiSet({p:c.p,k});const e=$('#aistat');if(e)e.textContent='পরীক্ষা চলছে…';
+    try{const sm=await getSample();const r=await sm([{role:'user',content:'এক শব্দে উত্তর দাও: ঠিক আছে'}],{});ST.aist='সংযুক্ত হয়েছে! এখন ওস্তাদকে প্রশ্ন করতে পারবেন।';}
+    catch(x){ST.aist=(x&&x.code==='bad_key')?'কী কাজ করছে না। সঠিক কী বসিয়েছেন কিনা দেখুন।':(x&&x.code==='rate_limited')?'কী ঠিক আছে, তবে এখন সীমা শেষ। পরে চেষ্টা করুন।':'ইন্টারনেট বা সার্ভারে সমস্যা। আবার চেষ্টা করুন।'}
+    const e2=$('#aistat');if(e2)e2.textContent=ST.aist;
+  }
+});
+/* ওস্তাদ ও আমি পাতায় সংযোগ-লিংক */
+const _st=document.createElement('style');
+_st.textContent='.aibar{height:44px;box-sizing:border-box;display:flex;align-items:center;justify-content:center;padding-top:6px}.aibar a{font-weight:600}.aibar+.aifull{height:calc(100dvh - 44px - env(safe-area-inset-top,0px) - env(safe-area-inset-bottom,0px))}';
+document.head.appendChild(_st);
+const _vt=viewTutor;
+viewTutor=function(){
+  const c=aiGet(),on=c&&c.k;
+  const bar=`<div class="aibar"><a href="#ai">${on?'AI সেটিংস ('+(c.p==='claude'?'Claude':'Gemini')+' সংযুক্ত)':'AI সংযুক্ত করুন (লগইন/কী)'}</a></div>`;
+  return bar+_vt();
+};
+const _vp=viewProgress;
+viewProgress=function(){
+  const c=aiGet();
+  return _vp()+`<section class="blk"><div class="card"><div class="row sp"><b>AI ওস্তাদ</b><small class="muted">${c&&c.k?'সংযুক্ত':'সংযুক্ত নয়'}</small></div><a class="btn ghost" href="#ai" style="margin-top:8px;display:inline-block">AI সংযুক্ত করুন</a></div></section>`;
+};
+
+/* ---------- Android ব্যাক বোতাম/জেসচার: অ্যাপের ভেতরে পিছনে যাওয়া ---------- */
+(function(){
+  if(!NATIVE)return;
+  let APP=null;try{APP=window.Capacitor.registerPlugin('App')}catch(e){}
+  if(!APP||!APP.addListener)return;
+  const stack=[location.hash||'#home'];let lastBack=0;
+  window.addEventListener('hashchange',()=>{
+    const h=location.hash||'#home';
+    if(stack.length>1&&stack[stack.length-2]===h)stack.pop();
+    else if(stack[stack.length-1]!==h)stack.push(h);
+    if(stack.length>60)stack.splice(0,stack.length-60);
+  });
+  APP.addListener('backButton',()=>{
+    const sh=document.getElementById('sheet');
+    if(sh&&!sh.hidden){closeSheet();return}
+    if(stack.length>1){location.hash=stack[stack.length-2];return}
+    if((location.hash||'#home')!=='#home'){stack.length=0;stack.push('#home');location.hash='#home';return}
+    const n=Date.now();
+    if(n-lastBack<2000){APP.exitApp();return}
+    lastBack=n;toast('বের হতে আবার পিছনে চাপুন');
+  });
+})();
+
+/* ফ্ল্যাশকার্ড উল্টানো: পুরো পাতা না এঁকে কার্ডের ভেতরটাই বদলায় (ফোনে বেশি নির্ভরযোগ্য) */
+ACT.flip=()=>{
+  try{
+    const F=ST.fc;if(!F)return;F.flip=!F.flip;
+    const b=document.querySelector('.flash'),d=deckOf(F.id);
+    if(!b||!d){rerender();return}
+    const c=d.c[F.q[0]];
+    b.innerHTML=F.flip?`<div class="bk">${c.b}</div>`:`${ar(c.f)}<div class="hint">ট্যাপ করে উল্টান</div>`;
+  }catch(e){toast('উল্টাতে সমস্যা: '+(e&&e.message||e))}
+};
 
 prefs();render();
 if('speechSynthesis' in window)try{speechSynthesis.getVoices()}catch(e){}
